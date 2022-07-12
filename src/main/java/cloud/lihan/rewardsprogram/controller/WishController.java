@@ -60,7 +60,7 @@ public class WishController extends BaseController {
     @ResponseBody
     public Base deleteWishById(@RequestParam("id") String id) {
         try {
-            wishService.deleteWishDocumentById(id);
+            wishService.deleteWishById(id);
             return apiOk();
         } catch (IOException e) {
             return apiErr(e.getMessage());
@@ -102,7 +102,7 @@ public class WishController extends BaseController {
     @ResponseBody
     public Base getWishById(@RequestParam("id") String id) {
         try {
-            WishDTO wishByWishDocumentId = wishService.getWishByWishDocumentId(id);
+            WishDTO wishByWishDocumentId = wishService.getWishByWishId(id);
             return apiOk(wishByWishDocumentId);
         } catch (IOException e) {
             return apiErr(e.getMessage());

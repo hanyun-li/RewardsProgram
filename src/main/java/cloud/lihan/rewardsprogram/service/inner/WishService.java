@@ -34,19 +34,18 @@ public interface WishService {
     /**
      * 根据ID删除愿望
      *
-     * @param wishDocumentId 愿望文档标识
-     * @return true:创建成功 false:创建失败
+     * @param wishId 愿望ID
      * @throws IOException 异常信息
      */
-    void deleteWishDocumentById(String wishDocumentId) throws IOException;
+    void deleteWishById(String wishId) throws IOException;
 
     /**
      * 根据ID实现愿望
      *
-     * @param wishDocumentId 愿望文档标识
+     * @param wishId 愿望ID
      * @throws IOException 异常信息
      */
-    void fulfillmentWishById(String wishDocumentId) throws IOException;
+    void fulfillmentWishById(String wishId) throws IOException;
 
     /**
      * 随机获取一个愿望
@@ -59,19 +58,19 @@ public interface WishService {
     /**
      * 随机获取指定数量的愿望(最多获取10条)
      *
-     * @param wishDocumentNum 需要获取的愿望文档数量
+     * @param wishNum 需要获取的愿望数量
      * @return {@link List<WishDTO>}
      * @throws IOException 异常信息
      */
-    List<WishDTO> getMultipleRandomWish(Integer wishDocumentNum) throws IOException;
+    List<WishDTO> getMultipleRandomWish(Integer wishNum) throws IOException;
 
     /**
      * 根据ID获取愿望
      *
-     * @param wishDocumentId 愿望主键
-     * @return {@link WishDTO}
+     * @param wishId 愿望ID
+     * @return {@link WishDTO} 愿望信息
      * @throws IOException 异常信息
      */
-    WishDTO getWishByWishDocumentId(String wishDocumentId) throws IOException;
+    WishDTO getWishByWishId(String wishId) throws IOException;
 
 }

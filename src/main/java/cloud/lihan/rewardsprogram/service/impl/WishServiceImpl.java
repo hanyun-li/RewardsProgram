@@ -43,20 +43,21 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public void deleteWishDocumentById(String wishDocumentId) throws IOException {
-        wishDao.deleteWishDocumentById(wishDocumentId);
+    public void deleteWishById(String wishId) throws IOException {
+        wishDao.deleteWishDocumentById(wishId);
     }
 
     @Override
-    public void fulfillmentWishById(String wishDocumentId) throws IOException {
+    public void fulfillmentWishById(String wishId) throws IOException {
         // 指定主键
         Query query = new Query.Builder()
-                .ids(id -> id.values(wishDocumentId))
+                .ids(id -> id.values(wishId))
                 .build();
         // 组装更新map
         Map<String, JsonData> optionMaps = new HashMap<>(IntegerConstant.ONE);
         optionMaps.put("isRealized", JsonData.of(Boolean.TRUE));
-        wishDao.updateWishDocumentById(optionMaps, query);
+        String source = "ctx._source.isRealized = params.isRealized";
+        wishDao.updateWishSingleField(optionMaps, source, query);
     }
 
     @Override
@@ -69,19 +70,19 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishDTO> getMultipleRandomWish(Integer wishDocumentNum) throws IOException {
+    public List<WishDTO> getMultipleRandomWish(Integer wishNum) throws IOException {
         // 筛选没有被实现的愿望
         Query query = new Query.Builder().term(t -> t
                 .field("isRealized")
                 .value(v -> v.booleanValue(Boolean.FALSE))
         ).build();
-        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishDocumentNum, query);
+        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
         return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
     }
 
     @Override
-    public WishDTO getWishByWishDocumentId(String wishDocumentId) throws IOException {
-        WishDocument wishDocument = wishDao.getWishDocumentById(wishDocumentId);
+    public WishDTO getWishByWishId(String wishId) throws IOException {
+        WishDocument wishDocument = wishDao.getWishDocumentById(wishId);
         return wishManager.wishDocumentConvertWishDTO(wishDocument);
     }
 

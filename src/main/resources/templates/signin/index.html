@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -14,53 +14,63 @@
     <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
 
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
         }
-      }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
     </style>
 
 
     <!-- Custom styles for this template -->
     <link th:href="@{/assets/dist/css/signin.css}" rel="stylesheet">
-  </head>
-  <body class="text-center">
+</head>
+<body class="text-center">
 
 <main class="form-signin">
-  <form method="post" id="formid">
-    <img class="mb-4" th:src="@{/logo/incentive_plan.png}" alt="" width="144" height="114">
+    <form method="post" id="formid" action="/login">
+        <img class="mb-4" th:src="@{/logo/incentive_plan.png}" alt="" width="144" height="114">
 
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingName" placeholder="张三">
-      <label for="floatingName">姓 名</label>
-    </div>
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">邮 箱 地 址</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">密码</label>
-    </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" name="userName" id="userName" placeholder="Username">
+            <label for="userName">姓 名</label>
+            <div th:if="${usernameIsEmpty}" class="alert alert-danger" role="alert">
+                姓名需要输入哦😊
+            </div>
+        </div>
+        <div class="form-floating">
+            <input type="email" class="form-control" name="userEmail" id="userEmail" placeholder="name@example.com">
+            <label for="userEmail">邮 箱 地 址</label>
+            <div th:if="${emailIsEmpty}" class="alert alert-danger" role="alert">
+                邮箱需要输入哦😊
+            </div>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+            <label for="password">密码</label>
+            <div th:if="${passwordIsEmpty}" class="alert alert-danger" role="alert">
+                密码必须输入哦😊
+            </div>
+        </div>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> 记住 我
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" id="xuanze" type="submit" onclick="checkUser()">登录/注册</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-  </form>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> 记住 我
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" id="xuanze" type="submit">登录/注册</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    </form>
+
 </main>
 
-  </body>
+</body>
 </html>

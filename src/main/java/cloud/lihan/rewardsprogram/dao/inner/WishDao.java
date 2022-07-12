@@ -42,13 +42,14 @@ public interface WishDao {
     void deleteWishDocumentById(String wishDocumentId) throws IOException;
 
     /**
-     * 根据自定义条件更新愿望文档
+     * 根据自定义条件更新愿望文档的
      *
+     * @param source 更新语句
      * @param optionsMaps 更新(操作)集合
      * @param updateByQuery 自定义更新条件
      * @throws IOException 异常信息
      */
-    void updateWishDocumentById(Map<String, JsonData> optionsMaps, Query updateByQuery) throws IOException;
+    void updateWishSingleField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException;
 
     /**
      * 根据ID获取愿望文档

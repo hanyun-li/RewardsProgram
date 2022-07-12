@@ -4,6 +4,7 @@ import cloud.lihan.rewardsprogram.common.constants.ElasticsearchScriptConstant;
 import cloud.lihan.rewardsprogram.common.constants.IndexConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
+import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.common.utils.UuidUtil;
 import cloud.lihan.rewardsprogram.dao.inner.WishDao;
 import cloud.lihan.rewardsprogram.entety.document.WishDocument;
@@ -35,7 +36,6 @@ import java.util.Map;
  * @author hanyun.li
  * @createTime 2022/06/28 18:39:00
  */
-@Slf4j
 @Repository("wishDao")
 public class WishDaoImpl implements WishDao {
 
@@ -45,9 +45,8 @@ public class WishDaoImpl implements WishDao {
     @Override
     public void createWishDocument(WishDocument wishDocument) throws IOException {
         wishDocument.setId(UuidUtil.newUUID());
-        SimpleDateFormat format = new SimpleDateFormat(TimeFormatConstant.STANDARD);
-        wishDocument.setCreateTime(format.format(new Date()));
-        wishDocument.setUpdateTime(format.format(new Date()));
+        wishDocument.setCreateTime(CurrentTimeUtil.newCurrentTime());
+        wishDocument.setUpdateTime(CurrentTimeUtil.newCurrentTime());
         wishDocument.setIsRealized(Boolean.FALSE);
         esClient.create(i -> i
                 .index(IndexConstant.WISH_INDEX)
@@ -86,14 +85,14 @@ public class WishDaoImpl implements WishDao {
     }
 
     @Override
-    public void updateWishDocumentById(Map<String, JsonData> optionsMaps, Query query) throws IOException {
+    public void updateWishSingleField(Map<String, JsonData> optionsMaps, String source, Query query) throws IOException {
         UpdateByQueryRequest update = UpdateByQueryRequest.of(u -> u
                 .index(IndexConstant.WISH_INDEX)
                 .query(query)
                 .script(s -> s.inline(i -> i
                         .lang(ElasticsearchScriptConstant.SCRIPT_LANGUAGE)
                         .params(optionsMaps)
-                        .source("ctx._source.isRealized=params.isRealized")
+                        .source(source)
                 ))
         );
         esClient.updateByQuery(update);
@@ -107,6 +106,7 @@ public class WishDaoImpl implements WishDao {
         SearchResponse<WishDocument> search = esClient.search(s -> s
                         .index(IndexConstant.WISH_INDEX)
                         .query(query)
+                        .size(IntegerConstant.ONE)
                 , WishDocument.class);
         List<WishDocument> wishDocuments = this.processWish(search);
         return CollectionUtils.isEmpty(wishDocuments) ? new WishDocument() : wishDocuments.get(IntegerConstant.ZERO);

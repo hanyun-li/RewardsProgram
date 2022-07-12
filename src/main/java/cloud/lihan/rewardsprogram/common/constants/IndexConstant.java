@@ -11,4 +11,9 @@ public interface IndexConstant {
      */
     String WISH_INDEX = "wish";
 
+    /**
+     * 用户索引
+     */
+    String USER_INDEX = "user";
+
 }
