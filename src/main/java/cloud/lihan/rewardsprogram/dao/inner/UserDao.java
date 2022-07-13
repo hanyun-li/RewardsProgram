@@ -43,4 +43,13 @@ public interface UserDao {
      */
     UserDocument getUserByUserDocumentId(String userDocumentId) throws IOException;
 
+    /**
+     * 根据特定条件查询单个用户文档
+     *
+     * @param query 自定义查询条件
+     * @return {@link UserDocument} 用户信息
+     * @throws IOException 异常信息
+     */
+    UserDocument getSingleUserByQuery(Query query) throws IOException;
+
 }

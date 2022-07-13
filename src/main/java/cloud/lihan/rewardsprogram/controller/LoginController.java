@@ -1,5 +1,6 @@
 package cloud.lihan.rewardsprogram.controller;
 
+import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * 登录相关控制
@@ -24,7 +26,7 @@ public class LoginController {
     private UserService userService;
 
     @GetMapping()
-    public ModelAndView index(ModelAndView view){
+    public ModelAndView toLoginPage(ModelAndView view) {
         view.setViewName("signin/index");
         return view;
     }
@@ -35,7 +37,7 @@ public class LoginController {
     }
 
     @GetMapping("/sidebars")
-    public ModelAndView sidebars(ModelAndView view){
+    public ModelAndView sidebars(ModelAndView view) {
         view.setViewName("sidebars/sidebars");
         return view;
     }
@@ -55,20 +57,28 @@ public class LoginController {
             return view;
         }
 
-        if (StringUtils.isEmpty(userVO.getUserEmail())) {
-            view.addObject("emailIsEmpty", Boolean.TRUE);
-            view.setViewName("signin/index");
-            return view;
-        }
-
         if (StringUtils.isEmpty(userVO.getPassword())) {
             view.addObject("passwordIsEmpty", Boolean.TRUE);
             view.setViewName("signin/index");
             return view;
         }
 
-        userService.savaUser(userVO);
-        view.setViewName("home/home");
+        // 校验用户名是否输入正确
+        UserDTO user = userService.getUserByUsername(userVO.getUserName());
+        if (Objects.isNull(user)) {
+            view.addObject("usernameIsError", Boolean.TRUE);
+            view.setViewName("signin/index");
+            return view;
+        }
+
+        // 校验密码是否输入正确
+        if (!userVO.getPassword().equals(user.getPassword())) {
+            view.addObject("passwordIsError", Boolean.TRUE);
+            view.setViewName("signin/index");
+            return view;
+        }
+
+        view.setViewName("product/product");
         return view;
     }
 

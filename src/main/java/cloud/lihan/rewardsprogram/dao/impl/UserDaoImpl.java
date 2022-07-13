@@ -66,13 +66,28 @@ public class UserDaoImpl implements UserDao {
         Query query = new Query.Builder()
                 .term(t -> t.field("id").value(userId))
                 .build();
+        return this.findUserDocument(query);
+    }
+
+    @Override
+    public UserDocument getSingleUserByQuery(Query query) throws IOException {
+        return this.findUserDocument(query);
+    }
+
+    /**
+     * 根据自定义查询条件获取单个用户文档
+     *
+     * @param query 自定义查询条件
+     * @return {@link UserDocument} 用户文档
+     */
+    private UserDocument findUserDocument(Query query) throws IOException{
         SearchResponse<UserDocument> search = esClient.search(s -> s
                         .index(IndexConstant.USER_INDEX)
                         .query(query)
                         .size(IntegerConstant.ONE)
                 , UserDocument.class);
         List<UserDocument> userDocuments = this.processWish(search);
-        return CollectionUtils.isEmpty(userDocuments) ? new UserDocument() : userDocuments.get(IntegerConstant.ZERO);
+        return CollectionUtils.isEmpty(userDocuments) ? null : userDocuments.get(IntegerConstant.ZERO);
     }
 
     /**

@@ -78,4 +78,13 @@ public class UserServiceImpl implements UserService {
         return userManager.userDocumentConvertUserDTO(userDocument);
     }
 
+    @Override
+    public UserDTO getUserByUsername(String userName) throws IOException {
+        Query username = new Query.Builder()
+                .term(t -> t.field("userName").value(userName))
+                .build();
+        UserDocument userDocument = userDao.getSingleUserByQuery(username);
+        return userManager.userDocumentConvertUserDTO(userDocument);
+    }
+
 }

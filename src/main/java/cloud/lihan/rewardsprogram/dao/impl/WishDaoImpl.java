@@ -109,7 +109,7 @@ public class WishDaoImpl implements WishDao {
                         .size(IntegerConstant.ONE)
                 , WishDocument.class);
         List<WishDocument> wishDocuments = this.processWish(search);
-        return CollectionUtils.isEmpty(wishDocuments) ? new WishDocument() : wishDocuments.get(IntegerConstant.ZERO);
+        return CollectionUtils.isEmpty(wishDocuments) ? null : wishDocuments.get(IntegerConstant.ZERO);
     }
 
     @Override

@@ -46,4 +46,14 @@ public interface UserService {
      * @throws IOException 异常信息
      */
     UserDTO getUserByUserId(String userId) throws IOException;
+
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param username 用户名
+     * @return {@link UserDTO} 用户信息
+     * @throws IOException 异常信息
+     */
+    UserDTO getUserByUsername(String username) throws IOException;
+
 }
