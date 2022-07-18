@@ -68,11 +68,9 @@ public class RegisterController {
         // 校验用户名是否存在
         UserDTO user = userService.getUserByUsername(userVO.getUserName());
         if (Objects.nonNull(user)) {
-            if (StringUtils.isEmpty(userVO.getPassword())) {
-                view.addObject("usernameIsExist", Boolean.TRUE);
-                view.setViewName("register/register");
-                return view;
-            }
+            view.addObject("usernameIsExist", Boolean.TRUE);
+            view.setViewName("register/register");
+            return view;
         }
 
         userService.savaUser(userVO);

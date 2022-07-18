@@ -1,4 +1,4 @@
-package cloud.lihan.rewardsprogram.config;
+package cloud.lihan.rewardsprogram.config.elasticsearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @createTime 2022/06/24 15:01:00
  */
 @Configuration
-public class ElasticsearchConfiguration {
+public class ClientConfiguration {
 
     @Value("${elasticsearch.host}")
     private String host = "127.0.0.1";

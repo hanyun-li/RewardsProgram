@@ -1,10 +1,9 @@
 package cloud.lihan.rewardsprogram.dao.impl;
 
 import cloud.lihan.rewardsprogram.common.constants.ElasticsearchScriptConstant;
-import cloud.lihan.rewardsprogram.common.constants.IndexConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
+import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
-import cloud.lihan.rewardsprogram.common.utils.UuidUtil;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
 import cloud.lihan.rewardsprogram.entety.document.UserDocument;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 用户数据相关操作
@@ -36,12 +36,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createUserDocument(UserDocument userDocument) throws IOException {
-        userDocument.setId(UuidUtil.newUUID());
+        userDocument.setId(UUID.randomUUID().toString());
         userDocument.setCreateTime(CurrentTimeUtil.newCurrentTime());
         userDocument.setUpdateTime(CurrentTimeUtil.newCurrentTime());
         userDocument.setCurrentDayLoginFailTimes(IntegerConstant.ZERO);
         esClient.create(i -> i
-                .index(IndexConstant.USER_INDEX)
+                .index(IndexEnum.USER_INDEX.getIndexName())
                 .id(userDocument.getId())
                 .document(userDocument)
         );
@@ -50,7 +50,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUserSingleField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException {
         UpdateByQueryRequest update = UpdateByQueryRequest.of(u -> u
-                .index(IndexConstant.USER_INDEX)
+                .index(IndexEnum.USER_INDEX.getIndexName())
                 .query(updateByQuery)
                 .script(s -> s.inline(i -> i
                         .lang(ElasticsearchScriptConstant.SCRIPT_LANGUAGE)
@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
      */
     private UserDocument findUserDocument(Query query) throws IOException{
         SearchResponse<UserDocument> search = esClient.search(s -> s
-                        .index(IndexConstant.USER_INDEX)
+                        .index(IndexEnum.USER_INDEX.getIndexName())
                         .query(query)
                         .size(IntegerConstant.ONE)
                 , UserDocument.class);

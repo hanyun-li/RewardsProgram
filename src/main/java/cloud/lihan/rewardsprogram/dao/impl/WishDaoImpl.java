@@ -1,11 +1,10 @@
 package cloud.lihan.rewardsprogram.dao.impl;
 
 import cloud.lihan.rewardsprogram.common.constants.ElasticsearchScriptConstant;
-import cloud.lihan.rewardsprogram.common.constants.IndexConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
+import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
-import cloud.lihan.rewardsprogram.common.utils.UuidUtil;
 import cloud.lihan.rewardsprogram.dao.inner.WishDao;
 import cloud.lihan.rewardsprogram.entety.document.WishDocument;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -15,7 +14,6 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.UpdateByQueryRequest;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +23,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 愿望数据相关操作
@@ -44,12 +39,12 @@ public class WishDaoImpl implements WishDao {
 
     @Override
     public void createWishDocument(WishDocument wishDocument) throws IOException {
-        wishDocument.setId(UuidUtil.newUUID());
+        wishDocument.setId(UUID.randomUUID().toString());
         wishDocument.setCreateTime(CurrentTimeUtil.newCurrentTime());
         wishDocument.setUpdateTime(CurrentTimeUtil.newCurrentTime());
         wishDocument.setIsRealized(Boolean.FALSE);
         esClient.create(i -> i
-                .index(IndexConstant.WISH_INDEX)
+                .index(IndexEnum.WISH_INDEX.getIndexName())
                 .id(wishDocument.getId())
                 .document(wishDocument)
         );
@@ -60,14 +55,14 @@ public class WishDaoImpl implements WishDao {
     public void bulkCreateWishDocument(List<WishDocument> wishDocuments) throws IOException {
         BulkRequest.Builder br = new BulkRequest.Builder();
         for (WishDocument wishDocument : wishDocuments) {
-            wishDocument.setId(UuidUtil.newUUID());
+            wishDocument.setId(UUID.randomUUID().toString());
             SimpleDateFormat format = new SimpleDateFormat(TimeFormatConstant.STANDARD);
             wishDocument.setCreateTime(format.format(new Date()));
             wishDocument.setUpdateTime(format.format(new Date()));
             wishDocument.setIsRealized(Boolean.FALSE);
             br.operations(op -> op
                     .index(idx -> idx
-                            .index(IndexConstant.WISH_INDEX)
+                            .index(IndexEnum.WISH_INDEX.getIndexName())
                             .id(wishDocument.getId())
                             .document(wishDocument)
                     )
@@ -79,7 +74,7 @@ public class WishDaoImpl implements WishDao {
     @Override
     public void deleteWishDocumentById(String wishDocumentId) throws IOException {
         esClient.delete(d -> d
-                .index(IndexConstant.WISH_INDEX)
+                .index(IndexEnum.WISH_INDEX.getIndexName())
                 .id(wishDocumentId)
         );
     }
@@ -87,7 +82,7 @@ public class WishDaoImpl implements WishDao {
     @Override
     public void updateWishSingleField(Map<String, JsonData> optionsMaps, String source, Query query) throws IOException {
         UpdateByQueryRequest update = UpdateByQueryRequest.of(u -> u
-                .index(IndexConstant.WISH_INDEX)
+                .index(IndexEnum.WISH_INDEX.getIndexName())
                 .query(query)
                 .script(s -> s.inline(i -> i
                         .lang(ElasticsearchScriptConstant.SCRIPT_LANGUAGE)
@@ -104,7 +99,7 @@ public class WishDaoImpl implements WishDao {
                 .term(t -> t.field("id").value(wishDocumentId))
                 .build();
         SearchResponse<WishDocument> search = esClient.search(s -> s
-                        .index(IndexConstant.WISH_INDEX)
+                        .index(IndexEnum.WISH_INDEX.getIndexName())
                         .query(query)
                         .size(IntegerConstant.ONE)
                 , WishDocument.class);
@@ -115,7 +110,7 @@ public class WishDaoImpl implements WishDao {
     @Override
     public List<WishDocument> getWishDocuments() throws IOException {
         SearchResponse<WishDocument> search = esClient.search(s -> s
-                        .index(IndexConstant.WISH_INDEX)
+                        .index(IndexEnum.WISH_INDEX.getIndexName())
                 , WishDocument.class);
         return this.processWish(search);
     }
@@ -126,7 +121,7 @@ public class WishDaoImpl implements WishDao {
         Reader queryJson = new StringReader(ElasticsearchScriptConstant.RANDOM_SORT_SCRIPT);
         SearchResponse<WishDocument> search = esClient.search(s -> s
                         .withJson(queryJson)
-                        .index(IndexConstant.WISH_INDEX)
+                        .index(IndexEnum.WISH_INDEX.getIndexName())
                         .size(wishDocumentNum)
                         .query(query)
                 , WishDocument.class);

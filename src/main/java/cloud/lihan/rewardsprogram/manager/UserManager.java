@@ -66,7 +66,7 @@ public class UserManager {
         UserDocument userDocument = new UserDocument();
         userDocument.setUserName(userVO.getUserName());
         userDocument.setUserEmail(userVO.getUserEmail());
-        userDocument.setPassword(userVO.getUserEmail());
+        userDocument.setPassword(userVO.getPassword());
         return userDocument;
     }
 
