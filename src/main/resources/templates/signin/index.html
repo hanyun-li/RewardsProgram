@@ -49,7 +49,7 @@
         </div>
 
         <div class="form-floating">
-            <input type="text" class="form-control" name="userName" id="userName" placeholder="Username">
+            <input type="text" class="form-control" name="userName" id="userName" th:value="${usernameValue}" placeholder="Username">
             <label for="userName">姓 名</label>
             <div th:if="${usernameIsEmpty}" class="alert alert-danger" role="alert">
                 姓名需要输入哦😊
