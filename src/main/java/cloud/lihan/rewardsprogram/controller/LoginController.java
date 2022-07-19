@@ -36,12 +36,6 @@ public class LoginController {
         return loginProvider(userVO);
     }
 
-    @GetMapping("/sidebars")
-    public ModelAndView sidebars(ModelAndView view) {
-        view.setViewName("sidebars/sidebars");
-        return view;
-    }
-
     /**
      * 登录提供
      *
