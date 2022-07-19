@@ -2,6 +2,8 @@ package cloud.lihan.rewardsprogram.common.documents;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Elasticsearch文档通用字段
  *
@@ -9,7 +11,9 @@ import lombok.Data;
  * @createTime 2022/06/28 18:12:00
  */
 @Data
-public class BaseDocument {
+public class BaseDocument implements Serializable {
+
+    private static final long serialVersionUID = -5073605700429341545L;
 
     /**
      * 序号
