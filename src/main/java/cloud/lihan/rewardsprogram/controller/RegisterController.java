@@ -49,18 +49,22 @@ public class RegisterController {
         ModelAndView view = new ModelAndView();
         if (StringUtils.isEmpty(userVO.getUserName())) {
             view.addObject("usernameIsEmpty", Boolean.TRUE);
+            view.addObject("emailValue", userVO.getUserEmail());
             view.setViewName("register/register");
             return view;
         }
 
         if (StringUtils.isEmpty(userVO.getUserEmail())) {
             view.addObject("emailIsEmpty", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
             view.setViewName("register/register");
             return view;
         }
 
         if (StringUtils.isEmpty(userVO.getPassword())) {
             view.addObject("passwordIsEmpty", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
+            view.addObject("emailValue", userVO.getUserEmail());
             view.setViewName("register/register");
             return view;
         }
@@ -69,12 +73,14 @@ public class RegisterController {
         UserDTO user = userService.getUserByUsername(userVO.getUserName());
         if (Objects.nonNull(user)) {
             view.addObject("usernameIsExist", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
+            view.addObject("emailValue", userVO.getUserEmail());
             view.setViewName("register/register");
             return view;
         }
 
         userService.savaUser(userVO);
-        view.setViewName("cover/cover");
+        view.setViewName("cover/cover_new");
         return view;
     }
 

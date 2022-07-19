@@ -36,12 +36,6 @@ public class LoginController {
         return loginProvider(userVO);
     }
 
-    @GetMapping("/sidebars")
-    public ModelAndView sidebars(ModelAndView view) {
-        view.setViewName("sidebars/sidebars");
-        return view;
-    }
-
     /**
      * 登录提供
      *
@@ -59,6 +53,7 @@ public class LoginController {
 
         if (StringUtils.isEmpty(userVO.getPassword())) {
             view.addObject("passwordIsEmpty", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
             view.setViewName("signin/index");
             return view;
         }
@@ -67,6 +62,7 @@ public class LoginController {
         UserDTO user = userService.getUserByUsername(userVO.getUserName());
         if (Objects.isNull(user)) {
             view.addObject("usernameIsError", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
             view.setViewName("signin/index");
             return view;
         }
@@ -74,6 +70,7 @@ public class LoginController {
         // 校验密码是否输入正确
         if (!userVO.getPassword().equals(user.getPassword())) {
             view.addObject("passwordIsError", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
             view.setViewName("signin/index");
             return view;
         }

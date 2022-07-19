@@ -38,4 +38,9 @@ public class UserDocument extends BaseDocument {
      */
     private Integer currentDayLoginFailTimes;
 
+    /**
+     * 激励值(用途：许愿消耗)
+     */
+    private Integer incentiveValue;
+
 }

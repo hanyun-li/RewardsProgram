@@ -40,6 +40,7 @@ public class UserDaoImpl implements UserDao {
         userDocument.setCreateTime(CurrentTimeUtil.newCurrentTime());
         userDocument.setUpdateTime(CurrentTimeUtil.newCurrentTime());
         userDocument.setCurrentDayLoginFailTimes(IntegerConstant.ZERO);
+        userDocument.setIncentiveValue(IntegerConstant.ZERO);
         esClient.create(i -> i
                 .index(IndexEnum.USER_INDEX.getIndexName())
                 .id(userDocument.getId())

@@ -177,16 +177,9 @@
         <h2 class="display-5">今日未完成计划❎</h2>
         <p class="lead">这一栏最多只会显示5条数据</p>
       </div>
-      <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+      <div th:each="wish : ${wishList}" class="bg-body shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
 
-        <div class="alert alert-dark" role="alert">
-          我要减1斤肉肉！
-        </div>
-        <div class="alert alert-dark" role="alert">
-          我要看1个小时📖！
-        </div>
-        <div class="alert alert-dark" role="alert">
-          我要做10道题！
+        <div class="alert alert-dark" role="alert" th:text="${wish.wishInfo}">
         </div>
 
       </div>
