@@ -80,7 +80,7 @@ public class RegisterController {
         }
 
         userService.savaUser(userVO);
-        view.setViewName("cover/cover_new");
+        view.setViewName("cover/cover");
         return view;
     }
 

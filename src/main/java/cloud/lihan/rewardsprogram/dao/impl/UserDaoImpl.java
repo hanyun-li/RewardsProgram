@@ -37,8 +37,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void createUserDocument(UserDocument userDocument) throws IOException {
         userDocument.setId(UUID.randomUUID().toString());
-        userDocument.setCreateTime(CurrentTimeUtil.newCurrentTime());
-        userDocument.setUpdateTime(CurrentTimeUtil.newCurrentTime());
+        CurrentTimeUtil.Time time = CurrentTimeUtil.newCurrentTimes();
+        userDocument.setCreateTime(time.getTime());
+        userDocument.setCreateTimestamp(time.getTimestamp());
+        userDocument.setUpdateTime(time.getTime());
         userDocument.setCurrentDayLoginFailTimes(IntegerConstant.ZERO);
         userDocument.setIncentiveValue(IntegerConstant.ZERO);
         esClient.create(i -> i
@@ -104,4 +106,5 @@ public class UserDaoImpl implements UserDao {
         }
         return userDocuments;
     }
+
 }

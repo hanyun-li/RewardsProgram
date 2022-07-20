@@ -1,6 +1,7 @@
 package cloud.lihan.rewardsprogram.common.utils;
 
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
+import cloud.lihan.rewardsprogram.entety.document.PlanDocument;
 import cloud.lihan.rewardsprogram.entety.document.UserDocument;
 import cloud.lihan.rewardsprogram.entety.document.WishDocument;
 
@@ -20,6 +21,7 @@ public class DocumentFactory {
         switch (indexEnum) {
             case USER_INDEX: return new UserDocument();
             case WISH_INDEX: return new WishDocument();
+            case PLAN_INDEX: return new PlanDocument();
             default: return null;
         }
     }

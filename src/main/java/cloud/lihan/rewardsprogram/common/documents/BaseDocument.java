@@ -26,6 +26,11 @@ public class BaseDocument implements Serializable {
     private String createTime;
 
     /**
+     * 创建时间(时间戳)
+     */
+    private Long createTimestamp;
+
+    /**
      * 更新时间
      */
     private String updateTime;

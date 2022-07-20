@@ -11,8 +11,9 @@ public enum IndexEnum {
     /**
      * 索引
      */
-    USER_INDEX("user", "愿望索引"),
-    WISH_INDEX("wish", "愿望索引");
+    USER_INDEX("user", "用户索引"),
+    WISH_INDEX("wish", "愿望索引"),
+    PLAN_INDEX("plan", "计划索引");
 
     /**
      * 索引名称

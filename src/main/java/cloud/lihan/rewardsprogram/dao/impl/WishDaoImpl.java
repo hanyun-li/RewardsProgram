@@ -40,8 +40,10 @@ public class WishDaoImpl implements WishDao {
     @Override
     public void createWishDocument(WishDocument wishDocument) throws IOException {
         wishDocument.setId(UUID.randomUUID().toString());
-        wishDocument.setCreateTime(CurrentTimeUtil.newCurrentTime());
-        wishDocument.setUpdateTime(CurrentTimeUtil.newCurrentTime());
+        CurrentTimeUtil.Time time = CurrentTimeUtil.newCurrentTimes();
+        wishDocument.setCreateTime(time.getTime());
+        wishDocument.setCreateTimestamp(time.getTimestamp());
+        wishDocument.setUpdateTime(time.getTime());
         wishDocument.setIsRealized(Boolean.FALSE);
         esClient.create(i -> i
                 .index(IndexEnum.WISH_INDEX.getIndexName())

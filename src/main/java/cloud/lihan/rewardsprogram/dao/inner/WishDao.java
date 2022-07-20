@@ -28,7 +28,6 @@ public interface WishDao {
      * 批量创建多个愿望文档
      *
      * @param wishDocuments 愿望文档
-     * @return true:创建成功 false:创建失败
      * @throws IOException 异常信息
      */
     void bulkCreateWishDocument(List<WishDocument> wishDocuments) throws IOException;
