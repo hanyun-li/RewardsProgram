@@ -13,6 +13,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -77,6 +78,34 @@ public class PlanServiceImpl implements PlanService {
         return this.getTodayPlans(Boolean.FALSE, userId);
     }
 
+    @Override
+    public Boolean checkPlanInfo(String planInfo, String userId) throws Exception {
+        String todayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                // 注意：当planInfo字段内容为中文是，此处会进行分词匹配，导致搜索不到结果，需要在字段后面添加"keyword"进行不分词搜索
+                                .field("planInfo.keyword")
+                                .value(planInfo))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("isFinished")
+                                .value(Boolean.FALSE))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("userId.keyword")
+                                .value(userId))
+                        )
+                        // 注意：此处使用matchPhrase而不使用match的原因在于match匹配会将入参也进行分词匹配，而matchPhrase则直接将入参数当成整体匹配
+                        .must(s -> s.matchPhrase(m -> m
+                                .field("createTime")
+                                .query(todayTime)
+                        ))
+                ).build();
+        List<PlanDTO> planDTOS = planManager.planDocumentsConvertPlanDTO(planDao.getMultiplePlanByQuery(query));
+        return CollectionUtils.isEmpty(planDTOS) ? Boolean.FALSE : Boolean.TRUE;
+    }
+
     /**
      * 获取今日的计划列表
      *
@@ -88,18 +117,16 @@ public class PlanServiceImpl implements PlanService {
         String todayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
         Query query = new Query.Builder()
                 .bool(b -> b
-                        .should(s -> s.term(t -> t
+                        .must(s -> s.term(t -> t
                                 .field("isFinished")
                                 .value(isFinished))
                         )
-                        .should(s -> s.term(t -> t
-                                .field("userId")
+                        .must(s -> s.term(t -> t
+                                .field("userId.keyword")
                                 .value(userId))
                         )
-                        .should(s -> s.match(m -> m
+                        .must(s -> s.matchPhrase(m -> m
                                 .field("createTime")
-                                // AUTO:开启模糊搜索
-                                .fuzziness("AUTO")
                                 .query(todayTime)
                         ))
                 )

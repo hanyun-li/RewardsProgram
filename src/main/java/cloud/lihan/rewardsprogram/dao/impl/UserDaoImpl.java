@@ -67,7 +67,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public UserDocument getUserByUserDocumentId(String userId) throws IOException {
         Query query = new Query.Builder()
-                .term(t -> t.field("id").value(userId))
+                .ids(i -> i.values(userId))
                 .build();
         return this.findUserDocument(query);
     }

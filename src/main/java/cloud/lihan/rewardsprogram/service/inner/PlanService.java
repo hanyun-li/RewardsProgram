@@ -73,4 +73,14 @@ public interface PlanService {
      */
     List<PlanDTO> getTodayUnfinishedPlans(String userId) throws Exception;
 
+    /**
+     * 检查输入的计划信息是否在今日已经创建过
+     *
+     * @param planInfo 计划信息
+     * @param userId 用户ID
+     * @return true:已经创建 false:未创建
+     * @throws Exception 异常信息
+     */
+    Boolean checkPlanInfo(String planInfo, String userId) throws Exception;
+
 }
