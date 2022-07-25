@@ -158,7 +158,7 @@
             <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 365px; border-radius: 21px 21px 0 0;">
                 <div th:each="todayUnfinishedPlan : ${todayUnfinishedPlans}" class="alert alert-dark" role="alert">
                     <div style="text-align:left; width: 90%; display: inline-block" th:text="${todayUnfinishedPlan.planInfo}"></div>
-                    <div style="text-align:right; width: 9%; display: inline-block">
+                    <div style="text-align:right; width: 8%; display: inline-block">
                         <a th:href="@{/plan/finish(id=${todayUnfinishedPlan.id})}" class='finished'>
                             <svg xmlns="http://www.w3.org/2000/svg" style="color: green" width="24" height="24" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
                                 <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -179,7 +179,7 @@
                 <div th:each="todayFinishedPlan : ${todayFinishedPlans}" class="alert alert-success" role="alert">
                     <div style="text-align:left; width: 90%; display: inline-block" th:text="${todayFinishedPlan.planInfo}">
                     </div>
-                    <div style="text-align:right; width: 9%; display: inline-block">
+                    <div style="text-align:right; width: 8%; display: inline-block">
                         <a th:href="@{/plan/delete(id=${todayFinishedPlan.id})}" class='finished'>
                             <svg xmlns="http://www.w3.org/2000/svg" style="color: red" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
