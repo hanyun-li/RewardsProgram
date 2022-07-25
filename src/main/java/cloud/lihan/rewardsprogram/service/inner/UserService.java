@@ -39,6 +39,24 @@ public interface UserService {
     void editPassword(String userId, String userPassword) throws IOException;
 
     /**
+     * 增加激励值（完成计划时增加）
+     *
+     * @param userDTO 用户传输对象
+     * @param increaseIncentiveValue 需要增加的激励值
+     * @throws IOException 异常信息
+     */
+    void increaseIncentiveValue(UserDTO userDTO, Integer increaseIncentiveValue) throws IOException;
+
+    /**
+     * 减少激励值（实现愿望时消耗）
+     *
+     * @param userDTO 用户传输对象
+     * @param reduceIncentiveValue 需要消耗的激励值
+     * @throws IOException 异常信息
+     */
+    void reduceIncentiveValue(UserDTO userDTO, Integer reduceIncentiveValue) throws IOException;
+
+    /**
      * 根据ID获取用户信息
      *
      * @param userId 愿望ID

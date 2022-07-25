@@ -57,4 +57,10 @@ public interface IntegerConstant {
      * 自然数9
      */
     Integer NINE = 9;
+
+    /**
+     * 自然数10
+     */
+    Integer TEN = 10;
+
 }

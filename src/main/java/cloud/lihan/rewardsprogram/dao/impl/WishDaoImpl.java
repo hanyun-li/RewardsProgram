@@ -53,7 +53,7 @@ public class WishDaoImpl implements WishDao {
     }
 
     @Override
-    @Transactional(rollbackFor = IOException.class)
+    @Transactional(rollbackFor = Exception.class)
     public void bulkCreateWishDocument(List<WishDocument> wishDocuments) throws IOException {
         BulkRequest.Builder br = new BulkRequest.Builder();
         for (WishDocument wishDocument : wishDocuments) {

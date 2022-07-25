@@ -1,6 +1,7 @@
 package cloud.lihan.rewardsprogram.service.inner;
 
 import cloud.lihan.rewardsprogram.dto.PlanDTO;
+import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.vo.PlanVO;
 
 import java.io.IOException;
@@ -41,10 +42,11 @@ public interface PlanService {
     /**
      * 根据ID实现计划
      *
+     * @param userDTO 用户传输对象
      * @param planId 计划ID
      * @throws IOException 异常信息
      */
-    void finishPlanById(String planId) throws IOException;
+    void finishPlanById(UserDTO userDTO, String planId) throws IOException;
 
     /**
      * 根据ID获取计划

@@ -34,7 +34,7 @@ public class UserDocument extends BaseDocument {
      * 当天登录失败的次数(功能是为了防止恶意破解密码，
      * 系统默认设定当天5次登录失败，则当天锁定用户登录)
      *
-     * {@link LoginLimitConstant}
+     * {@link LoginLimitConstant} 登录限制相关常量
      */
     private Integer currentDayLoginFailTimes;
 

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
         Query query = new Query.Builder()
-                .term(t -> t.field("id").value(userId))
+                .ids(t -> t.values(userId))
                 .build();
         Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
         optionsMap.put("currentDayLoginFailTimes", JsonData.of(++currentDayLoginFailTimes));
@@ -64,11 +64,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editPassword(String userId, String userPassword) throws IOException {
         Query query = new Query.Builder()
-                .term(t -> t.field("id").value(userId))
+                .ids(t -> t.values(userId))
                 .build();
         Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
         optionsMap.put("password", JsonData.of(userPassword));
         String source = "ctx._source.password = params.password";
+        userDao.updateUserSingleField(optionsMap, source, query);
+    }
+
+    @Override
+    public void increaseIncentiveValue(UserDTO userDTO, Integer increaseIncentiveValue) throws IOException {
+        Query query = new Query.Builder()
+                .ids(t -> t.values(userDTO.getId()))
+                .build();
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        // 适配旧版本还没有激励值的用户
+        Integer incentiveValue = Objects.isNull(userDTO.getIncentiveValue()) ? 0 : userDTO.getIncentiveValue();
+        // 增加激励值
+        Integer currentIncentiveValue = incentiveValue + increaseIncentiveValue;
+        optionsMap.put("incentiveValue", JsonData.of(currentIncentiveValue));
+        String source = "ctx._source.incentiveValue = params.incentiveValue";
+        userDao.updateUserSingleField(optionsMap, source, query);
+    }
+
+    @Override
+    public void reduceIncentiveValue(UserDTO userDTO, Integer reduceIncentiveValue) throws IOException {
+        Query query = new Query.Builder()
+                .ids(t -> t.values(userDTO.getId()))
+                .build();
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        // 扣除激励值
+        int currentIncentiveValue = userDTO.getIncentiveValue() - reduceIncentiveValue;
+        optionsMap.put("incentiveValue", JsonData.of(Math.max(currentIncentiveValue, IntegerConstant.ZERO)));
+        String source = "ctx._source.incentiveValue = params.incentiveValue";
         userDao.updateUserSingleField(optionsMap, source, query);
     }
 
@@ -81,7 +109,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByUsername(String userName) throws IOException {
         Query username = new Query.Builder()
-                .term(t -> t.field("userName").value(userName))
+                .term(t -> t.field("userName.keyword").value(userName))
                 .build();
         UserDocument userDocument = userDao.getSingleUserByQuery(username);
         return userManager.userDocumentConvertUserDTO(userDocument);

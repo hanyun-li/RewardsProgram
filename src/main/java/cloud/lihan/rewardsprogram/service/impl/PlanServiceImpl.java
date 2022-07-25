@@ -1,18 +1,22 @@
 package cloud.lihan.rewardsprogram.service.impl;
 
+import cloud.lihan.rewardsprogram.common.constants.IncentiveValueRuleConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.PlanDao;
 import cloud.lihan.rewardsprogram.dto.PlanDTO;
+import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.entety.document.PlanDocument;
 import cloud.lihan.rewardsprogram.manager.PlanManager;
 import cloud.lihan.rewardsprogram.service.inner.PlanService;
+import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.vo.PlanVO;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
@@ -33,6 +37,8 @@ public class PlanServiceImpl implements PlanService {
     private PlanDao planDao;
     @Autowired
     private PlanManager planManager;
+    @Autowired
+    private UserService userService;
 
     @Override
     public void savePlan(PlanVO planVO) throws IOException {
@@ -50,7 +56,8 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void finishPlanById(String planId) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public void finishPlanById(UserDTO userDTO, String planId) throws IOException {
         // 指定主键
         Query query = new Query.Builder()
                 .ids(id -> id.values(planId))
@@ -60,6 +67,8 @@ public class PlanServiceImpl implements PlanService {
         optionMaps.put("isFinished", JsonData.of(Boolean.TRUE));
         String source = "ctx._source.isFinished = params.isFinished";
         planDao.updatePlanSingleField(optionMaps, source, query);
+        // 增加激励值
+        userService.increaseIncentiveValue(userDTO, IncentiveValueRuleConstant.DAY_PLAN);
     }
 
     @Override

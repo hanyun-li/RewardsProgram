@@ -97,7 +97,7 @@ public class PlanController {
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
-            planService.finishPlanById(id);
+            planService.finishPlanById(user, id);
             Thread.sleep(1000);
             return this.planProvider(userId);
         }

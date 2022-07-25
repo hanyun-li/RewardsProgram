@@ -34,6 +34,7 @@ public class UserManager {
         userDTO.setUserEmail(userDocument.getUserEmail());
         userDTO.setPassword(userDocument.getPassword());
         userDTO.setCurrentDayLoginFailTimes(userDocument.getCurrentDayLoginFailTimes());
+        userDTO.setIncentiveValue(userDocument.getIncentiveValue());
         userDTO.setCreateTime(userDocument.getCreateTime());
         userDTO.setUpdateTime(userDocument.getUpdateTime());
         return userDTO;
