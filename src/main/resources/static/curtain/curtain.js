@@ -114,3 +114,7 @@ window.onmouseout = function () {
     current_circle.y = null;
 
 };
+
+function canvasBackground() {
+    document.getElementById('yst').style.backgroundImage = 'url("' + context.canvas.toDataURL() + '")';
+}
