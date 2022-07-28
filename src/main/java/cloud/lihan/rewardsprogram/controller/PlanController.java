@@ -41,7 +41,7 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId:{} not exist!]", userId);
+                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
@@ -74,7 +74,7 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId:{} not exist!]", userId);
+                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
@@ -93,12 +93,35 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId:{} not exist!]", userId);
+                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
             planService.finishPlanById(user, id);
             Thread.sleep(1000);
+            return this.planProvider(userId);
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
+
+    /**
+     * 去到计划页
+     *
+     * @return 模版
+     * @throws Exception 异常信息
+     */
+    @GetMapping
+    public ModelAndView toPlan(HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
             return this.planProvider(userId);
         }
         view.setViewName("cover/not_logger_in");

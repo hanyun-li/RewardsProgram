@@ -3,14 +3,20 @@ package cloud.lihan.rewardsprogram.controller;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.controller.BaseController;
 import cloud.lihan.rewardsprogram.common.core.Base;
+import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
+import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.WishDTO;
+import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.service.inner.WishService;
 import cloud.lihan.rewardsprogram.vo.WishVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -21,12 +27,15 @@ import java.util.Objects;
  * @author hanyun.li
  * @createTime 2022/06/29 15:16:00
  */
+@Slf4j
 @Controller("wishController")
 @RequestMapping("/wish")
 public class WishController extends BaseController {
 
     @Autowired
     private WishService wishService;
+    @Autowired
+    private UserService userService;
 
     @PutMapping()
     @ResponseBody
@@ -78,14 +87,32 @@ public class WishController extends BaseController {
         }
     }
 
-    @GetMapping()
-    @ResponseBody
-    public Base getSingeRandomWish() {
-        try {
-            return apiOk(wishService.getSingeRandomWish());
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
+//    @GetMapping()
+//    @ResponseBody
+//    public Base getSingeRandomWish() {
+//        try {
+//            return apiOk(wishService.getSingeRandomWish());
+//        } catch (IOException e) {
+//            return apiErr(e.getMessage());
+//        }
+//    }
+
+    @GetMapping
+    public ModelAndView toWish(HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                log.error("WishController.toWish() exist error! error info : [userId not exist!]");
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+            view.setViewName("wish/wish");
+            return view;
         }
+        view.setViewName("cover/not_logger_in");
+        return view;
     }
 
     @GetMapping("/all")
