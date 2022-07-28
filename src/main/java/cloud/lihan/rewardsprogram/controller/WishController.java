@@ -4,8 +4,10 @@ import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.controller.BaseController;
 import cloud.lihan.rewardsprogram.common.core.Base;
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
+import cloud.lihan.rewardsprogram.dto.PlanDTO;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.WishDTO;
+import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.service.inner.WishService;
 import cloud.lihan.rewardsprogram.vo.WishVO;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -37,65 +40,45 @@ public class WishController extends BaseController {
     @Autowired
     private UserService userService;
 
-    @PutMapping()
-    @ResponseBody
-    public Base savaWish(@RequestBody WishVO wishVO) {
-        try {
-            if (Objects.isNull(wishVO)) {
-                return apiErr("输入的愿望参数为空！");
+    @PostMapping
+    public ModelAndView makingWish(WishVO wishVO, HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
+                view.setViewName("cover/not_logger_in");
+                return view;
             }
-            wishService.saveWish(wishVO);
-            return apiOk();
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
-        }
-    }
 
-    @PutMapping("/bulk")
-    @ResponseBody
-    public Base bulkSavaWish(@RequestBody List<WishVO> wishVOs) {
-        try {
-            if (CollectionUtils.isEmpty(wishVOs)) {
-                return apiErr("输入的愿望参数集合为空！");
+            // 输入的愿望信息不能为空
+            if (StringUtils.isEmpty(wishVO.getWishInfo())) {
+                view.addObject("planInfoErrorInfo", "请输入计划信息！");
+                return this.wishProvider(view, userId);
             }
-            wishService.bulkSaveWish(wishVOs);
-            return apiOk();
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
-        }
-    }
 
-    @DeleteMapping()
-    @ResponseBody
-    public Base deleteWishById(@RequestParam("id") String id) {
-        try {
-            wishService.deleteWishById(id);
-            return apiOk();
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
-        }
-    }
+            // 输入的愿望信息不能重复
+            if (wishService.checkWishInfo(wishVO.getWishInfo(), userId)) {
+                view.addObject("planInfoErrorInfo", "计划信息重复，请重新输入！");
+                return this.wishProvider(view, userId);
+            }
 
-    @PostMapping("/fulfillment")
-    @ResponseBody
-    public Base fulfillmentWishById(@RequestParam("id") String id) {
-        try {
-            wishService.fulfillmentWishById(id);
-            return apiOk();
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
-        }
-    }
+            // 检测用户激励值是否足够本次许愿
+            WishProviderDTO wishProvider = userService.isIncentiveValueEnough(user);
+            if (wishProvider.getIsIncentiveValueEnough()) {
+                wishVO.setUserId(userId);
+                wishService.makingWish(user, wishVO);
+                Thread.sleep(3000);
+                return this.wishProvider(view, userId);
+            }
 
-//    @GetMapping()
-//    @ResponseBody
-//    public Base getSingeRandomWish() {
-//        try {
-//            return apiOk(wishService.getSingeRandomWish());
-//        } catch (IOException e) {
-//            return apiErr(e.getMessage());
-//        }
-//    }
+            view.addObject("wishProvider", wishProvider);
+            return this.wishProvider(view, userId);
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
 
     @GetMapping
     public ModelAndView toWish(HttpServletRequest request) throws Exception {
@@ -115,25 +98,17 @@ public class WishController extends BaseController {
         return view;
     }
 
-    @GetMapping("/all")
-    @ResponseBody
-    public Base getAllWish() {
-        try {
-            return apiOk(wishService.getMultipleRandomWish(IntegerConstant.ONE + IntegerConstant.NINE));
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
-        }
-    }
-
-    @GetMapping("/single")
-    @ResponseBody
-    public Base getWishById(@RequestParam("id") String id) {
-        try {
-            WishDTO wishByWishDocumentId = wishService.getWishByWishId(id);
-            return apiOk(wishByWishDocumentId);
-        } catch (IOException e) {
-            return apiErr(e.getMessage());
-        }
+    /**
+     * 愿望提供
+     *
+     * @param view 模版
+     * @param userId 用户ID
+     * @return 模版
+     * @throws Exception 异常信息
+     */
+    private ModelAndView wishProvider(ModelAndView view, String userId) throws Exception {
+        view.setViewName("wish/wish");
+        return view;
     }
 
 }

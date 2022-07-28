@@ -1,6 +1,7 @@
 package cloud.lihan.rewardsprogram.service.inner;
 
 
+import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.WishDTO;
 import cloud.lihan.rewardsprogram.vo.WishVO;
 
@@ -18,10 +19,11 @@ public interface WishService {
     /**
      * 保存愿望
      *
+     * @param userDTO 用户传输对象
      * @param wishVO 愿望信息
      * @throws IOException 异常信息
      */
-    void saveWish(WishVO wishVO) throws IOException;
+    void makingWish(UserDTO userDTO, WishVO wishVO) throws IOException;
 
     /**
      * 批量保存愿望
@@ -72,5 +74,15 @@ public interface WishService {
      * @throws IOException 异常信息
      */
     WishDTO getWishByWishId(String wishId) throws IOException;
+
+    /**
+     * 检查输入的愿望信息是否已经存在
+     *
+     * @param wishInfo 愿望信息
+     * @param userId 用户ID
+     * @return true:已经存在 false:不存在
+     * @throws Exception 异常信息
+     */
+    Boolean checkWishInfo(String wishInfo, String userId) throws Exception;
 
 }

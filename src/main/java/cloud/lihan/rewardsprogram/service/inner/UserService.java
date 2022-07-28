@@ -1,6 +1,7 @@
 package cloud.lihan.rewardsprogram.service.inner;
 
 import cloud.lihan.rewardsprogram.dto.UserDTO;
+import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
 import cloud.lihan.rewardsprogram.vo.UserVO;
 
 import java.io.IOException;
@@ -73,5 +74,13 @@ public interface UserService {
      * @throws IOException 异常信息
      */
     UserDTO getUserByUsername(String username) throws IOException;
+
+    /**
+     * 激励值是否足够许愿
+     *
+     * @param userDTO 用户传输对象
+     * @return {@link WishProviderDTO} 许愿时，返回的相关信息实体
+     */
+    WishProviderDTO isIncentiveValueEnough(UserDTO userDTO);
 
 }

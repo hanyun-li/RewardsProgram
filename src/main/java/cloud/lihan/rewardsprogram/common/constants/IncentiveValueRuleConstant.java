@@ -8,12 +8,35 @@ package cloud.lihan.rewardsprogram.common.constants;
  */
 public interface IncentiveValueRuleConstant {
 
+    /**
+     * 累计完成一天奖励的激励值
+     */
     Integer DAY_PLAN = 1;
 
+    /**
+     * 累计完成一周奖励的激励值
+     */
     Integer WEEK_PLAN = DAY_PLAN * IntegerConstant.SEVEN + IntegerConstant.ONE;
 
+    /**
+     * 累计完成一个月奖励的激励值
+     */
     Integer MOUTH_PLAN = WEEK_PLAN * IntegerConstant.FOUR + IntegerConstant.THERE;
 
+    /**
+     * 累计完成一年奖励的激励值
+     */
     Integer YEAR_PLAN = MOUTH_PLAN * (IntegerConstant.TEN + IntegerConstant.TWO) + IntegerConstant.TEN + IntegerConstant.TWO;
+
+
+    /**
+     * 以下是许愿消耗的激励值规则
+     */
+    /***************************************/
+
+    /**
+     * 第一个愿望需要消耗的激励值
+     */
+    Integer FIRST_WISH = 35;
 
 }

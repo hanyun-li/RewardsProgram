@@ -1,10 +1,14 @@
 package cloud.lihan.rewardsprogram.service.impl;
 
+import cloud.lihan.rewardsprogram.common.constants.IncentiveValueRuleConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.dao.inner.WishDao;
+import cloud.lihan.rewardsprogram.dto.PlanDTO;
+import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.WishDTO;
 import cloud.lihan.rewardsprogram.entety.document.WishDocument;
 import cloud.lihan.rewardsprogram.manager.WishManager;
+import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.service.inner.WishService;
 import cloud.lihan.rewardsprogram.vo.WishVO;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
@@ -31,9 +35,12 @@ public class WishServiceImpl implements WishService {
     private WishDao wishDao;
     @Autowired
     private WishManager wishManager;
+    @Autowired
+    private UserService userService;
 
     @Override
-    public void saveWish(WishVO wishVO) throws IOException {
+    public void makingWish(UserDTO userDTO, WishVO wishVO) throws IOException {
+        userService.reduceIncentiveValue(userDTO, IncentiveValueRuleConstant.FIRST_WISH);
         wishDao.createWishDocument(wishManager.wishVOConvertWishDocument(wishVO));
     }
 
@@ -84,6 +91,28 @@ public class WishServiceImpl implements WishService {
     public WishDTO getWishByWishId(String wishId) throws IOException {
         WishDocument wishDocument = wishDao.getWishDocumentById(wishId);
         return wishManager.wishDocumentConvertWishDTO(wishDocument);
+    }
+
+    @Override
+    public Boolean checkWishInfo(String wishInfo, String userId) throws Exception {
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                // 注意：当wishInfo字段内容为中文时，此处会进行分词匹配，导致搜索不到结果，需要在字段后面添加"keyword"进行不分词搜索
+                                .field("wishInfo.keyword")
+                                .value(wishInfo))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("isRealized")
+                                .value(Boolean.FALSE))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("userId.keyword")
+                                .value(userId))
+                        )
+                ).build();
+        List<WishDTO> wishDTOS = wishManager.wishDocumentsConvertWishDTO(wishDao.getRandomNumbersWishDocuments(IntegerConstant.FIVE, query));
+        return CollectionUtils.isEmpty(wishDTOS) ? Boolean.FALSE : Boolean.TRUE;
     }
 
 }

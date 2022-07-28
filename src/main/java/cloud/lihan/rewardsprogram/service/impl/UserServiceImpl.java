@@ -1,9 +1,11 @@
 package cloud.lihan.rewardsprogram.service.impl;
 
+import cloud.lihan.rewardsprogram.common.constants.IncentiveValueRuleConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.LoginLimitConstant;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
+import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
 import cloud.lihan.rewardsprogram.entety.document.UserDocument;
 import cloud.lihan.rewardsprogram.manager.UserManager;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
@@ -113,6 +115,30 @@ public class UserServiceImpl implements UserService {
                 .build();
         UserDocument userDocument = userDao.getSingleUserByQuery(username);
         return userManager.userDocumentConvertUserDTO(userDocument);
+    }
+
+    @Override
+    public WishProviderDTO isIncentiveValueEnough(UserDTO userDTO) {
+        WishProviderDTO wishProviderDTO = new WishProviderDTO();
+        wishProviderDTO.setCurrentConsumeIncentiveValue(IncentiveValueRuleConstant.FIRST_WISH);
+        // 激励值为null或者0时
+        if (Objects.isNull(userDTO.getIncentiveValue()) || IntegerConstant.ZERO.equals(userDTO.getIncentiveValue())) {
+            wishProviderDTO.setIsIncentiveValueEnough(Boolean.FALSE);
+            wishProviderDTO.setDifferenceIncentiveValue(IncentiveValueRuleConstant.FIRST_WISH);
+            return wishProviderDTO;
+        }
+
+        // 如果用户的激励值足够，则可以许愿
+        if (userDTO.getIncentiveValue() >= IncentiveValueRuleConstant.FIRST_WISH) {
+            wishProviderDTO.setIsIncentiveValueEnough(Boolean.TRUE);
+            wishProviderDTO.setDifferenceIncentiveValue(IntegerConstant.ZERO);
+            return wishProviderDTO;
+        }
+
+        // 用户的激励值不足，则不可以许愿
+        wishProviderDTO.setIsIncentiveValueEnough(Boolean.FALSE);
+        wishProviderDTO.setDifferenceIncentiveValue(IncentiveValueRuleConstant.FIRST_WISH - userDTO.getIncentiveValue());
+        return wishProviderDTO;
     }
 
 }

@@ -49,19 +49,19 @@ public class PlanController {
             // 输入的计划信息不能为空
             if (StringUtils.isEmpty(planVO.getPlanInfo())) {
                 view.addObject("planInfoErrorInfo", "请输入计划信息！");
-                return this.planProvider(userId);
+                return this.planProvider(view, userId);
             }
 
             // 输入的计划信息不能重复（当天内有效）
             if (planService.checkPlanInfo(planVO.getPlanInfo(), userId)) {
                 view.addObject("planInfoErrorInfo", "计划信息重复，请重新输入！");
-                return this.planProvider(userId);
+                return this.planProvider(view, userId);
             }
 
-            planVO.setUserId(LoginUtil.getLoginTokenByRequest(request));
+            planVO.setUserId(userId);
             planService.savePlan(planVO);
             Thread.sleep(1000);
-            return this.planProvider(userId);
+            return this.planProvider(view, userId);
         }
         view.setViewName("cover/not_logger_in");
         return view;
@@ -80,7 +80,7 @@ public class PlanController {
             }
             planService.deletePlanById(id);
             Thread.sleep(1000);
-            return this.planProvider(userId);
+            return this.planProvider(view, userId);
         }
         view.setViewName("cover/not_logger_in");
         return view;
@@ -99,7 +99,7 @@ public class PlanController {
             }
             planService.finishPlanById(user, id);
             Thread.sleep(1000);
-            return this.planProvider(userId);
+            return this.planProvider(view, userId);
         }
         view.setViewName("cover/not_logger_in");
         return view;
@@ -122,7 +122,7 @@ public class PlanController {
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
-            return this.planProvider(userId);
+            return this.planProvider(view, userId);
         }
         view.setViewName("cover/not_logger_in");
         return view;
@@ -131,12 +131,12 @@ public class PlanController {
     /**
      * 计划提供
      *
+     * @param view 模版
      * @param userId 用户ID
      * @return 模版
      * @throws Exception 异常信息
      */
-    private ModelAndView planProvider(String userId) throws Exception {
-        ModelAndView view = new ModelAndView();
+    private ModelAndView planProvider(ModelAndView view, String userId) throws Exception {
         List<PlanDTO> todayUnfinishedPlans = planService.getTodayUnfinishedPlans(userId);
         List<PlanDTO> todayFinishedPlans = planService.getTodayFinishedPlans(userId);
         view.addObject("todayUnfinishedPlans", todayUnfinishedPlans);

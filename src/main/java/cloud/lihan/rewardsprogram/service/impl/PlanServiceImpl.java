@@ -93,7 +93,7 @@ public class PlanServiceImpl implements PlanService {
         Query query = new Query.Builder()
                 .bool(b -> b
                         .must(s -> s.term(t -> t
-                                // 注意：当planInfo字段内容为中文是，此处会进行分词匹配，导致搜索不到结果，需要在字段后面添加"keyword"进行不分词搜索
+                                // 注意：当planInfo字段内容为中文时，此处会进行分词匹配，导致搜索不到结果，需要在字段后面添加"keyword"进行不分词搜索
                                 .field("planInfo.keyword")
                                 .value(planInfo))
                         )
