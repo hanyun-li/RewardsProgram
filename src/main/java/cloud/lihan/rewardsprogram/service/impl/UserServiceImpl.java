@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
                 .build();
         Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
         // 适配旧版本还没有激励值的用户
-        Integer incentiveValue = Objects.isNull(userDTO.getIncentiveValue()) ? 0 : userDTO.getIncentiveValue();
+        Integer incentiveValue = Objects.isNull(userDTO.getIncentiveValue()) ? IntegerConstant.ZERO : userDTO.getIncentiveValue();
         // 增加激励值
         Integer currentIncentiveValue = incentiveValue + increaseIncentiveValue;
         optionsMap.put("incentiveValue", JsonData.of(currentIncentiveValue));
