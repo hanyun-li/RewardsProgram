@@ -1,12 +1,8 @@
 package cloud.lihan.rewardsprogram.controller;
 
-import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.controller.BaseController;
-import cloud.lihan.rewardsprogram.common.core.Base;
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
-import cloud.lihan.rewardsprogram.dto.PlanDTO;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
-import cloud.lihan.rewardsprogram.dto.WishDTO;
 import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.service.inner.WishService;
@@ -14,14 +10,13 @@ import cloud.lihan.rewardsprogram.vo.WishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 /**

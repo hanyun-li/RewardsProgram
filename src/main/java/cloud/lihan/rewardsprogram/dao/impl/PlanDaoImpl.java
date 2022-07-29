@@ -2,13 +2,11 @@ package cloud.lihan.rewardsprogram.dao.impl;
 
 import cloud.lihan.rewardsprogram.common.constants.ElasticsearchScriptConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
-import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.PlanDao;
 import cloud.lihan.rewardsprogram.entety.document.PlanDocument;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.mapping.FieldType;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
