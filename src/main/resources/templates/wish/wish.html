@@ -106,7 +106,7 @@
                 </div>
 
                 <!--吹蜡烛特效-->
-                <div id="blow" style="visibility: hidden" class="warpper">
+                <div id="blow" style="display: none" class="warpper">
                     <div class="candles">
                         <div class="light_wave"></div>
 
@@ -175,13 +175,13 @@
     // 显示吹蜡烛
     function turnOnBlow() {
         let blowDiv = document.getElementById("blow");
-        blowDiv.style.visibility = "visible";
+        blowDiv.style.display = "";
     }
 
     // 关闭 吹蜡烛
     function turnOffBlow() {
         let blowDiv = document.getElementById("blow");
-        blowDiv.style.visibility = "hidden";
+        blowDiv.style.display = "none";
     }
 
     function purchaseProduction() {
