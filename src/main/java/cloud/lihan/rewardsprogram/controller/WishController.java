@@ -96,6 +96,24 @@ public class WishController extends BaseController {
         return view;
     }
 
+    @GetMapping("/toBlowOutCandles")
+    public ModelAndView toBlowOutCandles(HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                log.error("WishController.toWish() exist error! error info : [userId not exist!]");
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+            view.setViewName("wish/blow_out_candles");
+            return view;
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
+
     /**
      * 愿望提供
      *

@@ -97,7 +97,7 @@ public class WishServiceImpl implements WishService {
         Query query = new Query.Builder()
                 .bool(b -> b
                         .must(s -> s.term(t -> t
-                                .field("userId")
+                                .field("userId.keyword")
                                 .value(userId))
                         )
                         .must(s -> s.term(t -> t
@@ -115,7 +115,7 @@ public class WishServiceImpl implements WishService {
         Query query = new Query.Builder()
                 .bool(b -> b
                         .must(s -> s.term(t -> t
-                                .field("userId")
+                                .field("userId.keyword")
                                 .value(userId))
                         )
                         .must(s -> s.term(t -> t
@@ -138,8 +138,7 @@ public class WishServiceImpl implements WishService {
         Query query = new Query.Builder()
                 .bool(b -> b
                         .must(s -> s.term(t -> t
-                                // 注意：当wishInfo字段内容为中文时，此处会进行分词匹配，导致搜索不到结果，需要在字段后面添加"keyword"进行不分词搜索
-                                .field("wishInfo")
+                                .field("wishInfo.keyword")
                                 .value(wishInfo))
                         )
                         .must(s -> s.term(t -> t
@@ -147,7 +146,7 @@ public class WishServiceImpl implements WishService {
                                 .value(Boolean.FALSE))
                         )
                         .must(s -> s.term(t -> t
-                                .field("userId")
+                                .field("userId.keyword")
                                 .value(userId))
                         )
                 ).build();
@@ -177,7 +176,7 @@ public class WishServiceImpl implements WishService {
         Query query = new Query.Builder()
                 .bool(b -> b
                         .must(s -> s.term(t -> t
-                                .field("userId")
+                                .field("userId.keyword")
                                 .value(userId))
                         )
                         .must(s -> s.term(t -> t
