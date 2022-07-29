@@ -1,8 +1,10 @@
 package cloud.lihan.rewardsprogram.controller;
 
+import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.controller.BaseController;
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
+import cloud.lihan.rewardsprogram.dto.WishDTO;
 import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.service.inner.WishService;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -69,7 +72,8 @@ public class WishController extends BaseController {
             }
 
             view.addObject("wishProvider", wishProvider);
-            return this.wishProvider(view, userId);
+            view.setViewName("modals/modals");
+            return view;
         }
         view.setViewName("cover/not_logger_in");
         return view;
@@ -86,8 +90,7 @@ public class WishController extends BaseController {
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
-            view.setViewName("wish/wish");
-            return view;
+            return this.wishProvider(view, userId);
         }
         view.setViewName("cover/not_logger_in");
         return view;
@@ -102,6 +105,10 @@ public class WishController extends BaseController {
      * @throws Exception 异常信息
      */
     private ModelAndView wishProvider(ModelAndView view, String userId) throws Exception {
+        Integer notImplementedWishCount = wishService.getNotImplementedWishCount(userId);
+        List<WishDTO> multipleRandomWish = wishService.getMultipleRealizedRandomWish(userId, IntegerConstant.FIVE);
+        view.addObject("notImplementedWishCount", notImplementedWishCount);
+        view.addObject("multipleRandomWish", multipleRandomWish);
         view.setViewName("wish/wish");
         return view;
     }

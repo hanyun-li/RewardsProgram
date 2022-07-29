@@ -10,6 +10,7 @@ import cloud.lihan.rewardsprogram.entety.document.WishDocument;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.elasticsearch.core.CountResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.UpdateByQueryRequest;
 import co.elastic.clients.elasticsearch.core.search.Hit;
@@ -128,6 +129,15 @@ public class WishDaoImpl implements WishDao {
                         .query(query)
                 , WishDocument.class);
         return processWish(search);
+    }
+
+    @Override
+    public Integer getWishDocumentCount(Query query) throws IOException {
+        CountResponse count = esClient.count(c -> c
+                .index(IndexEnum.WISH_INDEX.getIndexName())
+                .query(query)
+        );
+        return (int) count.count();
     }
 
     /**

@@ -77,4 +77,13 @@ public interface WishDao {
      */
     List<WishDocument> getRandomNumbersWishDocuments(Integer wishDocumentNum, Query query) throws IOException;
 
+    /**
+     * 获取愿望文档数量
+     *
+     * @param query 自定义查询条件
+     * @return 愿望文档数量
+     * @throws IOException 异常信息
+     */
+    Integer getWishDocumentCount(Query query) throws IOException;
+
 }

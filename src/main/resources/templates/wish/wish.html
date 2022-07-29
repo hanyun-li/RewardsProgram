@@ -83,13 +83,13 @@
     <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
         <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
             <div class="my-3 p-3">
-                <h3 class="display-5">愿望池</h3>
-                <p class="lead">这一栏最多只会显示5条数据</p>
+                <h3 class="display-5">愿望池🥣</h3>
+                <p style="font-size: small" class="lead">这一栏只会展示已经许下的愿望数量</p>
             </div>
 
             <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 50px; border-radius: 21px 21px 0 0;">
                 <form id="wishForm" method="post" class="p-2 mb-2 bg-light border-bottom" action="/wish">
-                    <div class="input-group mb-3"\>
+                    <div class="input-group mb-3">
                         <input id="wishInfo" type="text" maxlength="16" name="wishInfo" class="form-control" placeholder="许下一个愿望..." aria-label="许下一个愿望..." aria-describedby="button-addon2">
                         <button onclick="myFunction()" class="btn btn-outline-secondary" type="button" id="button-addon2">
                             ➕许愿
@@ -98,17 +98,12 @@
                 </form>
             </div>
 
-            <div id="viewDiv" class="bg-body shadow-sm mx-auto" style="width: 80%; height: 365px; border-radius: 21px 21px 0 0;">
-<!--                <div th:each="todayUnfinishedPlan : ${todayUnfinishedPlans}" class="alert alert-dark" role="alert">-->
-<!--                    <div style="text-align:left; width: 90%; display: inline-block" th:text="${todayUnfinishedPlan.planInfo}"></div>-->
-<!--                    <div style="text-align:right; width: 8%; display: inline-block">-->
-<!--                        <a th:href="@{/plan/finish(id=${todayUnfinishedPlan.id})}" class='finished'>-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" style="color: green" width="24" height="24" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">-->
-<!--                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>-->
-<!--                            </svg>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
+            <div id="viewDiv" class="bg-body shadow-sm mx-auto" style="width: 80%; height: auto; border-radius: 21px 21px 0 0;">
+                <img src="http://5b0988e595225.cdn.sohucs.com/images/20170910/0b1e69b3eddb432a8c60fe79d1f62199.gif" style="width: 100%; height: auto">
+                <div style="width: 100%">
+                    <div style="display: inline-block">已许下的愿望数量：</div>
+                    <div th:text="${notImplementedWishCount}" style="color: greenyellow; display: inline-block;">4</div>
+                </div>
 
                 <!--吹蜡烛特效-->
                 <div id="blow" style="visibility: hidden" class="warpper">
@@ -150,27 +145,19 @@
             </div>
         </div>
 
-<!--        <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">-->
-<!--            <div class="my-3 py-3">-->
-<!--                <h3 class="display-5">已经实现的愿望✅</h3>-->
-<!--                <p class="lead">这一栏最多只会显示5条数据</p>-->
-<!--            </div>-->
-<!--            <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 358px; border-radius: 21px 21px 0 0;">-->
+        <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+            <div class="my-3 py-3">
+                <h3 class="display-5">已经实现的愿望✅</h3>
+                <p style="font-size: small" class="lead">这一栏将随机抽取最多5条已经实现的愿望在此展示</p>
+            </div>
+            <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 358px; border-radius: 21px 21px 0 0;">
 
-<!--                <div th:each="todayFinishedPlan : ${todayFinishedPlans}" class="alert alert-success" role="alert">-->
-<!--                    <div style="text-align:left; width: 90%; display: inline-block" th:text="${todayFinishedPlan.planInfo}">-->
-<!--                    </div>-->
-<!--                    <div style="text-align:right; width: 8%; display: inline-block">-->
-<!--                        <a th:href="@{/plan/delete(id=${todayFinishedPlan.id})}" class='finished'>-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" style="color: red" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">-->
-<!--                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>-->
-<!--                            </svg>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div th:each="wish : ${multipleRandomWish}" class="alert alert-success" role="alert">
+                    <div style="text-align:left; width: 90%; display: inline-block" th:text="${wish.wishInfo}"></div>
+                </div>
 
-<!--            </div>-->
-<!--        </div>-->
+            </div>
+        </div>
     </div>
 
 </main>
@@ -182,7 +169,7 @@
         // 开启除蜡烛动画
         setTimeout(turnOnBlow, 500);
         // 关闭除蜡烛动画
-        setTimeout(turnOffBlow, 3500);
+        setTimeout(turnOffBlow, 6500);
     }
 
     // 显示吹蜡烛

@@ -37,6 +37,6 @@ public interface IncentiveValueRuleConstant {
     /**
      * 第一个愿望需要消耗的激励值
      */
-    Integer FIRST_WISH = 35;
+    Integer FIRST_WISH = 2;
 
 }

@@ -15,6 +15,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class WishServiceImpl implements WishService {
     private UserService userService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void makingWish(UserDTO userDTO, WishVO wishVO) throws IOException {
         userService.reduceIncentiveValue(userDTO, IncentiveValueRuleConstant.FIRST_WISH);
         wishDao.createWishDocument(wishManager.wishVOConvertWishDocument(wishVO));
@@ -68,8 +70,8 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public WishDTO getSingeRandomWish() throws IOException {
-        List<WishDTO> multipleRandomWish = this.getMultipleRandomWish(IntegerConstant.ONE);
+    public WishDTO getSingeRandomWish(String userId) throws IOException {
+        List<WishDTO> multipleRandomWish = this.getMultipleRandomWish(userId, IntegerConstant.ONE);
         if (CollectionUtils.isEmpty(multipleRandomWish)) {
             return new WishDTO();
         }
@@ -77,12 +79,50 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishDTO> getMultipleRandomWish(Integer wishNum) throws IOException {
-        // 筛选没有被实现的愿望
-        Query query = new Query.Builder().term(t -> t
-                .field("isRealized")
-                .value(v -> v.booleanValue(Boolean.FALSE))
-        ).build();
+    public List<WishDTO> getMultipleRandomWish(String userId, Integer wishNum) throws IOException {
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                .field("userId.keyword")
+                                .value(userId))
+                        )
+                ).build();
+        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
+        return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
+    }
+
+    @Override
+    public List<WishDTO> getMultipleNotImplementedRandomWish(String userId, Integer wishNum) throws IOException {
+        // 筛选未实现的愿望
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                .field("userId")
+                                .value(userId))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("isRealized")
+                                .value(Boolean.FALSE))
+                        )
+                ).build();
+        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
+        return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
+    }
+
+    @Override
+    public List<WishDTO> getMultipleRealizedRandomWish(String userId, Integer wishNum) throws IOException {
+        // 筛选已经实现的愿望
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                .field("userId")
+                                .value(userId))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("isRealized")
+                                .value(Boolean.TRUE))
+                        )
+                ).build();
         List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
         return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
     }
@@ -99,7 +139,7 @@ public class WishServiceImpl implements WishService {
                 .bool(b -> b
                         .must(s -> s.term(t -> t
                                 // 注意：当wishInfo字段内容为中文时，此处会进行分词匹配，导致搜索不到结果，需要在字段后面添加"keyword"进行不分词搜索
-                                .field("wishInfo.keyword")
+                                .field("wishInfo")
                                 .value(wishInfo))
                         )
                         .must(s -> s.term(t -> t
@@ -107,12 +147,45 @@ public class WishServiceImpl implements WishService {
                                 .value(Boolean.FALSE))
                         )
                         .must(s -> s.term(t -> t
-                                .field("userId.keyword")
+                                .field("userId")
                                 .value(userId))
                         )
                 ).build();
         List<WishDTO> wishDTOS = wishManager.wishDocumentsConvertWishDTO(wishDao.getRandomNumbersWishDocuments(IntegerConstant.FIVE, query));
         return CollectionUtils.isEmpty(wishDTOS) ? Boolean.FALSE : Boolean.TRUE;
+    }
+
+    @Override
+    public Integer getNotImplementedWishCount(String userId) throws IOException {
+        return this.getWishCount(userId, Boolean.FALSE);
+    }
+
+    @Override
+    public Integer getRealizedWishCount(String userId) throws IOException {
+        return this.getWishCount(userId, Boolean.TRUE);
+    }
+
+    /**
+     * 获取已/未实现的愿望数量
+     *
+     * @param userId 用户ID
+     * @param isRealized true:已实现 false:未实现
+     * @return 已/未实现的愿望数量
+     * @throws IOException 异常信息
+     */
+    private Integer getWishCount(String userId, Boolean isRealized) throws IOException {
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                .field("userId")
+                                .value(userId))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("isRealized")
+                                .value(isRealized))
+                        )
+                ).build();
+        return wishDao.getWishDocumentCount(query);
     }
 
 }
