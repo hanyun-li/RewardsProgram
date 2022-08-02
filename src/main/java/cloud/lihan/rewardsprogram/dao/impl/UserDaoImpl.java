@@ -5,7 +5,7 @@ import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
-import cloud.lihan.rewardsprogram.entety.document.UserDocument;
+import cloud.lihan.rewardsprogram.entity.document.UserDocument;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;

@@ -1,6 +1,6 @@
 package cloud.lihan.rewardsprogram.dto;
 
-import cloud.lihan.rewardsprogram.entety.document.WishDocument;
+import cloud.lihan.rewardsprogram.entity.document.WishDocument;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

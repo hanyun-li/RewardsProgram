@@ -1,4 +1,4 @@
-package cloud.lihan.rewardsprogram.entety.document;
+package cloud.lihan.rewardsprogram.entity.document;
 
 import cloud.lihan.rewardsprogram.common.constants.LoginLimitConstant;
 import cloud.lihan.rewardsprogram.common.documents.BaseDocument;

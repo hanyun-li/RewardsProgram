@@ -7,7 +7,7 @@ import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.PlanDao;
 import cloud.lihan.rewardsprogram.dto.PlanDTO;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
-import cloud.lihan.rewardsprogram.entety.document.PlanDocument;
+import cloud.lihan.rewardsprogram.entity.document.PlanDocument;
 import cloud.lihan.rewardsprogram.manager.PlanManager;
 import cloud.lihan.rewardsprogram.service.inner.PlanService;
 import cloud.lihan.rewardsprogram.service.inner.UserService;

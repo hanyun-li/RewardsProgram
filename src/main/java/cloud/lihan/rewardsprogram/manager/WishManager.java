@@ -1,7 +1,7 @@
 package cloud.lihan.rewardsprogram.manager;
 
 import cloud.lihan.rewardsprogram.dto.WishDTO;
-import cloud.lihan.rewardsprogram.entety.document.WishDocument;
+import cloud.lihan.rewardsprogram.entity.document.WishDocument;
 import cloud.lihan.rewardsprogram.vo.WishVO;
 import org.springframework.stereotype.Component;
 

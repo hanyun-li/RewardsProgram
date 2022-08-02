@@ -1,7 +1,7 @@
 package cloud.lihan.rewardsprogram.manager;
 
 import cloud.lihan.rewardsprogram.dto.UserDTO;
-import cloud.lihan.rewardsprogram.entety.document.UserDocument;
+import cloud.lihan.rewardsprogram.entity.document.UserDocument;
 import cloud.lihan.rewardsprogram.vo.UserVO;
 import org.springframework.stereotype.Component;
 

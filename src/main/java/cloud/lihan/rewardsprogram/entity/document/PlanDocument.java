@@ -1,23 +1,23 @@
-package cloud.lihan.rewardsprogram.entety.document;
+package cloud.lihan.rewardsprogram.entity.document;
 
 import cloud.lihan.rewardsprogram.common.documents.BaseDocument;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 愿望信息文档
+ * 计划信息文档
  *
  * @author hanyun.li
- * @createTime 2022/06/28 17:30:00
+ * @createTime 2022/07/19 16:58:00
  */
-@Data
 @EqualsAndHashCode(callSuper = true)
-public class WishDocument extends BaseDocument {
+@Data
+public class PlanDocument extends BaseDocument {
 
     /**
-     * 愿望信息
+     * 计划信息
      */
-    private String wishInfo;
+    private String planInfo;
 
     /**
      * 用户ID(UUID类型)
@@ -25,8 +25,8 @@ public class WishDocument extends BaseDocument {
     private String userId;
 
     /**
-     * 是否已经实现 true:是 false:否
+     * 是否已经完成 true:是 false:否
      */
-    private Boolean isRealized;
+    private Boolean isFinished;
 
 }

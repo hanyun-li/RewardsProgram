@@ -6,7 +6,7 @@ import cloud.lihan.rewardsprogram.common.constants.LoginLimitConstant;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
-import cloud.lihan.rewardsprogram.entety.document.UserDocument;
+import cloud.lihan.rewardsprogram.entity.document.UserDocument;
 import cloud.lihan.rewardsprogram.manager.UserManager;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.vo.UserVO;

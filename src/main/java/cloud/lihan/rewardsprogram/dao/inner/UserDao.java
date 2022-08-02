@@ -1,7 +1,7 @@
 package cloud.lihan.rewardsprogram.dao.inner;
 
 
-import cloud.lihan.rewardsprogram.entety.document.UserDocument;
+import cloud.lihan.rewardsprogram.entity.document.UserDocument;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 

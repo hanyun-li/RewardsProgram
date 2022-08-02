@@ -1,9 +1,9 @@
 package cloud.lihan.rewardsprogram.common.utils;
 
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
-import cloud.lihan.rewardsprogram.entety.document.PlanDocument;
-import cloud.lihan.rewardsprogram.entety.document.UserDocument;
-import cloud.lihan.rewardsprogram.entety.document.WishDocument;
+import cloud.lihan.rewardsprogram.entity.document.PlanDocument;
+import cloud.lihan.rewardsprogram.entity.document.UserDocument;
+import cloud.lihan.rewardsprogram.entity.document.WishDocument;
 
 /**
  * @author hanyun.li
