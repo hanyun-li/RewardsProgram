@@ -92,38 +92,12 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishDTO> getMultipleNotImplementedRandomWish(String userId, Integer wishNum) throws IOException {
-        // 筛选未实现的愿望
-        Query query = new Query.Builder()
-                .bool(b -> b
-                        .must(s -> s.term(t -> t
-                                .field("userId.keyword")
-                                .value(userId))
-                        )
-                        .must(s -> s.term(t -> t
-                                .field("isRealized")
-                                .value(Boolean.FALSE))
-                        )
-                ).build();
-        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
-        return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
+        return this.getMultipleRandomWish(userId, Boolean.FALSE, wishNum);
     }
 
     @Override
     public List<WishDTO> getMultipleRealizedRandomWish(String userId, Integer wishNum) throws IOException {
-        // 筛选已经实现的愿望
-        Query query = new Query.Builder()
-                .bool(b -> b
-                        .must(s -> s.term(t -> t
-                                .field("userId.keyword")
-                                .value(userId))
-                        )
-                        .must(s -> s.term(t -> t
-                                .field("isRealized")
-                                .value(Boolean.TRUE))
-                        )
-                ).build();
-        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
-        return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
+        return this.getMultipleRandomWish(userId, Boolean.TRUE, wishNum);
     }
 
     @Override
@@ -161,6 +135,31 @@ public class WishServiceImpl implements WishService {
     @Override
     public Integer getRealizedWishCount(String userId) throws IOException {
         return this.getWishCount(userId, Boolean.TRUE);
+    }
+
+    /**
+     * 随机获取指定数量的愿望
+     *
+     * @param userId
+     * @param isRealized
+     * @param wishNum
+     * @return
+     * @throws IOException
+     */
+    private List<WishDTO> getMultipleRandomWish(String userId, Boolean isRealized, Integer wishNum) throws IOException {
+        Query query = new Query.Builder()
+                .bool(b -> b
+                        .must(s -> s.term(t -> t
+                                .field("userId.keyword")
+                                .value(userId))
+                        )
+                        .must(s -> s.term(t -> t
+                                .field("isRealized")
+                                .value(isRealized))
+                        )
+                ).build();
+        List<WishDocument> wishDocuments = wishDao.getRandomNumbersWishDocuments(wishNum, query);
+        return wishManager.wishDocumentsConvertWishDTO(wishDocuments);
     }
 
     /**
