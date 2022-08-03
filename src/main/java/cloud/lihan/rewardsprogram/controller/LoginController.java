@@ -42,7 +42,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ModelAndView login(UserVO userVO, HttpServletRequest request) throws Exception {
-        return loginProvider(userVO, request);
+        return this.loginProvider(userVO, request);
     }
 
     /**

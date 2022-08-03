@@ -35,7 +35,7 @@ public class RegisterController {
 
     @PostMapping()
     public ModelAndView register(UserVO userVO) throws IOException {
-        return registerProvider(userVO);
+        return this.registerProvider(userVO);
     }
 
     /**

@@ -67,6 +67,7 @@ public class WishController extends BaseController {
             if (wishProvider.getIsIncentiveValueEnough()) {
                 wishVO.setUserId(userId);
                 wishService.makingWish(user, wishVO);
+                // 这里休眠3秒是为了，让吹蜡烛动画可以播放3秒
                 Thread.sleep(3000);
                 return this.wishProvider(view, userId);
             }
