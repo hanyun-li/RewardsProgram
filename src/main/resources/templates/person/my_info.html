@@ -1,144 +1,212 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.88.1">
-  <title>我的信息</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>我的信息</title>
 
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/product/">
-
-  <!-- Bootstrap core CSS -->
-  <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
-
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-
-    .finished {
-      /*background-image: url('http://www.manongjc.com/Public/images/logo.gif');*/
-      text-decoration: none;
-    }
-
-    html{height: 100%}
-    body{margin: 0;height: 100%;
-      background: #fff;}
-    canvas{display: block;width: 100%;height: 100%;}
-    .body_content{
-      position: absolute;
-      top:30%;
-      left: 20%;
-      height: 20%;
-      background: palevioletred;
-      width: 20%;
-    }
-  </style>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
 
 
-  <!-- Custom styles for this template -->
-  <link th:href="@{/product/product.css}" rel="stylesheet">
-  <link th:href="@{/header/header.css}" rel="stylesheet">
-  <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/person/form-validation.css}" rel="stylesheet">
+    <link th:href="@{/header/header.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
 </head>
-<body>
-<!--<canvas id="canvas" style="position:absolute; z-index:-1;"></canvas>-->
-<!--<script th:src="@{/curtain/curtain.js}"></script>-->
+<body class="bg-light">
 
 <div class="container">
-  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 
-    <ul style="text-align: center" class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-      <!--            <li><a href="#" class="nav-link px-2 link-secondary">首页</a></li>-->
-      <li><a href="/plan" class="nav-link px-2 link-dark">计划</a></li>
-      <li><a href="/wish" class="nav-link px-2 link-dark">愿望</a></li>
-      <li>
-        <a href="#" class="nav-link px-2 link-dark">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-          </svg>
-        </a>
-      </li>
-    </ul>
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 
-  </header>
+        <ul style="text-align: center" class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <!--            <li><a href="#" class="nav-link px-2 link-secondary">首页</a></li>-->
+            <li><a href="/plan" class="nav-link px-2 link-dark">计划</a></li>
+            <li><a href="/wish" class="nav-link px-2 link-dark">愿望</a></li>
+            <li>
+                <a href="/myInfo" class="nav-link px-2 link-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" th:src="@{/assets/icon/favicon.ico}" alt="" width="72" height="57">
+            <h2>我的个人信息👤</h2>
+            <p class="lead">在这里，您可以修改一些自己的基本信息，如登录账号，密码等。。。</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">我的财富📈</span>
+                    <span class="badge bg-primary rounded-pill">3</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">激励值</h6>
+                            <small class="text-muted">用来许愿的...</small>
+                        </div>
+                        <span class="text-muted">12（枚）</span>
+                    </li>
+                    <!--          <li class="list-group-item d-flex justify-content-between">-->
+                    <!--            <span>Total (USD)</span>-->
+                    <!--            <strong>$20</strong>-->
+                    <!--          </li>-->
+                </ul>
+
+                <!--        <form class="card p-2">-->
+                <!--          <div class="input-group">-->
+                <!--            <input type="text" class="form-control" placeholder="Promo code">-->
+                <!--            <button type="submit" class="btn btn-secondary">Redeem</button>-->
+                <!--          </div>-->
+                <!--        </form>-->
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">账号信息👛</h4>
+                <form class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <!--            <div class="col-sm-6">-->
+                        <!--              <label for="firstName" class="form-label">姓</label>-->
+                        <!--              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>-->
+                        <!--              <div class="invalid-feedback">-->
+                        <!--                Valid first name is required.-->
+                        <!--              </div>-->
+                        <!--            </div>-->
+
+                        <!--            <div class="col-sm-6">-->
+                        <!--              <label for="lastName" class="form-label">Last name</label>-->
+                        <!--              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>-->
+                        <!--              <div class="invalid-feedback">-->
+                        <!--                Valid last name is required.-->
+                        <!--              </div>-->
+                        <!--            </div>-->
+
+                        <div class="col-12">
+                            <label for="username" class="form-label">昵称</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">展示名称</span>
+                                <input type="text" class="form-control" id="nickname" placeholder="请输入昵称..." required>
+                                <div class="invalid-feedback">
+                                    请输入昵称
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="username" class="form-label">用户名</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">登录账号</span>
+                                <input type="text" class="form-control" id="username" placeholder="请输入用户名..." required>
+                                <div class="invalid-feedback">
+                                    请输入用户名
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="email" class="form-label">邮箱地址📮 <span class="text-muted">(可不填)</span></label>
+                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                            <div class="invalid-feedback">
+                                请输入邮箱地址
+                            </div>
+                        </div>
+
+                        <!--            <div class="col-12">-->
+                        <!--              <label for="address" class="form-label">Address</label>-->
+                        <!--              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>-->
+                        <!--              <div class="invalid-feedback">-->
+                        <!--                Please enter your shipping address.-->
+                        <!--              </div>-->
+                        <!--            </div>-->
+
+                        <!--            <div class="col-12">-->
+                        <!--              <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>-->
+                        <!--              <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">-->
+                        <!--            </div>-->
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!--          <div class="form-check">-->
+                    <!--            <input type="checkbox" class="form-check-input" id="same-address">-->
+                    <!--            <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>-->
+                    <!--          </div>-->
+
+                    <!--          <div class="form-check">-->
+                    <!--            <input type="checkbox" class="form-check-input" id="save-info">-->
+                    <!--            <label class="form-check-label" for="save-info">Save this information for next time</label>-->
+                    <!--          </div>-->
+
+                    <!--          <hr class="my-4">-->
+
+                    <!--          <h4 class="mb-3">Payment</h4>-->
+
+                    <!--          <div class="my-3">-->
+                    <!--            <div class="form-check">-->
+                    <!--              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>-->
+                    <!--              <label class="form-check-label" for="credit">Credit card</label>-->
+                    <!--            </div>-->
+                    <!--            <div class="form-check">-->
+                    <!--              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>-->
+                    <!--              <label class="form-check-label" for="debit">Debit card</label>-->
+                    <!--            </div>-->
+                    <!--            <div class="form-check">-->
+                    <!--              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>-->
+                    <!--              <label class="form-check-label" for="paypal">PayPal</label>-->
+                    <!--            </div>-->
+                    <!--          </div>-->
+
+                    <!--          <hr class="my-4">-->
+
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">保存</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2022–2022</p>
+        <!--    <ul class="list-inline">-->
+        <!--      <li class="list-inline-item"><a href="#">Privacy</a></li>-->
+        <!--      <li class="list-inline-item"><a href="#">Terms</a></li>-->
+        <!--      <li class="list-inline-item"><a href="#">Support</a></li>-->
+        <!--    </ul>-->
+    </footer>
 </div>
 
-<main>
-  <h1>
-    开发中。。。
-  </h1>
-
-  <!--    <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">-->
-  <!--        <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">-->
-  <!--            <div class="my-3 p-3">-->
-  <!--                <h3 class="display-5">今日未完成计划❎</h3>-->
-  <!--                <p class="lead">这一栏最多只会显示5条数据</p>-->
-  <!--            </div>-->
-
-  <!--            <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 50px; border-radius: 21px 21px 0 0;">-->
-  <!--                <form method="post" class="p-2 mb-2 bg-light border-bottom" action="/plan">-->
-  <!--                    <div class="input-group mb-3"\>-->
-  <!--                        <input type="text" maxlength="16" name="planInfo" class="form-control" placeholder="创建一个计划..." aria-label="创建一个计划..." aria-describedby="button-addon2">-->
-  <!--                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">-->
-  <!--                            ➕创建-->
-  <!--                        </button>-->
-  <!--                    </div>-->
-  <!--                </form>-->
-  <!--            </div>-->
-
-  <!--            <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 365px; border-radius: 21px 21px 0 0;">-->
-  <!--                <div th:each="todayUnfinishedPlan : ${todayUnfinishedPlans}" class="alert alert-dark" role="alert">-->
-  <!--                    <div style="text-align:left; width: 90%; display: inline-block" th:text="${todayUnfinishedPlan.planInfo}"></div>-->
-  <!--                    <div style="text-align:right; width: 8%; display: inline-block">-->
-  <!--                        <a th:href="@{/plan/finish(id=${todayUnfinishedPlan.id})}" class='finished'>-->
-  <!--                            <svg xmlns="http://www.w3.org/2000/svg" style="color: green" width="24" height="24" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">-->
-  <!--                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>-->
-  <!--                            </svg>-->
-  <!--                        </a>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--            </div>-->
-  <!--        </div>-->
-
-  <!--        <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">-->
-  <!--            <div class="my-3 py-3">-->
-  <!--                <h3 class="display-5">今日已完成计划✅</h3>-->
-  <!--                <p class="lead">这一栏最多只会显示5条数据</p>-->
-  <!--            </div>-->
-  <!--            <div class="bg-body shadow-sm mx-auto" style="width: 80%; height: 358px; border-radius: 21px 21px 0 0;">-->
-
-  <!--                <div th:each="todayFinishedPlan : ${todayFinishedPlans}" class="alert alert-success" role="alert">-->
-  <!--                    <div style="text-align:left; width: 90%; display: inline-block" th:text="${todayFinishedPlan.planInfo}">-->
-  <!--                    </div>-->
-  <!--                    <div style="text-align:right; width: 8%; display: inline-block">-->
-  <!--                        <a th:href="@{/plan/delete(id=${todayFinishedPlan.id})}" class='finished'>-->
-  <!--                            <svg xmlns="http://www.w3.org/2000/svg" style="color: red" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">-->
-  <!--                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>-->
-  <!--                            </svg>-->
-  <!--                        </a>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-
-  <!--            </div>-->
-  <!--        </div>-->
-  <!--    </div>-->
-
-</main>
 
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
-
+<script th:src="@{/person/form-validation.js}"></script>
 </body>
 </html>

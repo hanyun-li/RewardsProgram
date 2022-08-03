@@ -49,7 +49,7 @@ public class LoginController {
      * 登录提供
      *
      * @param userVO 用户输入信息
-     * @return index.html 登录页面 或者(product.html 首页)
+     * @return index.html 登录页面 或者(plan.html 首页)
      * @throws Exception 异常信息
      */
     private ModelAndView loginProvider(UserVO userVO, HttpServletRequest request) throws Exception {
@@ -94,7 +94,7 @@ public class LoginController {
         List<PlanDTO> todayFinishedPlans = planService.getTodayFinishedPlans(user.getId());
         view.addObject("todayUnfinishedPlans", todayUnfinishedPlans);
         view.addObject("todayFinishedPlans", todayFinishedPlans);
-        view.setViewName("product/product");
+        view.setViewName("plan/plan");
         return view;
     }
 

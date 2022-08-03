@@ -141,7 +141,7 @@ public class PlanController {
         List<PlanDTO> todayFinishedPlans = planService.getTodayFinishedPlans(userId);
         view.addObject("todayUnfinishedPlans", todayUnfinishedPlans);
         view.addObject("todayFinishedPlans", todayFinishedPlans);
-        view.setViewName("product/product");
+        view.setViewName("plan/plan");
         return view;
     }
 
