@@ -1,7 +1,7 @@
-/*body {*/
-/*  background-color: #FFF;*/
-/*  animation: change-background 3s infinite linear;*/
-/*}*/
+body {
+  background-color: #FFF;
+  animation: change-background 3s infinite linear;
+}
 
 .wrapper {
   position: absolute;

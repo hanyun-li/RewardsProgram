@@ -66,9 +66,7 @@ public class WishController extends BaseController {
             if (wishProvider.getIsIncentiveValueEnough()) {
                 wishVO.setUserId(userId);
                 wishService.makingWish(user, wishVO);
-                // 这里休眠3秒是为了，让吹蜡烛动画可以播放3秒
-                Thread.sleep(3000);
-                return this.wishProvider(view, userId);
+                return this.toBlowOutCandles();
             }
 
             view.addObject("wishProvider", wishProvider);
@@ -95,20 +93,14 @@ public class WishController extends BaseController {
         return view;
     }
 
-    @GetMapping("/toBlowOutCandles")
-    public ModelAndView toBlowOutCandles(HttpServletRequest request) throws Exception {
+    /**
+     * 跳转许愿动画页面
+     *
+     * @return 模版
+     */
+    private ModelAndView toBlowOutCandles() {
         ModelAndView view = new ModelAndView();
-        if (LoginUtil.checkLogin(request)) {
-            String userId = LoginUtil.getLoginTokenByRequest(request);
-            UserDTO user = userService.getUserByUserId(userId);
-            if (Objects.isNull(user)) {
-                view.setViewName("cover/not_logger_in");
-                return view;
-            }
-            view.setViewName("wish/blow_out_candles");
-            return view;
-        }
-        view.setViewName("cover/not_logger_in");
+        view.setViewName("wish/blow_out_candles");
         return view;
     }
 

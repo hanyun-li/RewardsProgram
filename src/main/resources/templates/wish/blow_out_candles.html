@@ -1,46 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>蜡烛吹灭动画</title>
-    <link rel="stylesheet" th:href="@{/wish/blow_out_candles.css}">
+  <meta charset="UTF-8">
+  <title>蜡烛吹灭动画</title>
+  <link rel="stylesheet" th:href="@{/wish/candle.css}">
 </head>
 <body>
-  <div class="warpper">
-    <div class="candles">
-      <div class="light_wave"></div>
+<div class="warpper">
+  <div class="candles">
+    <div class="light_wave"></div>
 
-      <!-- 蜡烛1 -->
-      <div class="candle1">
-        <div class="candle1_body">
-          <div class="candle1_eyes">
-            <span class="candle1_eyes-left"></span>
-            <span class="candle1_eyes-right"></span>
-          </div>
-          <div class="candle1_mouth"></div>
+    <!-- 蜡烛1 -->
+    <div class="candle1">
+      <div class="candle1_body">
+        <div class="candle1_eyes">
+          <span class="candle1_eyes-left"></span>
+          <span class="candle1_eyes-right"></span>
         </div>
-        <div class="candle1_stick"></div>
+        <div class="candle1_mouth"></div>
       </div>
-
-      <!-- 蜡烛2 -->
-      <div class="candle2">
-        <div class="candle2_body">
-          <div class="candle2_eyes">
-            <span class="candle2_eyes-left"></span>
-            <span class="candle2_eyes-right"></span>
-          </div>
-        </div>
-        <div class="candle2_stick"></div>
-      </div>
-
-      <div class="candle2_fire"></div>
-      <div class="sparkle1"></div>
-      <div class="sparkle2"></div>
-      <div class="candle_smoke1"></div>
-      <div class="candle_smoke2"></div>
+      <div class="candle1_stick"></div>
     </div>
 
-    <div class="floor"></div>
-  </div>   
+    <!-- 蜡烛2 -->
+    <div class="candle2">
+      <div class="candle2_body">
+        <div class="candle2_eyes">
+          <span class="candle2_eyes-left"></span>
+          <span class="candle2_eyes-right"></span>
+        </div>
+      </div>
+      <div class="candle2_stick"></div>
+    </div>
+
+    <div class="candle2_fire"></div>
+    <div class="sparkle1"></div>
+    <div class="sparkle2"></div>
+    <div class="candle_smoke1"></div>
+    <div class="candle_smoke2"></div>
+  </div>
+
+  <div class="floor"></div>
+</div>
+
+<script type="text/javascript">
+  // 自动加载该函数
+  window.onload = function () {
+    // 设置定时器（4秒后调用）
+    window.setTimeout("myFunction()", 4000);//使用字符串执行方法
+  }
+
+  // 跳转到愿望页面
+  function myFunction() {
+    window.location.replace("/wish")
+  }
+</script>
 </body>
 </html>

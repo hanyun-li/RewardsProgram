@@ -12,7 +12,6 @@
 
     <!-- Bootstrap core CSS -->
     <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/wish/blow_out_candles.css}">
 
     <style>
         .bd-placeholder-img {
@@ -96,7 +95,7 @@
                 <form id="wishForm" method="post" class="p-2 mb-2 bg-light border-bottom" action="/wish">
                     <div class="input-group mb-3">
                         <input id="wishInfo" type="text" maxlength="16" name="wishInfo" class="form-control" placeholder="许下一个愿望..." aria-label="许下一个愿望..." aria-describedby="button-addon2">
-                        <button onclick="myFunction()" class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
                             ➕许愿
                         </button>
                     </div>
@@ -108,44 +107,6 @@
                 <div style="width: 100%">
                     <div style="display: inline-block">已许下的愿望数量：</div>
                     <div th:text="${notImplementedWishCount}" style="color: greenyellow; display: inline-block;">4</div>
-                </div>
-
-                <!--吹蜡烛特效-->
-                <div id="blow" style="display: none" class="warpper">
-                    <div class="candles">
-                        <div class="light_wave"></div>
-
-                        <!-- 蜡烛1 -->
-                        <div class="candle1">
-                            <div class="candle1_body">
-                                <div class="candle1_eyes">
-                                    <span class="candle1_eyes-left"></span>
-                                    <span class="candle1_eyes-right"></span>
-                                </div>
-                                <div class="candle1_mouth"></div>
-                            </div>
-                            <div class="candle1_stick"></div>
-                        </div>
-
-                        <!-- 蜡烛2 -->
-                        <div class="candle2">
-                            <div class="candle2_body">
-                                <div class="candle2_eyes">
-                                    <span class="candle2_eyes-left"></span>
-                                    <span class="candle2_eyes-right"></span>
-                                </div>
-                            </div>
-                            <div class="candle2_stick"></div>
-                        </div>
-
-                        <div class="candle2_fire"></div>
-                        <div class="sparkle1"></div>
-                        <div class="sparkle2"></div>
-                        <div class="candle_smoke1"></div>
-                        <div class="candle_smoke2"></div>
-                    </div>
-
-                    <div class="floor"></div>
                 </div>
             </div>
         </div>
@@ -168,6 +129,7 @@
 </main>
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
 <script type="text/javascript">
+    // 该特效已被单独页面替换（已经弃用~2022/8/4）
     function myFunction() {
         // 提交表单
         purchaseProduction();
