@@ -12,6 +12,16 @@ import lombok.Data;
 public class UserVO {
 
     /**
+     * 用户Id（更新时使用）
+     */
+    private String userId;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
+
+    /**
      * 用户名
      */
     private String userName;

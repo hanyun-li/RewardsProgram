@@ -30,6 +30,7 @@ public class UserManager {
         }
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userDocument.getId());
+        userDTO.setNickName(userDocument.getNickName());
         userDTO.setUserName(userDocument.getUserName());
         userDTO.setUserEmail(userDocument.getUserEmail());
         userDTO.setPassword(userDocument.getPassword());
@@ -65,6 +66,7 @@ public class UserManager {
             return null;
         }
         UserDocument userDocument = new UserDocument();
+        userDocument.setNickName(userVO.getNickName());
         userDocument.setUserName(userVO.getUserName());
         userDocument.setUserEmail(userVO.getUserEmail());
         userDocument.setPassword(userVO.getPassword());

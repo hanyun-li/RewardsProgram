@@ -34,15 +34,21 @@ public class LoginController {
     @Autowired
     private PlanService planService;
 
+    @PostMapping("/login")
+    public ModelAndView login(UserVO userVO, HttpServletRequest request) throws Exception {
+        return this.loginProvider(userVO, request);
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpServletRequest request) {
+        request.getSession().removeAttribute(SessionConstant.LOGIN_TOKEN);
+        return this.toLoginPage(new ModelAndView());
+    }
+
     @GetMapping()
     public ModelAndView toLoginPage(ModelAndView view) {
         view.setViewName("signin/index");
         return view;
-    }
-
-    @PostMapping("/login")
-    public ModelAndView login(UserVO userVO, HttpServletRequest request) throws Exception {
-        return this.loginProvider(userVO, request);
     }
 
     /**

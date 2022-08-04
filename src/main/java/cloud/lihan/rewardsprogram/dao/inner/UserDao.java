@@ -32,7 +32,7 @@ public interface UserDao {
      * @param updateByQuery 自定义更新条件
      * @throws IOException 异常信息
      */
-    void updateUserSingleField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException;
+    void updateUserField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException;
 
     /**
      * 根据ID获取用户文档信息

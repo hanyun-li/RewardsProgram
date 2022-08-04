@@ -40,6 +40,14 @@ public interface UserService {
     void editPassword(String userId, String userPassword) throws IOException;
 
     /**
+     * 编辑用户信息
+     *
+     * @param userVO 用户信息
+     * @throws IOException 异常信息
+     */
+    void editUserInfo(UserVO userVO) throws IOException;
+
+    /**
      * 增加激励值（完成计划时增加）
      *
      * @param userDTO 用户传输对象
@@ -82,5 +90,14 @@ public interface UserService {
      * @return {@link WishProviderDTO} 许愿时，返回的相关信息实体
      */
     WishProviderDTO isIncentiveValueEnough(UserDTO userDTO);
+
+    /**
+     * 根据昵称获取用户信息
+     *
+     * @param nickName 昵称
+     * @return {@link UserDTO} 用户信息
+     * @throws IOException 异常信息
+     */
+    UserDTO getUserByNickname(String nickName) throws IOException;
 
 }

@@ -32,7 +32,7 @@
 
 
     <!-- Custom styles for this template -->
-    <link th:href="@{/person/form-validation.css}" rel="stylesheet">
+    <link th:href="@{/person/validation.css}" rel="stylesheet">
     <link th:href="@{/header/header.css}" rel="stylesheet">
     <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
 </head>
@@ -54,6 +54,15 @@
                     </svg>
                 </a>
             </li>
+            <li>
+                <a href="/logout" class="nav-link px-2 link-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"></path>
+                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+                    </svg>
+                    登出
+                </a>
+            </li>
         </ul>
 
     </header>
@@ -61,15 +70,15 @@
     <main>
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" th:src="@{/assets/icon/favicon.ico}" alt="" width="72" height="57">
-            <h2>我的个人信息👤</h2>
-            <p class="lead">在这里，您可以修改一些自己的基本信息，如登录账号，密码等。。。</p>
+            <h2>个人信息👤</h2>
+            <p style="font-size: small" class="lead">在这里，您可以修改一些自己的基本信息，如登录账号，密码等。。。</p>
         </div>
 
         <div class="row g-5">
             <div class="col-md-5 col-lg-4 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">我的财富📈</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
+                    <span style="color: burlywood" class="text-primary">我的财富📈</span>
+                    <span class="badge bg-primary rounded-pill">1</span>
                 </h4>
                 <ul class="list-group mb-3">
                     <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -77,7 +86,7 @@
                             <h6 class="my-0">激励值</h6>
                             <small class="text-muted">用来许愿的...</small>
                         </div>
-                        <span class="text-muted">12（枚）</span>
+                        <span th:text="${user.incentiveValue}" class="text-muted"></span>
                     </li>
                     <!--          <li class="list-group-item d-flex justify-content-between">-->
                     <!--            <span>Total (USD)</span>-->
@@ -94,7 +103,7 @@
             </div>
             <div class="col-md-7 col-lg-8">
                 <h4 class="mb-3">账号信息👛</h4>
-                <form class="needs-validation" novalidate>
+                <form action="/myInfo" method="post" class="needs-validation" novalidate>
                     <div class="row g-3">
                         <!--            <div class="col-sm-6">-->
                         <!--              <label for="firstName" class="form-label">姓</label>-->
@@ -116,9 +125,15 @@
                             <label for="username" class="form-label">昵称</label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text">展示名称</span>
-                                <input type="text" class="form-control" id="nickname" placeholder="请输入昵称..." required>
+                                <input type="text" class="form-control" id="nickname" name="nickName" th:value="${user.nickName}" th:placeholder="请输入昵称..." required>
                                 <div class="invalid-feedback">
                                     请输入昵称
+                                </div>
+                                <div th:if="${isTheNicknameEmpty}" class="col-12" style="font-size: small; color: red">
+                                    未输入昵称
+                                </div>
+                                <div th:if="${repeatedNickname}" class="col-12" style="font-size: small; color: red">
+                                    很抱歉，您修改后的昵称已存在😣
                                 </div>
                             </div>
                         </div>
@@ -127,18 +142,24 @@
                             <label for="username" class="form-label">用户名</label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text">登录账号</span>
-                                <input type="text" class="form-control" id="username" placeholder="请输入用户名..." required>
+                                <input type="text" class="form-control" id="username" name="userName" th:value="${user.userName}" placeholder="请输入用户名..." required>
                                 <div class="invalid-feedback">
                                     请输入用户名
+                                </div>
+                                <div th:if="${isTheUsernameEmpty}" class="col-12" style="font-size: small; color: red">
+                                    未输入用户名
+                                </div>
+                                <div th:if="${repeatedUsername}" class="col-12" style="font-size: small; color: red">
+                                    很抱歉，您修改后的用户名已存在😣
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <label for="email" class="form-label">邮箱地址📮 <span class="text-muted">(可不填)</span></label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                            <input type="email" class="form-control" id="email" name="userEmail" th:value="${user.userEmail}" placeholder="you@example.com">
                             <div class="invalid-feedback">
-                                请输入邮箱地址
+                                未输入邮箱地址或邮箱格式不正确
                             </div>
                         </div>
 
@@ -207,6 +228,6 @@
 
 
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/person/form-validation.js}"></script>
+<script th:src="@{/person/validation.js}"></script>
 </body>
 </html>

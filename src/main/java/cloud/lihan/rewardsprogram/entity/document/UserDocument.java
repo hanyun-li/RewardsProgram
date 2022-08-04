@@ -16,6 +16,11 @@ import lombok.EqualsAndHashCode;
 public class UserDocument extends BaseDocument {
 
     /**
+     * 昵称
+     */
+    private String nickName;
+
+    /**
      * 用户名
      */
     private String userName;

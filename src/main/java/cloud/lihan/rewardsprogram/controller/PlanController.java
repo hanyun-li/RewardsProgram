@@ -41,7 +41,6 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
@@ -74,7 +73,6 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
@@ -93,7 +91,6 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }
@@ -118,7 +115,6 @@ public class PlanController {
             String userId = LoginUtil.getLoginTokenByRequest(request);
             UserDTO user = userService.getUserByUserId(userId);
             if (Objects.isNull(user)) {
-                log.error("PlanController.savePlan() exist error! error info : [userId not exist!]");
                 view.setViewName("cover/not_logger_in");
                 return view;
             }

@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUserSingleField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException {
+    public void updateUserField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException {
         UpdateByQueryRequest update = UpdateByQueryRequest.of(u -> u
                 .index(IndexEnum.USER_INDEX.getIndexName())
                 .query(updateByQuery)
