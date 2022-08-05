@@ -1,5 +1,6 @@
 package cloud.lihan.rewardsprogram.controller;
 
+import cloud.lihan.rewardsprogram.common.constants.PlanLimitConstant;
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
 import cloud.lihan.rewardsprogram.dto.PlanDTO;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
@@ -57,10 +58,17 @@ public class PlanController {
                 return this.planProvider(view, userId);
             }
 
-            planVO.setUserId(userId);
-            planService.savePlan(planVO);
-            Thread.sleep(1000);
-            return this.planProvider(view, userId);
+            // 检测当天创建的计划数是否超过最大限制次数
+            if (planService.canCreatePlan(user)) {
+                planVO.setUserId(userId);
+                planService.savePlan(planVO);
+                Thread.sleep(1000);
+                return this.planProvider(view, userId);
+            }
+
+            view.addObject("createPlanMaxTimes", PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES);
+            view.setViewName("cover/create_plan_limit");
+            return view;
         }
         view.setViewName("cover/not_logger_in");
         return view;

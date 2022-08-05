@@ -2,6 +2,7 @@ package cloud.lihan.rewardsprogram.service.impl;
 
 import cloud.lihan.rewardsprogram.common.constants.IncentiveValueRuleConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
+import cloud.lihan.rewardsprogram.common.constants.PlanLimitConstant;
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.PlanDao;
@@ -14,6 +15,7 @@ import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.vo.PlanVO;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 计划相关的业务细节
@@ -30,6 +33,7 @@ import java.util.Map;
  * @author hanyun.li
  * @createTime 2022/07/20 11:29:00
  */
+@Slf4j
 @Service("planService")
 public class PlanServiceImpl implements PlanService {
 
@@ -41,7 +45,9 @@ public class PlanServiceImpl implements PlanService {
     private UserService userService;
 
     @Override
-    public void savePlan(PlanVO planVO) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public void savePlan(PlanVO planVO) throws Exception {
+        userService.increaseCreatePlanTimes(planVO.getUserId());
         planDao.createPlanDocument(planManager.planVOConvertPlanDocument(planVO));
     }
 
@@ -113,6 +119,36 @@ public class PlanServiceImpl implements PlanService {
                 ).build();
         List<PlanDTO> planDTOS = planManager.planDocumentsConvertPlanDTO(planDao.getMultiplePlanByQuery(query));
         return CollectionUtils.isEmpty(planDTOS) ? Boolean.FALSE : Boolean.TRUE;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean canCreatePlan(UserDTO userDTO) throws Exception {
+        if (Objects.isNull(userDTO)) {
+            log.error("PlanServiceImpl.savePlan() is exit error! userDTO is null!");
+        }
+
+        // 获取当天的时间(eg:2022-8-4)
+        String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
+        // 对老用户进行初始化字段值"lastTimeAddPlanTime"
+        if (Objects.isNull(userDTO.getLastTimeAddPlanTime())) {
+            userService.initLastTimeAddPlanTime(userDTO.getId(), currentDayTime);
+            // 此处等待字段"lastTimeAddPlanTime"初始化
+            Thread.sleep(1000);
+        }
+
+        // 判断当天时间是否与上一次创建计划的时间是同一天
+        if (CurrentTimeUtil.isSameDay(userDTO, currentDayTime)) {
+            Integer currentDayCreatePlanTimes = userDTO.getCurrentDayCreatePlanTimes();
+            // 检测是否超过最大创建计划次数
+            if (currentDayCreatePlanTimes >= PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES) {
+                log.warn("Exceeded maximum number of create plan，" + PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES + "times！The userId is: {}", userDTO.getId());
+                return Boolean.FALSE;
+            }
+            return Boolean.TRUE;
+        }
+        userService.resetCreatePlanTimes(userDTO.getId(), currentDayTime);
+        return Boolean.TRUE;
     }
 
     /**

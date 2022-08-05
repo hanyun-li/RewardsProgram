@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.88.1">
+  <title>计划创建限制</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    html{height: 100%}
+    body{margin: 0;height: 100%;
+      background: #fff;}
+    canvas{display: block;width: 100%;height: 100%;}
+    .body_content{
+      position: absolute;
+      top:30%;
+      left: 20%;
+      height: 20%;
+      background: palevioletred;
+      width: 20%;
+    }
+  </style>
+
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/assets/dist/css/signin.css}" rel="stylesheet">
+  <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
+</head>
+<body class="text-center">
+<canvas id="canvas" style="position:absolute; z-index:-1;"></canvas>
+<script th:src="@{/curtain/curtain.js}"></script>
+
+<main class="form-signin">
+
+  <img class="mb-4" th:src="@{/logo/incentive_plan.png}" alt="" width="144" height="114">
+
+  <h1>您今天已经非常努力了💪，请量力而行</h1>
+  <p class="lead">超过今日最大创建计划次数<span style="color: red" th:text="${createPlanMaxTimes}"></span>次</p>
+  <p class="lead">
+    <a href="/plan" class="btn btn-lg btn-secondary fw-bold border-green bg-green">返回 计划页</a>
+  </p>
+
+  <p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
+
+</main>
+
+</body>
+</html>

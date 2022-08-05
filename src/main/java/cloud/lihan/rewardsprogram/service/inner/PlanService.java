@@ -3,6 +3,7 @@ package cloud.lihan.rewardsprogram.service.inner;
 import cloud.lihan.rewardsprogram.dto.PlanDTO;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.vo.PlanVO;
+import cloud.lihan.rewardsprogram.common.constants.PlanLimitConstant;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,9 +20,9 @@ public interface PlanService {
      * 保存计划
      *
      * @param planVO 计划信息
-     * @throws IOException 异常信息
+     * @throws Exception 异常信息
      */
-    void savePlan(PlanVO planVO) throws IOException;
+    void savePlan(PlanVO planVO) throws Exception;
 
     /**
      * 批量保存计划
@@ -84,5 +85,15 @@ public interface PlanService {
      * @throws Exception 异常信息
      */
     Boolean checkPlanInfo(String planInfo, String userId) throws Exception;
+
+    /**
+     * 是否可以创建计划（检测是否已达到当日最大创建计划次数）
+     *
+     * {@link PlanLimitConstant} 当天允许创建计划的最大次数
+     * @param userDTO 用户信息
+     * @return true：可以创建 false：不可以创建
+     * @throws Exception 异常信息
+     */
+    Boolean canCreatePlan(UserDTO userDTO) throws Exception;
 
 }

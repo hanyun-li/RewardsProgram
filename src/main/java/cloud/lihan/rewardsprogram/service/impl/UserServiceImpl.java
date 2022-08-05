@@ -116,6 +116,65 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void initLastTimeLoginFailTime(String userId, String currentDayTime) throws Exception {
+        Query query = Query.of(q -> q.ids(i -> i.values(userId)));
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
+        String source = "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime";
+        userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
+    public void initLastTimeAddPlanTime(String userId, String currentDayTime) throws Exception {
+        Query query = Query.of(q -> q.ids(i -> i.values(userId)));
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        optionsMap.put("lastTimeAddPlanTime", JsonData.of(currentDayTime));
+        String source = "ctx._source.lastTimeAddPlanTime = params.lastTimeAddPlanTime";
+        userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
+    public void resetLoginFailTimes(String userId, String currentDayTime) throws IOException {
+        // 更新最后一次登录失败的那一天的时间为当天时间 且 同时清空当天登录失败次数
+        Query query = Query.of(q -> q.ids(i -> i.values(userId)));
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
+        optionsMap.put("currentDayLoginFailTimes", JsonData.of(IntegerConstant.ZERO));
+        String source = "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime;" +
+                "ctx._source.currentDayLoginFailTimes = params.currentDayLoginFailTimes";
+        userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
+    public void resetCreatePlanTimes(String userId, String currentDayTime) throws IOException {
+        // 更新最后一次创建计划的那一天的时间为当天时间 且 同时清空当天创建计划的次数
+        Query query = Query.of(q -> q.ids(i -> i.values(userId)));
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        optionsMap.put("lastTimeAddPlanTime", JsonData.of(currentDayTime));
+        optionsMap.put("currentDayCreatePlanTimes", JsonData.of(IntegerConstant.ZERO));
+        String source = "ctx._source.lastTimeAddPlanTime = params.lastTimeAddPlanTime;" +
+                "ctx._source.currentDayCreatePlanTimes = params.currentDayCreatePlanTimes";
+        userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
+    public void increaseCreatePlanTimes(String userId) throws IOException {
+        UserDTO userDTO = this.getUserByUserId(userId);
+        if (Objects.isNull(userDTO)) {
+            log.error("UserServiceImpl.increaseCreatePlanTimes() exit error! userDTO is null!");
+            return;
+        }
+
+        Query query = new Query.Builder().ids(i -> i.values(userId)).build();
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        Integer currentDayCreatePlanTimes = userDTO.getCurrentDayCreatePlanTimes();
+        currentDayCreatePlanTimes += IntegerConstant.ONE;
+        optionsMap.put("currentDayCreatePlanTimes", JsonData.of(currentDayCreatePlanTimes));
+        String source = "ctx._source.currentDayCreatePlanTimes = params.currentDayCreatePlanTimes";
+        userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
     public UserDTO getUserByUserId(String userId) throws IOException {
         UserDocument userDocument = userDao.getUserByUserDocumentId(userId);
         return userManager.userDocumentConvertUserDTO(userDocument);
@@ -170,11 +229,7 @@ public class UserServiceImpl implements UserService {
         String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
         // 对老用户进行初始化字段值"lastTimeLoginFailTime"
         if (Objects.isNull(userDTO.getLastTimeLoginFailTime())) {
-            Query query = Query.of(q -> q.ids(i -> i.values(userDTO.getId())));
-            Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
-            optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
-            String source = "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime";
-            userDao.updateUserField(optionsMap, source, query);
+            this.initLastTimeLoginFailTime(userDTO.getId(), currentDayTime);
             // 此处等待字段"lastTimeLoginFailTime"初始化
             Thread.sleep(1000);
         }
@@ -189,15 +244,7 @@ public class UserServiceImpl implements UserService {
             }
             return Boolean.FALSE;
         }
-
-        // 更新最后一次登录失败的那一天的时间为当天时间 且 同时清空当天登录失败次数
-        Query query = Query.of(q -> q.ids(i -> i.values(userDTO.getId())));
-        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
-        optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
-        optionsMap.put("currentDayLoginFailTimes", JsonData.of(IntegerConstant.ZERO));
-        String source = "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime;" +
-                "ctx._source.currentDayLoginFailTimes = params.currentDayLoginFailTimes";
-        userDao.updateUserField(optionsMap, source, query);
+        this.resetLoginFailTimes(userDTO.getId(), currentDayTime);
         return Boolean.FALSE;
     }
 

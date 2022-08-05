@@ -66,6 +66,50 @@ public interface UserService {
     void reduceIncentiveValue(UserDTO userDTO, Integer reduceIncentiveValue) throws IOException;
 
     /**
+     * 初始化最后一次登录失败的那一天的时间
+     *
+     * @param userId 用户ID
+     * @param currentDayTime 当前时间
+     * @throws Exception 异常信息
+     */
+    void initLastTimeLoginFailTime(String userId, String currentDayTime) throws Exception;
+
+    /**
+     * 初始化最后一次添加计划的那一天的时间
+     *
+     * @param userId 用户ID
+     * @param currentDayTime 当前时间
+     * @throws Exception 异常信息
+     */
+    void initLastTimeAddPlanTime(String userId, String currentDayTime) throws Exception;
+
+    /**
+     * 重置登录失败次数
+     *
+     * @param userId 用户ID
+     * @param currentDayTime 当天时间
+     * @throws IOException 异常信息
+     */
+    void resetLoginFailTimes(String userId, String currentDayTime) throws IOException;
+
+    /**
+     * 重置创建计划次数
+     *
+     * @param userId 用户ID
+     * @param currentDayTime 当天时间
+     * @throws IOException 异常信息
+     */
+    void resetCreatePlanTimes(String userId, String currentDayTime) throws IOException;
+
+    /**
+     * 增加创建计划次数
+     *
+     * @param userId 用户ID
+     * @throws IOException 异常信息
+     */
+    void increaseCreatePlanTimes(String userId) throws IOException;
+
+    /**
      * 根据ID获取用户信息
      *
      * @param userId 愿望ID
