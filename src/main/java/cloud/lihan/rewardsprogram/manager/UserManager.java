@@ -40,6 +40,7 @@ public class UserManager {
         userDTO.setCurrentDayCreatePlanTimes(userDocument.getCurrentDayCreatePlanTimes());
         userDTO.setIncentiveValue(userDocument.getIncentiveValue());
         userDTO.setCreateTime(userDocument.getCreateTime());
+        userDTO.setCreateTimestamp(userDocument.getCreateTimestamp());
         userDTO.setUpdateTime(userDocument.getUpdateTime());
         return userDTO;
     }

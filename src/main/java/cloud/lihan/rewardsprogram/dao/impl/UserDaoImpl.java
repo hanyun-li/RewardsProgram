@@ -2,6 +2,7 @@ package cloud.lihan.rewardsprogram.dao.impl;
 
 import cloud.lihan.rewardsprogram.common.constants.ElasticsearchScriptConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
+import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
@@ -35,13 +36,17 @@ public class UserDaoImpl implements UserDao {
     private ElasticsearchClient esClient;
 
     @Override
-    public void createUserDocument(UserDocument userDocument) throws IOException {
+    public void createUserDocument(UserDocument userDocument) throws Exception {
         userDocument.setId(UUID.randomUUID().toString());
         CurrentTimeUtil.Time time = CurrentTimeUtil.newCurrentTimes();
         userDocument.setCreateTime(time.getTime());
         userDocument.setCreateTimestamp(time.getTimestamp());
         userDocument.setUpdateTime(time.getTime());
+        String currentTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
+        userDocument.setLastTimeLoginFailTime(currentTime);
         userDocument.setCurrentDayLoginFailTimes(IntegerConstant.ZERO);
+        userDocument.setLastTimeAddPlanTime(currentTime);
+        userDocument.setCurrentDayCreatePlanTimes(IntegerConstant.ZERO);
         userDocument.setIncentiveValue(IntegerConstant.ZERO);
         esClient.create(i -> i
                 .index(IndexEnum.USER_INDEX.getIndexName())

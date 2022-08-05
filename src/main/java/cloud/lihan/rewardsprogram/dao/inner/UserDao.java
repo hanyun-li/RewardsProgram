@@ -20,9 +20,9 @@ public interface UserDao {
      * 创建用户文档
      *
      * @param userDocument 用户文档
-     * @throws IOException 异常信息
+     * @throws Exception 异常信息
      */
-    void createUserDocument(UserDocument userDocument) throws IOException;
+    void createUserDocument(UserDocument userDocument) throws Exception;
 
     /**
      * 根据特定条件更新用户信息

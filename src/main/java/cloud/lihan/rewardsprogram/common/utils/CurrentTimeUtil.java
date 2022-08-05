@@ -1,10 +1,13 @@
 package cloud.lihan.rewardsprogram.common.utils;
 
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
+import cloud.lihan.rewardsprogram.dto.UserDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 当前时间相关工具类
@@ -12,7 +15,40 @@ import java.util.Date;
  * @author hanyun.li
  * @createTime 2022/07/08 14:57:00
  */
+@Slf4j
 public class CurrentTimeUtil {
+
+    /**
+     * 判断当天是与最后一次登录失败的那一天是同一天
+     *
+     * @param userDTO 用户信息
+     * @return true：是同一天 false：不是同一天
+     * @throws Exception
+     */
+    public static Boolean isSameDay(UserDTO userDTO) throws Exception {
+        // 获取当天的时间(eg:2022-8-4)
+        String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
+        return isSameDay(userDTO, currentDayTime);
+    }
+
+    /**
+     * 判断当天与最后一次登录失败的那一天是否是同一天
+     *
+     * @param userDTO 用户信息
+     * @param currentDayTime 当天时间（注意，时间格式必须与用户信息中"lastTimeLoginFailTime"字典的时间格式相同）
+     * @return true：是同一天 false：不是同一天
+     */
+    public static Boolean isSameDay(UserDTO userDTO, String currentDayTime) throws IllegalArgumentException {
+        if (Objects.isNull(userDTO.getLastTimeLoginFailTime())) {
+            throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exit error! The lastTimeLoginFailTime filed not initialized!");
+        }
+
+        // 判断当天时间是否与上一次失败登录的时间是同一天
+        if (currentDayTime.equals(userDTO.getLastTimeLoginFailTime())) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
 
     /**
      * 获取当前时间

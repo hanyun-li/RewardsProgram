@@ -1,5 +1,6 @@
 package cloud.lihan.rewardsprogram.controller;
 
+import cloud.lihan.rewardsprogram.common.constants.LoginLimitConstant;
 import cloud.lihan.rewardsprogram.common.constants.SessionConstant;
 import cloud.lihan.rewardsprogram.dto.PlanDTO;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
@@ -86,8 +87,16 @@ public class LoginController {
             return view;
         }
 
+        // 检测用户当天是否被锁定登录
+        if (userService.isLocked(user)) {
+            view.addObject("maxLoginFailTimes", LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES);
+            view.setViewName("cover/login_locked");
+            return view;
+        }
+
         // 校验密码是否输入正确
         if (!userVO.getPassword().equals(user.getPassword())) {
+            userService.failLogin(user.getId());
             view.addObject("passwordIsError", Boolean.TRUE);
             view.addObject("usernameValue", userVO.getUserName());
             view.setViewName("signin/index");

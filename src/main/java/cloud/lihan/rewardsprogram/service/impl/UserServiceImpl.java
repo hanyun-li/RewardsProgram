@@ -3,6 +3,8 @@ package cloud.lihan.rewardsprogram.service.impl;
 import cloud.lihan.rewardsprogram.common.constants.IncentiveValueRuleConstant;
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.LoginLimitConstant;
+import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
+import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
@@ -15,6 +17,7 @@ import co.elastic.clients.json.JsonData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,28 +40,23 @@ public class UserServiceImpl implements UserService {
     private UserManager userManager;
 
     @Override
-    public void savaUser(UserVO userVO) throws IOException {
+    public void savaUser(UserVO userVO) throws Exception {
         userDao.createUserDocument(userManager.userVOConvertUserDocument(userVO));
     }
 
     @Override
-    public void failLogin(String userId) throws IOException {
+    public void failLogin(String userId) throws Exception {
         UserDTO userDTO = this.getUserByUserId(userId);
         if (Objects.isNull(userDTO)) {
+            log.error("UserServiceImpl.failLogin() exit error! userDTO is null!");
             return;
         }
 
-        Integer currentDayLoginFailTimes = userDTO.getCurrentDayLoginFailTimes();
-        if (currentDayLoginFailTimes > LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES) {
-            log.info("超过最大失败登录次数，" + LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES + "次！");
-            return;
-        }
-
-        Query query = new Query.Builder()
-                .ids(t -> t.values(userId))
-                .build();
+        Query query = new Query.Builder().ids(i -> i.values(userId)).build();
         Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
-        optionsMap.put("currentDayLoginFailTimes", JsonData.of(++currentDayLoginFailTimes));
+        Integer currentDayLoginFailTimes = userDTO.getCurrentDayLoginFailTimes();
+        currentDayLoginFailTimes += IntegerConstant.ONE;
+        optionsMap.put("currentDayLoginFailTimes", JsonData.of(currentDayLoginFailTimes));
         String source = "ctx._source.currentDayLoginFailTimes = params.currentDayLoginFailTimes";
         userDao.updateUserField(optionsMap, source, query);
     }
@@ -163,6 +161,44 @@ public class UserServiceImpl implements UserService {
                 .build();
         UserDocument userDocument = userDao.getSingleUserByQuery(username);
         return userManager.userDocumentConvertUserDTO(userDocument);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean isLocked(UserDTO userDTO) throws Exception {
+        // 获取当天的时间(eg:2022-8-4)
+        String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
+        // 对老用户进行初始化字段值"lastTimeLoginFailTime"
+        if (Objects.isNull(userDTO.getLastTimeLoginFailTime())) {
+            Query query = Query.of(q -> q.ids(i -> i.values(userDTO.getId())));
+            Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+            optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
+            String source = "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime";
+            userDao.updateUserField(optionsMap, source, query);
+            // 此处等待字段"lastTimeLoginFailTime"初始化
+            Thread.sleep(1000);
+        }
+
+        // 判断当天时间是否与上一次失败登录的时间是同一天
+        if (CurrentTimeUtil.isSameDay(userDTO, currentDayTime)) {
+            Integer currentDayLoginFailTimes = userDTO.getCurrentDayLoginFailTimes();
+            // 检测是否超过最大失败登录次数
+            if (currentDayLoginFailTimes >= LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES) {
+                log.warn("Exceeded maximum number of failed logins，" + LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES + "times！The userId is: {}", userDTO.getId());
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
+
+        // 更新最后一次登录失败的那一天的时间为当天时间 且 同时清空当天登录失败次数
+        Query query = Query.of(q -> q.ids(i -> i.values(userDTO.getId())));
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
+        optionsMap.put("currentDayLoginFailTimes", JsonData.of(IntegerConstant.ZERO));
+        String source = "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime;" +
+                "ctx._source.currentDayLoginFailTimes = params.currentDayLoginFailTimes";
+        userDao.updateUserField(optionsMap, source, query);
+        return Boolean.FALSE;
     }
 
 }

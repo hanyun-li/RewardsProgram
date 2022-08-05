@@ -18,17 +18,17 @@ public interface UserService {
      * 保存用户
      *
      * @param userVO 用户信息
-     * @throws IOException 异常信息
+     * @throws Exception 异常信息
      */
-    void savaUser(UserVO userVO) throws IOException;
+    void savaUser(UserVO userVO) throws Exception;
 
     /**
      * 失败登录时，增加失败登录次数
      *
      * @param userId 用户ID
-     * @throws IOException 异常信息
+     * @throws Exception 异常信息
      */
-    void failLogin(String userId) throws IOException;
+    void failLogin(String userId) throws Exception;
 
     /**
      * 编辑密码
@@ -99,5 +99,14 @@ public interface UserService {
      * @throws IOException 异常信息
      */
     UserDTO getUserByNickname(String nickName) throws IOException;
+
+    /**
+     * 检测当天是否超过最大失败登录次数
+     *
+     * @param userDTO 用户信息
+     * @return true:超过 false:未超过
+     * @throws Exception 异常信息
+     */
+    Boolean isLocked(UserDTO userDTO) throws Exception;
 
 }
