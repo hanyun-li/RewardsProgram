@@ -95,7 +95,7 @@
                 <form id="wishForm" method="post" class="p-2 mb-2 bg-light border-bottom" action="/wish">
                     <div class="input-group mb-3">
                         <input id="wishInfo" type="text" maxlength="16" name="wishInfo" class="form-control" placeholder="许下一个愿望..." aria-label="许下一个愿望..." aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <button onclick="myFunction()" class="btn btn-outline-secondary" type="button" id="button-addon2">
                             ➕许愿
                         </button>
                     </div>
@@ -129,14 +129,16 @@
 </main>
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
 <script type="text/javascript">
-    // 该特效已被单独页面替换（已经弃用~2022/8/4）
+
     function myFunction() {
         // 提交表单
         purchaseProduction();
+
+        // 以下特效已被单独页面替换（已经弃用~2022/8/4）
         // 开启除蜡烛动画
-        setTimeout(turnOnBlow, 500);
+        // setTimeout(turnOnBlow, 500);
         // 关闭除蜡烛动画
-        setTimeout(turnOffBlow, 6500);
+        // setTimeout(turnOffBlow, 6500);
     }
 
     // 显示吹蜡烛
