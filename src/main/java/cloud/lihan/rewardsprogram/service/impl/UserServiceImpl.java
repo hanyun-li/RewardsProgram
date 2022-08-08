@@ -192,16 +192,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public WishProviderDTO isIncentiveValueEnough(UserDTO userDTO) {
         WishProviderDTO wishProviderDTO = new WishProviderDTO();
-        wishProviderDTO.setCurrentConsumeIncentiveValue(IncentiveValueRuleConstant.FIRST_WISH);
+        wishProviderDTO.setCurrentConsumeIncentiveValue(IncentiveValueRuleConstant.EACH_WISH);
         // 激励值为null或者0时
         if (Objects.isNull(userDTO.getIncentiveValue()) || IntegerConstant.ZERO.equals(userDTO.getIncentiveValue())) {
             wishProviderDTO.setIsIncentiveValueEnough(Boolean.FALSE);
-            wishProviderDTO.setDifferenceIncentiveValue(IncentiveValueRuleConstant.FIRST_WISH);
+            wishProviderDTO.setDifferenceIncentiveValue(IncentiveValueRuleConstant.EACH_WISH);
             return wishProviderDTO;
         }
 
         // 如果用户的激励值足够，则可以许愿
-        if (userDTO.getIncentiveValue() >= IncentiveValueRuleConstant.FIRST_WISH) {
+        if (userDTO.getIncentiveValue() >= IncentiveValueRuleConstant.EACH_WISH) {
             wishProviderDTO.setIsIncentiveValueEnough(Boolean.TRUE);
             wishProviderDTO.setDifferenceIncentiveValue(IntegerConstant.ZERO);
             return wishProviderDTO;
@@ -209,7 +209,7 @@ public class UserServiceImpl implements UserService {
 
         // 用户的激励值不足，则不可以许愿
         wishProviderDTO.setIsIncentiveValueEnough(Boolean.FALSE);
-        wishProviderDTO.setDifferenceIncentiveValue(IncentiveValueRuleConstant.FIRST_WISH - userDTO.getIncentiveValue());
+        wishProviderDTO.setDifferenceIncentiveValue(IncentiveValueRuleConstant.EACH_WISH - userDTO.getIncentiveValue());
         return wishProviderDTO;
     }
 

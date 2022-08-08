@@ -35,8 +35,8 @@ public interface IncentiveValueRuleConstant {
     /***************************************/
 
     /**
-     * 第一个愿望需要消耗的激励值
+     * 每个愿望需要消耗的激励值
      */
-    Integer FIRST_WISH = 2;
+    Integer EACH_WISH = IntegerConstant.THERE * IntegerConstant.SEVEN * IntegerConstant.FIVE;
 
 }

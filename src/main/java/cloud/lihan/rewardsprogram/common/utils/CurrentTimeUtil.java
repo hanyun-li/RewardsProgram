@@ -19,6 +19,24 @@ import java.util.Objects;
 public class CurrentTimeUtil {
 
     /**
+     * 比较两时间是否是同一天
+     *
+     * @param compareTime 需要与当天比较的时间（注：时间格式需与当天时间格式相同）
+     * @param currentDayTime 当天时间（注意，时间格式必须与用户信息中"lastTimeLoginFailTime"字段的时间格式相同）
+     * @return true：是同一天 false：不是同一天
+     */
+    public static Boolean isSameDay(String compareTime, String currentDayTime) throws IllegalArgumentException {
+        if (Objects.isNull(compareTime)) {
+            throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exit error! The compareTime is null!");
+        }
+
+        if (currentDayTime.equals(compareTime)) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
      * 判断当天是与最后一次登录失败的那一天是同一天
      *
      * @param userDTO 用户信息
@@ -35,7 +53,7 @@ public class CurrentTimeUtil {
      * 判断当天与最后一次登录失败的那一天是否是同一天
      *
      * @param userDTO 用户信息
-     * @param currentDayTime 当天时间（注意，时间格式必须与用户信息中"lastTimeLoginFailTime"字典的时间格式相同）
+     * @param currentDayTime 当天时间（注意，时间格式必须与用户信息中"lastTimeLoginFailTime"字段的时间格式相同）
      * @return true：是同一天 false：不是同一天
      */
     public static Boolean isSameDay(UserDTO userDTO, String currentDayTime) throws IllegalArgumentException {

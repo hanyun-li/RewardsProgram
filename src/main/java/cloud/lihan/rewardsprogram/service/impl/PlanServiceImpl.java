@@ -138,7 +138,7 @@ public class PlanServiceImpl implements PlanService {
         }
 
         // 判断当天时间是否与上一次创建计划的时间是同一天
-        if (CurrentTimeUtil.isSameDay(userDTO, currentDayTime)) {
+        if (CurrentTimeUtil.isSameDay(userDTO.getLastTimeAddPlanTime(), currentDayTime)) {
             Integer currentDayCreatePlanTimes = userDTO.getCurrentDayCreatePlanTimes();
             // 检测是否超过最大创建计划次数
             if (currentDayCreatePlanTimes >= PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES) {

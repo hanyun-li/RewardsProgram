@@ -41,7 +41,7 @@ public class WishServiceImpl implements WishService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void makingWish(UserDTO userDTO, WishVO wishVO) throws IOException {
-        userService.reduceIncentiveValue(userDTO, IncentiveValueRuleConstant.FIRST_WISH);
+        userService.reduceIncentiveValue(userDTO, IncentiveValueRuleConstant.EACH_WISH);
         wishDao.createWishDocument(wishManager.wishVOConvertWishDocument(wishVO));
     }
 
