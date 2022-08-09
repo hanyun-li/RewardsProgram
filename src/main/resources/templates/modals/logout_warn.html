@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="edit password">
+  <meta name="author" content="hanyun.li">
+  <meta name="generator" content="v1.0">
+  <title>登出警告</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/modals/">
+
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    #modalChoice {
+      position: fixed;
+      top: 50%;
+      background-color: #000;
+      -webkit-transform: translateY(50%);
+    }
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/modals/modal.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="modal modal-alert position-static d-block bg-secondary py-5" tabindex="-1" role="dialog" id="modalChoice">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-body p-4 text-center">
+        <h4 class="mb-0">您正在退出当前账号！</h4>
+        <p class="mb-0">
+          若您正有此意，请点击下方确定按钮
+        </p>
+        <p class="mb-0"></p>
+      </div>
+      <div class="modal-footer flex-nowrap p-0">
+        <a href="/logout" type="button" class="btn btn-lg btn-link fs-12 text-decoration-none col-6 m-0 rounded-0 border-center">
+          <strong>确 定</strong>
+        </a>
+        <button onclick="returnAfterPageFunction()" type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">
+          后 悔 了
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript">
+
+  function returnAfterPageFunction() {
+    window.history.go(-1);  //返回上一页
+    // window.history.back();  //返回上一页
+    // window.location.go(-1); //刷新上一页，不可行看下面
+  }
+
+</script>
+</body>
+</html>

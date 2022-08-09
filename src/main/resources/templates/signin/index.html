@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
+    <meta name="description" content="edit password">
+    <meta name="author" content="hanyun.li">
+    <meta name="generator" content="v1.0">
     <title>登录</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
@@ -69,9 +69,9 @@
 
         <div class="form-floating">
             <input type="text" class="form-control" name="userName" id="userName" th:value="${usernameValue}" placeholder="Username">
-            <label for="userName">姓 名</label>
+            <label for="userName">用 户 名</label>
             <div th:if="${usernameIsEmpty}" class="alert alert-danger" role="alert">
-                姓名需要输入哦😊
+                用户名需要输入哦😊
             </div>
             <div th:if="${usernameIsError}" class="alert alert-danger" role="alert">
                 抱歉哦，用户名输入错误😣
@@ -89,9 +89,9 @@
         </div>
 
         <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> 记住 我
-            </label>
+<!--            <label>-->
+<!--                <a href="/user/password/forgot">忘记 密码</a>-->
+<!--            </label>-->
         </div>
 
         <button class="w-100 btn btn-lg btn-primary" id="xuanze" type="submit">登 录</button>

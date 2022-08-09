@@ -52,6 +52,12 @@ public class LoginController {
         return view;
     }
 
+    @GetMapping("/logoutWarn")
+    public ModelAndView toLogoutWarnPage(ModelAndView view) {
+        view.setViewName("modals/logout_warn");
+        return view;
+    }
+
     /**
      * 登录提供
      *
