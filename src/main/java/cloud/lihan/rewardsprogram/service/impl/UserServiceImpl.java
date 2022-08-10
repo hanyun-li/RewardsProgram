@@ -246,7 +246,7 @@ public class UserServiceImpl implements UserService {
             Integer currentDayLoginFailTimes = userDTO.getCurrentDayLoginFailTimes();
             // 检测是否超过最大失败登录次数
             if (currentDayLoginFailTimes >= LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES) {
-                log.warn("Exceeded maximum number of failed logins，" + LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES + "times！The userId is: {}", userDTO.getId());
+                log.warn("UserServiceImpl.isLocked() exit warn! Exceeded maximum number of failed logins . The userId is: {}", userDTO.getId());
                 return Boolean.TRUE;
             }
             return Boolean.FALSE;
