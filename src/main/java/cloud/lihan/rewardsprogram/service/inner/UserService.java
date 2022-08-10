@@ -35,9 +35,9 @@ public interface UserService {
      *
      * @param userId 用户ID
      * @param userPassword 用户密码
-     * @throws IOException 异常信息
+     * @throws Exception 异常信息
      */
-    void editPassword(String userId, String userPassword) throws IOException;
+    void editPassword(String userId, String userPassword) throws Exception;
 
     /**
      * 编辑用户信息

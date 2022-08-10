@@ -36,4 +36,9 @@ public class UserVO {
      */
     private String password;
 
+    /**
+     * 忘记密码时需要验证的验证码
+     */
+    private Integer verificationCode;
+
 }

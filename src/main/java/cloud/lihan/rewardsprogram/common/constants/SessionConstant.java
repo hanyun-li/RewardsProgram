@@ -18,4 +18,14 @@ public interface SessionConstant {
      */
     String LOGIN_TOKEN = "login_token";
 
+    /**
+     * 验证码有效时间（10分钟）
+     */
+    int VERIFICATION_CODE_EFFICIENT_TIME = 10 * 60;
+
+    /**
+     * 验证码key
+     */
+    String VERIFICATION_CODE = "verification_code";
+
 }

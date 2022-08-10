@@ -62,13 +62,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editPassword(String userId, String userPassword) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public void editPassword(String userId, String userPassword) throws Exception {
+        // 获取当天的时间(eg:2022-8-4)
+        String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
         Query query = new Query.Builder()
                 .ids(t -> t.values(userId))
                 .build();
-        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.THERE);
         optionsMap.put("password", JsonData.of(userPassword));
-        String source = "ctx._source.password = params.password";
+        optionsMap.put("lastTimeLoginFailTime", JsonData.of(currentDayTime));
+        optionsMap.put("currentDayLoginFailTimes", JsonData.of(IntegerConstant.ZERO));
+        String source = "ctx._source.password = params.password;" +
+                "ctx._source.lastTimeLoginFailTime = params.lastTimeLoginFailTime;" +
+                "ctx._source.currentDayLoginFailTimes = params.currentDayLoginFailTimes";
         userDao.updateUserField(optionsMap, source, query);
     }
 

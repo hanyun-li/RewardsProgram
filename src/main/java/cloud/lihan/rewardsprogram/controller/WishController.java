@@ -1,7 +1,6 @@
 package cloud.lihan.rewardsprogram.controller;
 
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
-import cloud.lihan.rewardsprogram.common.controller.BaseController;
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.WishDTO;
@@ -31,7 +30,7 @@ import java.util.Objects;
 @Slf4j
 @Controller("wishController")
 @RequestMapping("/wish")
-public class WishController extends BaseController {
+public class WishController {
 
     @Autowired
     private WishService wishService;
