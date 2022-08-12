@@ -16,7 +16,7 @@
 # 🔩技术架构
 1⃣️前端技术框架：Bootstrap
 
-2⃣️后端技术框架：Springboot Elasticsearch
+2⃣️后端技术框架：Springboot
 
 3⃣️系统设计细节请移步[激励计划设计wiki v1.0](https://github.com/hanyun-li/RewardsProgram/wiki/%E6%BF%80%E5%8A%B1%E8%AE%A1%E5%88%92%E8%AE%BE%E8%AE%A1-v1.0)
 
