@@ -81,6 +81,9 @@
             <div th:if="${emailIsEmpty}" class="alert alert-danger" role="alert">
                 邮箱需要输入哦😊
             </div>
+            <div th:if="${emailIsExist}" class="alert alert-danger" role="alert">
+                抱歉哦，邮箱已经被注册过啦😣
+            </div>
         </div>
         <div class="form-floating">
             <input type="password" class="form-control" name="password" id="password" placeholder="Password">

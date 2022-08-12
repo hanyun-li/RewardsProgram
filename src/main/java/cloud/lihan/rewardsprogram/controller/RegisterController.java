@@ -79,6 +79,15 @@ public class RegisterController {
             return view;
         }
 
+        UserDTO userDTO = userService.getUserByUserEmail(userVO.getUserEmail());
+        if (Objects.nonNull(userDTO)) {
+            view.addObject("emailIsExist", Boolean.TRUE);
+            view.addObject("usernameValue", userVO.getUserName());
+            view.addObject("emailValue", userVO.getUserEmail());
+            view.setViewName("register/register");
+            return view;
+        }
+
         userService.savaUser(userVO);
         view.setViewName("cover/cover");
         return view;
