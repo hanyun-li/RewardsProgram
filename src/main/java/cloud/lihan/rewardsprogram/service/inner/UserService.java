@@ -128,6 +128,15 @@ public interface UserService {
     UserDTO getUserByUsername(String username) throws IOException;
 
     /**
+     * 根据用户邮箱获取用户信息
+     *
+     * @param userEmail 用户邮箱
+     * @return {@link UserDTO} 用户信息
+     * @throws IOException 异常信息
+     */
+    UserDTO getUserByUserEmail(String userEmail) throws IOException;
+
+    /**
      * 激励值是否足够许愿
      *
      * @param userDTO 用户传输对象

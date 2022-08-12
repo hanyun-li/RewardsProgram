@@ -189,10 +189,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByUsername(String userName) throws IOException {
-        Query username = new Query.Builder()
+        Query query = new Query.Builder()
                 .term(t -> t.field("userName.keyword").value(userName))
                 .build();
-        UserDocument userDocument = userDao.getSingleUserByQuery(username);
+        UserDocument userDocument = userDao.getSingleUserByQuery(query);
+        return userManager.userDocumentConvertUserDTO(userDocument);
+    }
+
+    @Override
+    public UserDTO getUserByUserEmail(String userEmail) throws IOException {
+        Query query = new Query.Builder()
+                .term(t -> t.field("userEmail.keyword").value(userEmail))
+                .build();
+        UserDocument userDocument = userDao.getSingleUserByQuery(query);
         return userManager.userDocumentConvertUserDTO(userDocument);
     }
 

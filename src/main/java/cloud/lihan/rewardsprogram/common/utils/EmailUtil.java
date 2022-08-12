@@ -37,12 +37,12 @@ public class EmailUtil {
     /**
      * 密码（例：test123）
      */
-    private static final String PASSWORD = "A1B2C3d4e5";
+    private static final String PASSWORD = "test123";
 
     /**
      * 用户名（发件人邮箱地址）（例：test@gmail.com）
      */
-    private static final String EMAIL_USERNAME = "javatest@edm.vision-iot.co";
+    private static final String EMAIL_USERNAME = "test@gmail.com";
 
     /**
      * 邮箱地址必须包含的符号

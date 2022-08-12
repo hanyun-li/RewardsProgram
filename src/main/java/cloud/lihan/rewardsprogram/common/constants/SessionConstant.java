@@ -28,4 +28,9 @@ public interface SessionConstant {
      */
     String VERIFICATION_CODE = "verification_code";
 
+    /**
+     * 可重复修改密码的间隔时间(50秒，注：单位是毫秒)
+     */
+    int REPEAT_MODIFICATION_INTERVAL_TIME = 50 * 1000;
+
 }
