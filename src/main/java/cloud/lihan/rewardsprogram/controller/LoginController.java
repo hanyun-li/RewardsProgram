@@ -65,7 +65,7 @@ public class LoginController {
      * @return index.html 登录页面 或者(plan.html 首页)
      * @throws Exception 异常信息
      */
-    private ModelAndView loginProvider(UserVO userVO, HttpServletRequest request) throws Exception {
+    private synchronized ModelAndView loginProvider(UserVO userVO, HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         // 设置本次登录维持的最长会话超时时间
         session.setMaxInactiveInterval(SessionConstant.MAX_TIMEOUT_TIME);

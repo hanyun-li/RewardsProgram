@@ -140,7 +140,7 @@ public class PlanController {
      * @return 模版
      * @throws Exception 异常信息
      */
-    private ModelAndView planProvider(ModelAndView view, String userId) throws Exception {
+    private synchronized ModelAndView planProvider(ModelAndView view, String userId) throws Exception {
         List<PlanDTO> todayUnfinishedPlans = planService.getTodayUnfinishedPlans(userId);
         List<PlanDTO> todayFinishedPlans = planService.getTodayFinishedPlans(userId);
         view.addObject("todayUnfinishedPlans", todayUnfinishedPlans);

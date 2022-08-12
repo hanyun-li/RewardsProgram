@@ -45,7 +45,7 @@ public class RegisterController {
      * @return index.html 登录页面 或者(home.html 首页)
      * @throws IOException 异常信息
      */
-    private ModelAndView registerProvider(UserVO userVO) throws Exception {
+    private synchronized ModelAndView registerProvider(UserVO userVO) throws Exception {
         ModelAndView view = new ModelAndView();
         if (StringUtils.isEmpty(userVO.getUserName())) {
             view.addObject("usernameIsEmpty", Boolean.TRUE);

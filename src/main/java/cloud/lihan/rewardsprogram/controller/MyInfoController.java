@@ -103,7 +103,7 @@ public class MyInfoController {
      * @return 模版
      * @throws Exception 异常信息
      */
-    private ModelAndView myInfoProvider(ModelAndView view, String userId) throws Exception {
+    private synchronized ModelAndView myInfoProvider(ModelAndView view, String userId) throws Exception {
         UserDTO user = userService.getUserByUserId(userId);
         view.addObject("user", user);
         view.setViewName("person/my_info");

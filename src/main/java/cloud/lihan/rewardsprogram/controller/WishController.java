@@ -111,7 +111,7 @@ public class WishController {
      * @return 模版
      * @throws Exception 异常信息
      */
-    private ModelAndView wishProvider(ModelAndView view, String userId) throws Exception {
+    private synchronized ModelAndView wishProvider(ModelAndView view, String userId) throws Exception {
         Integer notImplementedWishCount = wishService.getNotImplementedWishCount(userId);
         List<WishDTO> multipleRandomWish = wishService.getMultipleRealizedRandomWish(userId, IntegerConstant.FIVE);
         view.addObject("notImplementedWishCount", notImplementedWishCount);
