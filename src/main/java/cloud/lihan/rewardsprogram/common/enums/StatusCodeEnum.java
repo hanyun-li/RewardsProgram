@@ -9,12 +9,18 @@ package cloud.lihan.rewardsprogram.common.enums;
 public enum StatusCodeEnum {
 
     /**
-     * 邮箱相关状态码
+     * 邮箱相关
      */
-    EMAIL_ADDRESS_INVALID("5001", "该邮箱不存在"),
+    EMAIL_ADDRESS_INVALID("5001", "该邮箱不存在🙅"),
     EMAIL_ADDRESS_PROHIBITED("5002", "您发送的太频繁了，请稍后再发送😊"),
     EMAIL_ADDRESS_MISMATCH("5003", "邮箱地址不匹配，请重新输入🙅"),
-    USER_NAME_NOT_EMPTY("5004", "用户名不能为空，请输入用户名😊")
+    EMAIL_ADDRESS_FORMAT_NOT_TRUE("5004", "邮箱地址格式不正确，请重新输入🙅"),
+    EMAIL_NOT_EMPTY("5005", "请输入邮箱地址😊"),
+
+    /**
+     * 用户相关
+     */
+    USER_NAME_NOT_EMPTY("5101", "请输入用户名😊")
     ;
 
     /**

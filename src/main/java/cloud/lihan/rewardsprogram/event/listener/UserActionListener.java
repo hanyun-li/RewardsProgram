@@ -31,7 +31,6 @@ public class UserActionListener {
 
         // 锁定发送邮件功能，不允许发送邮件
         SendVerificationCodeLimitData.prohibit(userDTO.getId());
-        log.info("已经锁定用户");
         // 锁定发送邮件的间隔时间，再次期间，用户无法再次发送验证码
         Thread.sleep(SessionConstant.REPEAT_MODIFICATION_INTERVAL_TIME);
         // 解除发送邮件功能限制，允许发送邮件

@@ -113,7 +113,7 @@ public class UserController extends BaseController {
         }
 
         if (StringUtils.isEmpty(userVO.getUserEmail())) {
-            return apiErr();
+            return ApiReturn(StatusCodeEnum.EMAIL_NOT_EMPTY.getCode(), StatusCodeEnum.EMAIL_NOT_EMPTY.getDescription());
         }
 
         // 校验邮箱格式是否正确
@@ -125,7 +125,7 @@ public class UserController extends BaseController {
             }
 
             // 判断输入的邮箱地址是否与用户匹配
-            if (userVO.getUserName().equals(userDTO.getUserName())) {
+            if (!userVO.getUserName().equals(userDTO.getUserName())) {
                 return ApiReturn(StatusCodeEnum.EMAIL_ADDRESS_MISMATCH.getCode(), StatusCodeEnum.EMAIL_ADDRESS_MISMATCH.getDescription());
             }
 
@@ -145,7 +145,7 @@ public class UserController extends BaseController {
                 return ApiReturn(StatusCodeEnum.EMAIL_ADDRESS_PROHIBITED.getCode(), StatusCodeEnum.EMAIL_ADDRESS_PROHIBITED.getDescription());
             }
         }
-        return apiErr();
+        return ApiReturn(StatusCodeEnum.EMAIL_ADDRESS_FORMAT_NOT_TRUE.getCode(), StatusCodeEnum.EMAIL_ADDRESS_FORMAT_NOT_TRUE.getDescription());
     }
 
     @GetMapping("/password/forgot")
