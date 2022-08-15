@@ -142,7 +142,7 @@ public class PlanServiceImpl implements PlanService {
             Integer currentDayCreatePlanTimes = userDTO.getCurrentDayCreatePlanTimes();
             // 检测是否超过最大创建计划次数
             if (currentDayCreatePlanTimes >= PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES) {
-                log.warn("Exceeded maximum number of create plan，" + PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES + "times！The userId is: {}", userDTO.getId());
+                log.warn("Exceeded maximum number of create plan " + PlanLimitConstant.CURRENT_DAY_CREATE_PLAN_MAX_TIMES + "times! The userId is: {}", userDTO.getId());
                 return Boolean.FALSE;
             }
             return Boolean.TRUE;
