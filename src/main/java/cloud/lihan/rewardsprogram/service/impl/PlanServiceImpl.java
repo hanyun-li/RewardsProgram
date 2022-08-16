@@ -148,6 +148,8 @@ public class PlanServiceImpl implements PlanService {
             return Boolean.TRUE;
         }
         userService.resetCreatePlanTimes(userDTO.getId(), currentDayTime);
+        // 此处需等待计划次数重置，为了避免出现并发（版本冲突异常）问题
+        Thread.sleep(1000);
         return Boolean.TRUE;
     }
 
