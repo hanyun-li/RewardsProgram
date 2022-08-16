@@ -17,4 +17,10 @@ public interface TimeFormatConstant {
      * 日月年时间格式
      */
     String Y_M_D = "yyyy-MM-dd";
+
+    /**
+     * 小时时间格式
+     */
+    String H = "HH";
+
 }

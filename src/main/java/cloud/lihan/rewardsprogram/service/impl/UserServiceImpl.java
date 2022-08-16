@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -264,6 +265,48 @@ public class UserServiceImpl implements UserService {
         // 此处需等待登录失败次数重置，为了避免出现并发（版本冲突异常）问题
         Thread.sleep(1000);
         return Boolean.FALSE;
+    }
+
+    @Override
+    public Boolean isLoggedInToday(UserDTO userDTO) throws Exception {
+        // 获取当天的时间(eg:2022-8-4)
+        Date currentDate = new Date();
+        String currentDayTime = CurrentTimeUtil.newCurrentTime(currentDate, TimeFormatConstant.Y_M_D);
+
+        // 老用户兼容
+        if (Objects.isNull(userDTO.getLastSuccessfulLoginTime())) {
+            this.assignTheCurrentDay(userDTO, currentDayTime);
+            return Boolean.FALSE;
+        }
+
+        // 判断今天是否已经登录过
+        if (userDTO.getLastSuccessfulLoginTime().equals(currentDayTime)) {
+            return Boolean.TRUE;
+        }
+
+        // 判断当前时间是否是白天
+        if (CurrentTimeUtil.isDaytime(currentDate)) {
+            this.assignTheCurrentDay(userDTO, currentDayTime);
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
+
+    /**
+     * 将最后一次登录时间更新为当日时间
+     *
+     * @param userDTO 用户信息
+     * @param currentDayTime 当日时间（注：格式类似于：2022-8-4）
+     * @throws IOException 包含Elasticsearch异常信息
+     */
+    private void assignTheCurrentDay(UserDTO userDTO, String currentDayTime) throws IOException {
+        Query query = Query.of(q -> q
+                .ids(id -> id.values(userDTO.getId()))
+        );
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.ONE);
+        optionsMap.put("currentDayTime", JsonData.of(currentDayTime));
+        String source = "ctx._source.lastSuccessfulLoginTime = params.currentDayTime";
+        userDao.updateUserField(optionsMap, source, query);
     }
 
 }

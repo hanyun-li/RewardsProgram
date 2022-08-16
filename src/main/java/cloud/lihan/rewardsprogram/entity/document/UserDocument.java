@@ -37,7 +37,7 @@ public class UserDocument extends BaseDocument {
     private String userEmail;
 
     /**
-     * 最后一次登录失败的那一天的时间（注：格式为：2022-8-4）
+     * 最后一次登录失败的那一天的时间（注：格式类似于：2022-8-4）
      */
     private String lastTimeLoginFailTime;
 
@@ -55,7 +55,7 @@ public class UserDocument extends BaseDocument {
     private Integer incentiveValue;
 
     /**
-     * 最后一次添加计划的那一天的时间（注：格式为：2022-8-4）
+     * 最后一次添加计划的那一天的时间（注：格式类似于：2022-8-4）
      */
     private String lastTimeAddPlanTime;
 
@@ -66,5 +66,10 @@ public class UserDocument extends BaseDocument {
      * {@link PlanLimitConstant} 计划限制相关常量
      */
     private Integer currentDayCreatePlanTimes;
+
+    /**
+     * 最后一次成功登录的时间（注：格式类似于：2022-8-4）
+     */
+    private String lastSuccessfulLoginTime;
 
 }

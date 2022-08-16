@@ -111,6 +111,13 @@ public class LoginController {
 
         // 设置登录token
         session.setAttribute(SessionConstant.LOGIN_TOKEN, user.getId());
+
+        // 判断该用户今天是否已经登录过，如果今天是首次登录且是白天（9:00~18:00），则触发招呼特效
+        if (!userService.isLoggedInToday(user)) {
+            view.setViewName("greeting/greeting");
+            return view;
+        }
+
         List<PlanDTO> todayUnfinishedPlans = planService.getTodayUnfinishedPlans(user.getId());
         List<PlanDTO> todayFinishedPlans = planService.getTodayFinishedPlans(user.getId());
         view.addObject("todayUnfinishedPlans", todayUnfinishedPlans);

@@ -1,5 +1,6 @@
 package cloud.lihan.rewardsprogram.common.utils;
 
+import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +20,31 @@ import java.util.Objects;
 public class CurrentTimeUtil {
 
     /**
+     * 检查当前时间是否是白天（即：9:00~18:00之间）
+     *
+     * @param currentDate 当前时间
+     * @return true:是白天 false:是黑夜
+     */
+    public static Boolean isDaytime(Date currentDate) {
+        if (Objects.isNull(currentDate)) {
+            throw new IllegalArgumentException("CurrentTimeUtil.isDaytime() exit error! The currentDate is null!");
+        }
+
+        // 获取当天时间的小时数（24小时制，eg:17）
+        String currentHourStr = CurrentTimeUtil.newCurrentTime(currentDate, TimeFormatConstant.H);
+        int currentHour = Integer.parseInt(currentHourStr);
+        // 这里判断时间是否是白天，采用的是工作时间（即：9:00~18:00之间）
+        return currentHour >= IntegerConstant.NINE && currentHour <= (IntegerConstant.TEN + IntegerConstant.EIGHT);
+    }
+
+    /**
      * 比较两时间是否是同一天
      *
      * @param compareTime 需要与当天比较的时间（注：时间格式需与当天时间格式相同）
      * @param currentDayTime 当天时间（注意，时间格式必须与用户信息中"lastTimeLoginFailTime"字段的时间格式相同）
      * @return true：是同一天 false：不是同一天
      */
-    public static Boolean isSameDay(String compareTime, String currentDayTime) throws IllegalArgumentException {
+    public static Boolean isSameDay(String compareTime, String currentDayTime) {
         if (Objects.isNull(compareTime)) {
             throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exit error! The compareTime is null!");
         }
@@ -41,9 +60,8 @@ public class CurrentTimeUtil {
      *
      * @param userDTO 用户信息
      * @return true：是同一天 false：不是同一天
-     * @throws Exception
      */
-    public static Boolean isSameDay(UserDTO userDTO) throws Exception {
+    public static Boolean isSameDay(UserDTO userDTO) {
         // 获取当天的时间(eg:2022-8-4)
         String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
         return isSameDay(userDTO, currentDayTime);
@@ -56,7 +74,7 @@ public class CurrentTimeUtil {
      * @param currentDayTime 当天时间（注意，时间格式必须与用户信息中"lastTimeLoginFailTime"字段的时间格式相同）
      * @return true：是同一天 false：不是同一天
      */
-    public static Boolean isSameDay(UserDTO userDTO, String currentDayTime) throws IllegalArgumentException {
+    public static Boolean isSameDay(UserDTO userDTO, String currentDayTime) {
         if (Objects.isNull(userDTO.getLastTimeLoginFailTime())) {
             throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exit error! The lastTimeLoginFailTime filed not initialized!");
         }
@@ -96,13 +114,33 @@ public class CurrentTimeUtil {
      * @param timeFormat 时间展示格式
      * @return 当前时间
      */
-    public static String newCurrentTime(String timeFormat) throws Exception {
+    public static String newCurrentTime(String timeFormat) {
         if (StringUtils.isEmpty(timeFormat)) {
-            throw new Exception("TimeFormat not be empty!");
+            throw new IllegalArgumentException("TimeFormat not be empty!");
         }
 
         SimpleDateFormat format = new SimpleDateFormat(timeFormat);
         return format.format(new Date());
+    }
+
+    /**
+     * 获取当前时间
+     *
+     * @param currentDate 当前时间
+     * @param timeFormat 时间展示格式
+     * @return 当前时间
+     */
+    public static String newCurrentTime(Date currentDate, String timeFormat) {
+        if (Objects.isNull(currentDate)) {
+            throw new IllegalArgumentException("currentDate not be null!");
+        }
+
+        if (StringUtils.isEmpty(timeFormat)) {
+            throw new IllegalArgumentException("timeFormat not be empty!");
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat(timeFormat);
+        return format.format(currentDate);
     }
 
     /**

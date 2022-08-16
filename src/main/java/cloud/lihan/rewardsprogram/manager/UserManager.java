@@ -42,6 +42,7 @@ public class UserManager {
         userDTO.setCreateTime(userDocument.getCreateTime());
         userDTO.setCreateTimestamp(userDocument.getCreateTimestamp());
         userDTO.setUpdateTime(userDocument.getUpdateTime());
+        userDTO.setLastSuccessfulLoginTime(userDocument.getLastSuccessfulLoginTime());
         return userDTO;
     }
 

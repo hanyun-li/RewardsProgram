@@ -48,6 +48,7 @@ public class UserDaoImpl implements UserDao {
         userDocument.setLastTimeAddPlanTime(currentTime);
         userDocument.setCurrentDayCreatePlanTimes(IntegerConstant.ZERO);
         userDocument.setIncentiveValue(IntegerConstant.ZERO);
+        userDocument.setLastSuccessfulLoginTime(currentTime);
         esClient.create(i -> i
                 .index(IndexEnum.USER_INDEX.getIndexName())
                 .id(userDocument.getId())

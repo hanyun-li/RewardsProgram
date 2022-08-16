@@ -162,4 +162,15 @@ public interface UserService {
      */
     Boolean isLocked(UserDTO userDTO) throws Exception;
 
+    /**
+     * 检测该用户今日是否登录过
+     * 如果未登录过，则将最后一次登录日期修改为今日日期，格式类似于：2022-8-4, 且返回false
+     * 如果已经登录过，则返回true
+     *
+     * @param userDTO 用户信息
+     * @return true：今日已经登录过 false：今日未登录过
+     * @throws Exception 包含时间解析异常信息
+     */
+    Boolean isLoggedInToday(UserDTO userDTO) throws Exception;
+
 }
