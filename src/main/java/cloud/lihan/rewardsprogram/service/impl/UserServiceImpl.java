@@ -261,6 +261,8 @@ public class UserServiceImpl implements UserService {
             return Boolean.FALSE;
         }
         this.resetLoginFailTimes(userDTO.getId(), currentDayTime);
+        // 此处需等待登录失败次数重置，为了避免出现并发（版本冲突异常）问题
+        Thread.sleep(1000);
         return Boolean.FALSE;
     }
 
