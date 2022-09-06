@@ -1,6 +1,7 @@
 package cloud.lihan.rewardsprogram.controller;
 
 import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
+import cloud.lihan.rewardsprogram.common.utils.EmailUtil;
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.WishDTO;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
@@ -36,6 +38,54 @@ public class WishController {
     private WishService wishService;
     @Autowired
     private UserService userService;
+
+    @PostMapping("/implements")
+    public ModelAndView implementsWish(WishVO wishVO, HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+
+            // 输入的实现人信息不能为空
+            if (StringUtils.isEmpty(wishVO.getImplementsPersonInfo())) {
+                view.addObject("implementsPersonInfoIsEmpty", Boolean.TRUE);
+                view.addObject("wishId", wishVO.getWishId());
+                view.setViewName("cover/implements_wish");
+                return view;
+            }
+
+            UserDTO userDTO = userService.getUserByUserInfo(wishVO.getImplementsPersonInfo());
+            // 输入的实现人信息是否存在
+            if (Objects.isNull(userDTO)) {
+                view.addObject("implementsPersonInfoIsNotExits", Boolean.TRUE);
+                view.addObject("wishId", wishVO.getWishId());
+                view.setViewName("cover/implements_wish");
+                return view;
+            }
+
+            WishDTO wishDTO = wishService.getWishByWishId(wishVO.getWishId());
+            // 判断愿望是否已经实现
+            if (Boolean.TRUE.equals(wishDTO.getIsRealized())) {
+                view.setViewName("cover/wish_is_realized");
+                return view;
+            }
+
+            // 实现愿望
+            wishService.fulfillmentWishById(wishVO.getWishId());
+
+            String name = StringUtils.isEmpty(user.getNickName()) ? user.getUserName() : user.getNickName();
+            // 通知实现人
+            EmailUtil.sendMail(userDTO.getUserEmail(), this.sendWishFulfillmentNotificationEmail(name, wishDTO.getWishInfo()), "Wish Fulfillment Notification");
+            view.setViewName("wish/implements_wish_success");
+            return view;
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
 
     @PostMapping
     public ModelAndView makingWish(WishVO wishVO, HttpServletRequest request) throws Exception {
@@ -92,6 +142,26 @@ public class WishController {
         return view;
     }
 
+    @GetMapping("/toImplementsWish")
+    public ModelAndView toImplementsWish(@RequestParam("wishId") String wishId,
+                                         HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+
+            view.addObject("wishId", wishId);
+            view.setViewName("cover/implements_wish");
+            return view;
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
+
     /**
      * 跳转许愿动画页面
      *
@@ -113,11 +183,40 @@ public class WishController {
      */
     private synchronized ModelAndView wishProvider(ModelAndView view, String userId) throws Exception {
         Integer notImplementedWishCount = wishService.getNotImplementedWishCount(userId);
-        List<WishDTO> multipleRandomWish = wishService.getMultipleRealizedRandomWish(userId, IntegerConstant.FIVE);
+        List<WishDTO> multipleRandomWish = wishService.getMultipleRandomWish(userId, IntegerConstant.FIVE);
         view.addObject("notImplementedWishCount", notImplementedWishCount);
         view.addObject("multipleRandomWish", multipleRandomWish);
         view.setViewName("wish/wish");
         return view;
+    }
+
+    /**
+     * 给实现人发送愿望实现通知邮件
+     *
+     * @param name 需要实现愿望的用户名称（昵称/用户名）
+     * @param wishInfo 愿望内容信息
+     * @return 邮件模版信息
+     */
+    private String sendWishFulfillmentNotificationEmail(String name, String wishInfo) {
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>愿望实现通知</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "  <h1>\n" +
+                "    愿望实现通知\n" +
+                "  </h1>\n" +
+                "  <h2>\n" +
+                name +
+                "    已将您选为他（她）的愿望实现人，请您尽快实现其愿望\uD83D\uDE0A。\n" +
+                "  </h2>\n" +
+                "  <h2>\n" +
+                "    愿望内容：" + wishInfo + "。\n" +
+                "  </h2>\n" +
+                "</body>\n" +
+                "</html>";
     }
 
 }

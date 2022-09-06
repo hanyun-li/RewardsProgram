@@ -173,4 +173,13 @@ public interface UserService {
      */
     Boolean isLoggedInToday(UserDTO userDTO) throws Exception;
 
+    /**
+     * 根据昵称/用户名或邮箱地址获取用户信息
+     *
+     * @param userInfo 昵称/用户名或邮箱地址
+     * @return {@link UserDTO} 用户信息
+     * @throws Exception 包含elasticsearch异常信息
+     */
+    UserDTO getUserByUserInfo(String userInfo) throws Exception;
+
 }

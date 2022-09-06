@@ -99,7 +99,7 @@ public class WishDaoImpl implements WishDao {
     @Override
     public WishDocument getWishDocumentById(String wishDocumentId) throws IOException {
         Query query = new Query.Builder()
-                .term(t -> t.field("id").value(wishDocumentId))
+                .ids(id -> id.values(wishDocumentId))
                 .build();
         SearchResponse<WishDocument> search = esClient.search(s -> s
                         .index(IndexEnum.WISH_INDEX.getIndexName())

@@ -292,6 +292,26 @@ public class UserServiceImpl implements UserService {
         return Boolean.TRUE;
     }
 
+    @Override
+    public UserDTO getUserByUserInfo(String userInfo) throws Exception {
+        UserDTO userByUserId = getUserByUserId(userInfo);
+        if (Objects.nonNull(userByUserId)) {
+            return userByUserId;
+        }
+
+        UserDTO userByNickname = getUserByNickname(userInfo);
+        if (Objects.nonNull(userByNickname)) {
+            return userByNickname;
+        }
+
+        UserDTO userByUsername = getUserByUsername(userInfo);
+        if (Objects.nonNull(userByUsername)) {
+            return userByUsername;
+        }
+
+        return getUserByUserEmail(userInfo);
+    }
+
     /**
      * 将最后一次登录时间更新为当日时间
      *

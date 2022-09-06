@@ -20,4 +20,15 @@ public class WishVO {
      * 用户ID(UUID类型)
      */
     private String userId;
+
+    /**
+     * 愿望ID
+     */
+    private String wishId;
+
+    /**
+     * 愿望实现人信息（昵称/用户名或邮箱地址）
+     */
+    private String implementsPersonInfo;
+
 }

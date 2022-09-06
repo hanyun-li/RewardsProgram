@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>烟花特效</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.min.css">
+    <link rel="stylesheet" th:href="@{/wish/fireworks/fireworks.css}">
+</head>
+<body>
+    <!-- 文字部分 -->
+    <canvas></canvas>
+    <h1>
+        <iframe src="./soul.html" width="180px" height="180px" frameborder="0"></iframe>
+    </h1>
+
+    <!-- partial -->
+    <script th:src="@{/wish/fireworks/fireworks.js}"></script>
+    <script type="text/javascript">
+        // 自动加载该函数
+        window.onload = function () {
+            // 设置定时器（4秒后调用）
+            window.setTimeout("myFunction()", 4000);//使用字符串执行方法
+        }
+
+        // 跳转到愿望页面
+        function myFunction() {
+            window.location.replace("/wish")
+        }
+    </script>
+</body>
+</html>
