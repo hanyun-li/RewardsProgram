@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="chat room">
+	<meta name="author" content="hanyun.li">
+	<meta name="generator" content="v1.0">
+	<title>聊天房</title>
+
+	<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/product/">
+	<link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/chat/css/rolling.css}" rel="stylesheet">
+	<link th:href="@{/chat/css/style.css}" rel="stylesheet">
+	<link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
+</head>
+<body class="room">
+	<div class="scrollbar-macosx">
+		<div class="header">
+			<div class="toptext">
+				<a href="index.html">
+					<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+					</svg>
+					返回大厅
+				</a>
+			</div>
+			<ul class="topnavlist">
+				<li class="userlist">
+					<a>
+						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+							<path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+						</svg>
+					</a>
+					<div class="popover fade bottom in">
+						<div class="arrow"></div>
+						<h3 class="popover-title">在线用户18人</h3>
+						<div class="popover-content scrollbar-macosx">
+							<ul>
+								<li>
+									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">
+									<b>美国队长</b>
+								</li>
+								<li>
+									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">
+									<b>美国队长</b>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="main container">
+			<div class="col-md-12">
+				<ul class="chat_info">
+					<li class="systeminfo">
+						<span style="font-size: large">文明聊天，温馨你我</span>
+					</li>
+					<li class="systeminfo">
+						<span style="font-size: large">欢迎来到激励计划聊天室，下面请大家愉快的玩耍吧！</span>
+					</li>
+<!--					<li class="systeminfo">-->
+<!--						<span>【绿巨人】加入了房间</span>-->
+<!--					</li>-->
+<!--					<li class="left">-->
+<!--						<img th:src="@{/chat/images/user/12.png}" alt="">-->
+<!--						<b>美国队长</b>-->
+<!--						<i>09:15</i>-->
+<!--						<div>嗨起来！！！</div>-->
+<!--					</li>-->
+				</ul>
+			</div>
+		</div>
+		<div class="input">
+			<div class="center">
+				<div class="text">
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="输入聊天信息..." aria-describedby="subxx">
+						<button id="subxx" style="border:none" class="btn btn-outline-light" type="button">
+							<svg xmlns="http://www.w3.org/2000/svg" style="color: #b6effb" width="21" height="21" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+								<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/assets/js/jquery-1.11.2.min.js}"></script>
+	<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+	<script th:src="@{/chat/js/rolling.js}"></script>
+	<script th:src="@{/assets/js/public.js}"></script>
+</body>
+</html>
