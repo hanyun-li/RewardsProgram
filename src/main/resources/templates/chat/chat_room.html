@@ -60,9 +60,9 @@
 					<li class="systeminfo">
 						<span style="font-size: large">欢迎来到激励计划聊天室，下面请大家愉快的玩耍吧！</span>
 					</li>
-<!--					<li class="systeminfo">-->
-<!--						<span>【绿巨人】加入了房间</span>-->
-<!--					</li>-->
+					<li class="systeminfo">
+						<span id="username" th:text="${username}"></span>
+					</li>
 <!--					<li class="left">-->
 <!--						<img th:src="@{/chat/images/user/12.png}" alt="">-->
 <!--						<b>美国队长</b>-->
@@ -76,8 +76,8 @@
 			<div class="center">
 				<div class="text">
 					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="输入聊天信息..." aria-describedby="subxx">
-						<button id="subxx" style="border:none" class="btn btn-outline-light" type="button">
+						<input id="msg" type="text" class="form-control" placeholder="输入聊天信息..." aria-describedby="subxx">
+						<button style="border:none" class="btn btn-outline-light" type="button" onclick="sendMsgToServer()">
 							<svg xmlns="http://www.w3.org/2000/svg" style="color: #b6effb" width="21" height="21" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
 								<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
 							</svg>
@@ -91,5 +91,119 @@
 	<script th:src="@{/assets/js/bootstrap.min.js}"></script>
 	<script th:src="@{/chat/js/rolling.js}"></script>
 	<script th:src="@{/assets/js/public.js}"></script>
+
+	<script th:inline="javascript">
+
+		/**
+		 * WebSocket客户端
+		 *
+		 * 使用说明：
+		 * 1、WebSocket客户端通过回调函数来接收服务端消息。例如：webSocket.onmessage
+		 * 2、WebSocket客户端通过send方法来发送消息给服务端。例如：webSocket.send();
+		 */
+		function getWebSocket() {
+			/**
+			 * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
+			 */
+			var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://127.0.0.1:8080/chat');
+			/**
+			 * 当服务端打开连接
+			 */
+			webSocket.onopen = function (event) {
+				console.log('WebSocket打开连接');
+			};
+
+			/**
+			 * 当服务端发来消息：1.广播消息 2.更新在线人数
+			 */
+			webSocket.onmessage = function (event) {
+				console.log('WebSocket收到消息：%c' + event.data, 'color:green');
+				//获取服务端消息
+				var message = JSON.parse(event.data) || {};
+				var $messageContainer = $('.chat_info');
+				//喉咙发炎
+				if (message.type === 'SPEAK') {
+					$messageContainer.append(
+						'<li class="left">' +
+						'<img src="/chat/images/user/12.png">' +
+						'<b>' + message.username + '</b>\n' +
+						'<i>' + getNowTime()+ '</i>\n' +
+						'<div>' + message.msg + '</div>\n' +
+						'</li>');
+				}
+				$('.popover-title').text(message.onlineCount);
+				//防止刷屏
+				// var $cards = $messageContainer.children('.mdui-card:visible').toArray();
+				// if ($cards.length > 5) {
+				// 	$cards.forEach(function (item, index) {
+				// 		index < $cards.length - 5 && $(item).slideUp('fast');
+				// 	});
+				// }
+			};
+
+			/**
+			 * 关闭连接
+			 */
+			webSocket.onclose = function (event) {
+				console.log('WebSocket关闭连接');
+			};
+
+			/**
+			 * 通信失败
+			 */
+			webSocket.onerror = function (event) {
+				console.log('WebSocket发生异常');
+
+			};
+			return webSocket;
+		}
+
+		var webSocket = getWebSocket();
+
+
+		/**
+		 * 通过WebSocket对象发送消息给服务端
+		 */
+		function sendMsgToServer() {
+			var $message = $('#msg');
+			let item = sessionStorage.getItem("id");
+			if ($message.val()) {
+				webSocket.send(JSON.stringify({id: item, username: $('#username').text(), msg: $message.val()}));
+				$message.val(null);
+			}
+
+		}
+
+		/**
+		 * 获取当前时间
+		 */
+		function getNowTime() {
+			let date = new Date();
+			let year = date.getFullYear();
+			// 在日期格式中，月份是从0开始的，因此要加0，使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+			let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+			let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+			let hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+			let minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+			// let seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+			// 拼接
+			return year + "-" + month + "-" + day + " " + hours + ":" + minutes;
+		}
+
+		/**
+		 * 清屏
+		 */
+		function clearMsg() {
+			$(".message-container").empty();
+		}
+
+		/**
+		 * 使用ENTER发送消息
+		 */
+		document.onkeydown = function (event) {
+			var e = event || window.event || arguments.callee.caller.arguments[0];
+			e.keyCode === 13 && sendMsgToServer();
+		};
+	</script>
 </body>
 </html>
