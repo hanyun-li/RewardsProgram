@@ -11,12 +11,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * WebSocket 聊天服务端
+ * WebSocket服务
  *
  * @see ServerEndpoint WebSocket服务端 需指定端点的访问路径
  * @see Session   WebSocket会话对象 通过它给客户端发送消息
+ *
+ * @author hanyun.li
+ * @createTime 2022/09/08 10:08:00
  */
-
 @Component
 @ServerEndpoint("/chat")
 public class WebSocketController {
