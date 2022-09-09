@@ -60,7 +60,7 @@ public class ChatController {
 
             view.setViewName("chat/chat_room");
             view.addObject("username", user.getNickName());
-            view.addObject("webSocketUrl", "ws://"+ InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+request.getContextPath()+"/chat");
+            view.addObject("webSocketUrl", "ws://127.0.0.1:"+request.getServerPort()+request.getContextPath()+"/chat");
             return view;
         }
         view.setViewName("cover/not_logger_in");
