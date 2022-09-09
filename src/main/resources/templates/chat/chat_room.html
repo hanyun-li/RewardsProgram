@@ -9,6 +9,7 @@
 	<title>聊天房</title>
 
 	<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/product/">
+
 	<link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
 	<link th:href="@{/chat/css/rolling.css}" rel="stylesheet">
 	<link th:href="@{/chat/css/style.css}" rel="stylesheet">
@@ -76,6 +77,7 @@
 			<div class="center">
 				<div class="text">
 					<div class="input-group mb-3">
+						<input id="sessionId" type="hidden">
 						<input id="msg" type="text" class="form-control" placeholder="输入聊天信息..." aria-describedby="subxx">
 						<button style="border:none" class="btn btn-outline-light" type="button" onclick="sendMsgToServer()">
 							<svg xmlns="http://www.w3.org/2000/svg" style="color: #b6effb" width="21" height="21" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
@@ -121,6 +123,7 @@
 				//获取服务端消息
 				var message = JSON.parse(event.data) || {};
 				var $messageContainer = $('.chat_info');
+				$('#sessionId').textContent = message.sessionId;
 				//喉咙发炎
 				if (message.type === 'SPEAK') {
 					$messageContainer.append(
@@ -165,13 +168,38 @@
 		 * 通过WebSocket对象发送消息给服务端
 		 */
 		function sendMsgToServer() {
-			var $message = $('#msg');
-			let item = sessionStorage.getItem("id");
+
+			var $message = $('#msg'); // 获取聊天内容
 			if ($message.val()) {
-				webSocket.send(JSON.stringify({id: item, username: $('#username').text(), msg: $message.val()}));
-				$message.val(null);
+				webSocket.send(JSON.stringify({sessionId: $('#sessionId').text(), username: $('#username').text(), msg: $message.val()}));
+
+				var str = $message.val(); // 获取聊天内容
+				str = str.replace(/\</g,'&lt;');
+				str = str.replace(/\>/g,'&gt;');
+				str = str.replace(/\n/g,'<br/>');
+				str = str.replace(/\[em_([0-9]*)\]/g,'<img src="/chat/images/face/$1.gif" alt="" />');
+				if(str!='') {
+
+					sends_message('绿巨人', 1, str); // sends_message(昵称,头像id,聊天内容);
+
+
+					// 滚动条滚到最下面
+					$('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').animate({
+						scrollTop: $('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').prop('scrollHeight')
+					}, 500);
+
+				}
+				$('.text input').val(''); // 清空输入框
+				$('.text input').focus(); // 输入框获取焦点
+
 			}
 
+		}
+
+		function sends_message (userName, userPortrait, message) {
+			if(message!='') {
+				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="/chat/images/user/' + userPortrait + '.png" alt=""><b>' + userName + '</b><i>09:15</i><div class="aaa">' + message  +'</div></li>');
+			}
 		}
 
 		/**

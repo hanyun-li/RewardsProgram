@@ -17,6 +17,11 @@ public class Message {
     public static final String QUIT = "QUIT";
 
     /**
+     * 区分session
+     */
+    private String sessionId;
+
+    /**
      * 消息类型
      */
     private String type;
@@ -36,11 +41,12 @@ public class Message {
      */
     private int onlineCount;
 
-    public static String jsonStr(String type, String username, String msg, int onlineTotal) {
-        return JSON.toJSONString(new Message(type, username, msg, onlineTotal));
+    public static String jsonStr(String sessionId, String type, String username, String msg, int onlineTotal) {
+        return JSON.toJSONString(new Message(sessionId, type, username, msg, onlineTotal));
     }
 
-    public Message(String type, String username, String msg, int onlineCount) {
+    public Message(String sessionId, String type, String username, String msg, int onlineCount) {
+        this.sessionId = sessionId;
         this.type = type;
         this.username = username;
         this.msg = msg;

@@ -35,7 +35,7 @@ public class WebSocketController {
     @OnOpen
     public void onOpen(Session session) {
         onlineSessions.put(session.getId(), session);
-        sendMessageToAll(Message.jsonStr(Message.ENTER, "", "", onlineSessions.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.ENTER, "", "", onlineSessions.size()));
     }
 
     /**
@@ -46,7 +46,7 @@ public class WebSocketController {
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
         Message message = JSON.parseObject(jsonStr, Message.class);
-        sendMessageToAll(Message.jsonStr(Message.SPEAK, message.getUsername(), message.getMsg(), onlineSessions.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(), message.getMsg(), onlineSessions.size()));
     }
 
     /**
@@ -55,7 +55,7 @@ public class WebSocketController {
     @OnClose
     public void onClose(Session session) {
         onlineSessions.remove(session.getId());
-        sendMessageToAll(Message.jsonStr(Message.QUIT, "", "", onlineSessions.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.QUIT, "", "", onlineSessions.size()));
     }
 
     /**
@@ -69,10 +69,13 @@ public class WebSocketController {
     /**
      * 公共方法：发送信息给所有人
      */
-    private static void sendMessageToAll(String msg) {
+    private static void sendMessageToAll(String sessionId, String msg) {
         onlineSessions.forEach((id, session) -> {
             try {
-                session.getBasicRemote().sendText(msg);
+                // 这里判断不给自己发消息
+                if (!id.equals(sessionId)) {
+                    session.getBasicRemote().sendText(msg);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -28,13 +28,27 @@ public class ChatController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 去到聊天房间
-     *
-     * @return 模版
-     * @throws Exception 异常信息
-     */
-    @GetMapping
+    @GetMapping()
+    public ModelAndView toHall(HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+
+            view.setViewName("chat/select_room");
+//            view.addObject("username", user.getNickName());
+//            view.addObject("webSocketUrl", "ws://"+ InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+request.getContextPath()+"/chat");
+            return view;
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
+
+    @GetMapping("/toRoom")
     public ModelAndView toRoom(HttpServletRequest request) throws Exception {
         ModelAndView view = new ModelAndView();
         if (LoginUtil.checkLogin(request)) {
