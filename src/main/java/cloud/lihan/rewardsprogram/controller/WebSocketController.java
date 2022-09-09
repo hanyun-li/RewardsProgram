@@ -26,16 +26,15 @@ public class WebSocketController {
     /**
      * 全部在线会话  PS: 基于场景考虑 这里使用线程安全的Map存储会话对象。
      */
-    private static Map<String, Session> onlineSessions = new ConcurrentHashMap<>();
-
+    private static final Map<String, Session> ONLINE_SESSIONS = new ConcurrentHashMap<>();
 
     /**
      * 当客户端打开连接：1.添加会话对象 2.更新在线人数
      */
     @OnOpen
     public void onOpen(Session session) {
-        onlineSessions.put(session.getId(), session);
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.ENTER, "", "", onlineSessions.size()));
+        ONLINE_SESSIONS.put(session.getId(), session);
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.ENTER, "", "", ONLINE_SESSIONS.size()));
     }
 
     /**
@@ -46,7 +45,7 @@ public class WebSocketController {
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
         Message message = JSON.parseObject(jsonStr, Message.class);
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(), message.getMsg(), onlineSessions.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(), message.getMsg(), ONLINE_SESSIONS.size()));
     }
 
     /**
@@ -54,8 +53,8 @@ public class WebSocketController {
      */
     @OnClose
     public void onClose(Session session) {
-        onlineSessions.remove(session.getId());
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.QUIT, "", "", onlineSessions.size()));
+        ONLINE_SESSIONS.remove(session.getId());
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.QUIT, "", "", ONLINE_SESSIONS.size()));
     }
 
     /**
@@ -70,7 +69,7 @@ public class WebSocketController {
      * 公共方法：发送信息给所有人
      */
     private static void sendMessageToAll(String sessionId, String msg) {
-        onlineSessions.forEach((id, session) -> {
+        ONLINE_SESSIONS.forEach((id, session) -> {
             try {
                 // 这里判断不给自己发消息
                 if (!id.equals(sessionId)) {

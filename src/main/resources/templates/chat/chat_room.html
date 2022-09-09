@@ -19,7 +19,7 @@
 	<div class="scrollbar-macosx">
 		<div class="header">
 			<div class="toptext">
-				<a href="index.html">
+				<a href="/chat">
 					<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
 					</svg>
@@ -35,19 +35,19 @@
 					</a>
 					<div class="popover fade bottom in">
 						<div class="arrow"></div>
-						<h3 class="popover-title">在线用户18人</h3>
-						<div class="popover-content scrollbar-macosx">
-							<ul>
-								<li>
-									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">
-									<b>美国队长</b>
-								</li>
-								<li>
-									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">
-									<b>美国队长</b>
-								</li>
-							</ul>
-						</div>
+						<h3 class="popover-title"></h3>
+<!--						<div class="popover-content scrollbar-macosx">-->
+<!--							<ul>-->
+<!--								<li>-->
+<!--									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">-->
+<!--									<b>美国队长</b>-->
+<!--								</li>-->
+<!--								<li>-->
+<!--									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">-->
+<!--									<b>美国队长</b>-->
+<!--								</li>-->
+<!--							</ul>-->
+<!--						</div>-->
 					</div>
 				</li>
 			</ul>
@@ -62,14 +62,8 @@
 						<span style="font-size: large">欢迎来到激励计划聊天室，下面请大家愉快的玩耍吧！</span>
 					</li>
 					<li class="systeminfo">
-						<span id="username" th:text="${username}"></span>
+						<span id="username" style="display: none" th:text="${username}"></span>
 					</li>
-<!--					<li class="left">-->
-<!--						<img th:src="@{/chat/images/user/12.png}" alt="">-->
-<!--						<b>美国队长</b>-->
-<!--						<i>09:15</i>-->
-<!--						<div>嗨起来！！！</div>-->
-<!--					</li>-->
 				</ul>
 			</div>
 		</div>
@@ -131,10 +125,15 @@
 						'<img src="/chat/images/user/12.png">' +
 						'<b>' + message.username + '</b>\n' +
 						'<i>' + getNowTime()+ '</i>\n' +
-						'<div>' + message.msg + '</div>\n' +
+						'<div class="aaa">' + message.msg + '</div>\n' +
 						'</li>');
 				}
-				$('.popover-title').text(message.onlineCount);
+
+				// 滚动条滚到最下面
+				$('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').animate({
+					scrollTop: $('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').prop('scrollHeight')
+				}, 500);
+				$('.popover-title').text('房间人数：' + message.onlineCount + '人');
 				//防止刷屏
 				// var $cards = $messageContainer.children('.mdui-card:visible').toArray();
 				// if ($cards.length > 5) {
@@ -163,6 +162,10 @@
 
 		var webSocket = getWebSocket();
 
+		var x = 12;
+		var y = 1;
+		// 文档加载后，生成行x~y中的随机整数
+		var rand = parseInt(Math.random() * (x - y + 1) + y);
 
 		/**
 		 * 通过WebSocket对象发送消息给服务端
@@ -180,7 +183,7 @@
 				str = str.replace(/\[em_([0-9]*)\]/g,'<img src="/chat/images/face/$1.gif" alt="" />');
 				if(str!='') {
 
-					sends_message('绿巨人', 1, str); // sends_message(昵称,头像id,聊天内容);
+					sends_message($('#username').text(), rand, str); // sends_message(昵称,头像id,聊天内容);
 
 
 					// 滚动条滚到最下面
@@ -198,7 +201,7 @@
 
 		function sends_message (userName, userPortrait, message) {
 			if(message!='') {
-				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="/chat/images/user/' + userPortrait + '.png" alt=""><b>' + userName + '</b><i>09:15</i><div class="aaa">' + message  +'</div></li>');
+				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="/chat/images/user/' + userPortrait + '.png" alt=""><b>' + userName + '</b><i>' + getNowTime() + '</i><div class="aaa">' + message  +'</div></li>');
 			}
 		}
 

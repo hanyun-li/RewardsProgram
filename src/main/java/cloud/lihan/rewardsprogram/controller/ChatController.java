@@ -39,9 +39,8 @@ public class ChatController {
                 return view;
             }
 
-            view.setViewName("chat/select_room");
-//            view.addObject("username", user.getNickName());
-//            view.addObject("webSocketUrl", "ws://"+ InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+request.getContextPath()+"/chat");
+            view.setViewName("chat/hall");
+            view.addObject("username", user.getNickName());
             return view;
         }
         view.setViewName("cover/not_logger_in");
