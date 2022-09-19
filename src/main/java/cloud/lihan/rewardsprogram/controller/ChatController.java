@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -59,8 +60,9 @@ public class ChatController {
             }
 
             view.setViewName("chat/chat_room");
-            view.addObject("username", user.getNickName());
-            view.addObject("webSocketUrl", "ws://127.0.0.1:"+request.getServerPort()+request.getContextPath()+"/chat");
+            view.addObject("username", StringUtils.isEmpty(user.getNickName()) ? user.getUserName() : user.getNickName());
+            view.addObject("webSocketUrl",
+                    "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" +request.getServerPort() + request.getContextPath()+"/chat");
             return view;
         }
         view.setViewName("cover/not_logger_in");
