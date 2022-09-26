@@ -318,7 +318,7 @@ public class UserServiceImpl implements UserService {
      * @param currentDayTime 当日时间（注：格式类似于：2022-8-4）
      * @throws IOException 包含Elasticsearch异常信息
      */
-    private void assignTheCurrentDay(UserDTO userDTO, String currentDayTime) throws IOException {
+    private void assignTheCurrentDay(UserDTO userDTO, String currentDayTime) throws IOException, InterruptedException {
         Query query = Query.of(q -> q
                 .ids(id -> id.values(userDTO.getId()))
         );
@@ -326,6 +326,9 @@ public class UserServiceImpl implements UserService {
         optionsMap.put("currentDayTime", JsonData.of(currentDayTime));
         String source = "ctx._source.lastSuccessfulLoginTime = params.currentDayTime";
         userDao.updateUserField(optionsMap, source, query);
+
+        // 此处需等待最后一次登陆时间更新为当日时间，为了避免出现并发（版本冲突异常）问题
+        Thread.sleep(1000);
     }
 
 }
