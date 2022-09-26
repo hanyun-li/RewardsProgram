@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void editPassword(String userId, String userPassword) throws Exception {
         // 获取当天的时间(eg:2022-8-4)
         String currentDayTime = CurrentTimeUtil.newCurrentTime(TimeFormatConstant.Y_M_D);
