@@ -4,7 +4,7 @@ import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.event.carrier.base.BaseEvent;
 
 /**
- *
+ * 发送验证码限制事件载体
  *
  * @author hanyun.li
  * @createTime 2022/08/11 14:54:00

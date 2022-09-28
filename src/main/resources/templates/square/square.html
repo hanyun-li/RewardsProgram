@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="square">
+    <meta name="author" content="hanyun.li">
+    <meta name="generator" content="v1.0">
+    <title>广场</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/features/">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <link th:href="@{/square/squares.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
+  </head>
+  <body>
+
+  <!--公共导航条-->
+  <div id="my_header" class="container"></div>
+
+<main>
+  <div class="container px-4 py-5" id="hanging-icons">
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+
+      <!--帖子-->
+      <div class="col d-flex align-items-start">
+        <div class="icon-square text-dark flex-shrink-0 me-3">
+          <img style="border-radius: 50%" class="bi" width="100%" height="100%" th:src="@{/chat/images/rooms/1.jpg}" alt="">
+        </div>
+        <div style="width: 75%;">
+          <h1>酷酷</h1>
+          <p>这是我的第一个帖子！这是我的第一个帖子！这是我的第一个帖子！这是我的第一个帖子！</p>
+
+          <div style="width: 100%; text-align: right">
+            <a type="button" class="btn btn-outline-secondary" style="color: lightskyblue; border-color: transparent;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+              </svg>
+            </a>
+
+            <a type="button" class="btn btn-outline-secondary" style="color: pink; border-color: transparent;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+  <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
+
+  <script th:src="@{/assets/js/jquery-1.11.2.min.js}"></script>
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      $("#my_header").load("/common/header.html")
+    });
+  </script>
+
+  </body>
+</html>
