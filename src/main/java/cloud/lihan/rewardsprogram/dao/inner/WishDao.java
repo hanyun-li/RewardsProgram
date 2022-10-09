@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 愿望相关的数据方法
+ * 愿望相关的数据操作方法
  *
  * @author hanyun.li
  * @createTime 2022/06/29 10:16:00
@@ -41,12 +41,12 @@ public interface WishDao {
     void deleteWishDocumentById(String wishDocumentId) throws IOException;
 
     /**
-     * 根据自定义条件更新愿望文档的
+     * 根据自定义条件更新帖子文档
      *
-     * @param source 更新语句
      * @param optionsMaps 更新(操作)集合
+     * @param source 更新语句
      * @param updateByQuery 自定义更新条件
-     * @throws IOException 异常信息
+     * @throws IOException 包含Elasticsearch异常信息
      */
     void updateWishSingleField(Map<String, JsonData> optionsMaps, String source, Query updateByQuery) throws IOException;
 

@@ -36,7 +36,7 @@ public class IndexInitialization {
                     this.initIndex(indexEnum);
                     log.info("index '" + indexEnum.getIndexName() + "' has been initialized");
                 }
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 log.error("Init index '" + indexEnum.getIndexName() + "' fail! errorInfo: {}", e.getMessage());
             }
         }
@@ -60,11 +60,32 @@ public class IndexInitialization {
      * @param indexEnum 索引枚举
      * @throws IOException 异常信息
      */
-    private void initIndex(IndexEnum indexEnum) throws IOException {
+    private void initIndex(IndexEnum indexEnum) throws IOException, InterruptedException {
+        String id = UUID.randomUUID().toString();
         esClient.create(t -> t
-                .id(UUID.randomUUID().toString())
+                .id(id)
                 .index(indexEnum.getIndexName())
                 .document(DocumentFactory.getDocumentByIndexName(indexEnum))
+        );
+
+        // 判断是否是帖子索引
+        if (IndexEnum.CONTENT_INDEX.equals(indexEnum)) {
+            // 删除初始化帖子索引所引入的多余数据
+            this.deleteUselessContent(id);
+        }
+    }
+
+    /**
+     * 删除初始化帖子索引所引入的多余数据
+     *
+     * @throws IOException 异常信息
+     */
+    private void deleteUselessContent(String id) throws IOException, InterruptedException {
+        // 等待帖子索引初始化之后再执行清除无用数据操作
+        Thread.sleep(1000);
+        esClient.delete(d -> d
+                .index(IndexEnum.CONTENT_INDEX.getIndexName())
+                .id(id)
         );
     }
 

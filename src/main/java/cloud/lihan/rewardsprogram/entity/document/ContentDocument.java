@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SquareDocument extends BaseDocument {
+public class ContentDocument extends BaseDocument {
 
     /**
      * 用户ID

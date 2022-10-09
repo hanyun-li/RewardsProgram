@@ -25,4 +25,5 @@ public interface ElasticsearchScriptConstant {
             "        }\n" +
             "    }\n" +
             "}";
+
 }

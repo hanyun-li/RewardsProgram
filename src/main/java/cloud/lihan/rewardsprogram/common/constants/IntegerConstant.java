@@ -63,4 +63,9 @@ public interface IntegerConstant {
      */
     Integer TEN = 10;
 
+    /**
+     * 自然数100
+     */
+    Integer ONE_HUNDRED = 100;
+
 }

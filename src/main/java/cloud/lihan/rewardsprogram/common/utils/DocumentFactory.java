@@ -1,6 +1,7 @@
 package cloud.lihan.rewardsprogram.common.utils;
 
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
+import cloud.lihan.rewardsprogram.entity.document.ContentDocument;
 import cloud.lihan.rewardsprogram.entity.document.PlanDocument;
 import cloud.lihan.rewardsprogram.entity.document.UserDocument;
 import cloud.lihan.rewardsprogram.entity.document.WishDocument;
@@ -17,12 +18,18 @@ public class DocumentFactory {
      * @param indexEnum {@link IndexEnum} 索引枚举
      * @return 文档对象
      */
-    public static Object  getDocumentByIndexName(IndexEnum indexEnum) {
+    public static Object getDocumentByIndexName(IndexEnum indexEnum) {
         switch (indexEnum) {
-            case USER_INDEX: return new UserDocument();
-            case WISH_INDEX: return new WishDocument();
-            case PLAN_INDEX: return new PlanDocument();
-            default: return null;
+            case USER_INDEX:
+                return new UserDocument();
+            case WISH_INDEX:
+                return new WishDocument();
+            case PLAN_INDEX:
+                return new PlanDocument();
+            case CONTENT_INDEX:
+                return new ContentDocument();
+            default:
+                return null;
         }
     }
 }

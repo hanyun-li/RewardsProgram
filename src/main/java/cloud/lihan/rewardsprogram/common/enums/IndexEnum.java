@@ -13,7 +13,8 @@ public enum IndexEnum {
      */
     USER_INDEX("user", "用户索引"),
     WISH_INDEX("wish", "愿望索引"),
-    PLAN_INDEX("plan", "计划索引");
+    PLAN_INDEX("plan", "计划索引"),
+    CONTENT_INDEX("content", "帖子索引");
 
     /**
      * 索引名称

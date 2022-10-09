@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * 用户相关的数据方法
+ * 用户相关的数据操作方法
  *
  * @author hanyun.li
  * @createTime 2022/07/08 14:39:00

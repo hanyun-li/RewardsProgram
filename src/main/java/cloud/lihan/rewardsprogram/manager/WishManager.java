@@ -34,6 +34,7 @@ public class WishManager {
         wishDTO.setIsRealized(wishDocument.getIsRealized());
         wishDTO.setUserId(wishDocument.getUserId());
         wishDTO.setCreateTime(wishDocument.getCreateTime());
+        wishDTO.setCreateTimestamp(wishDocument.getCreateTimestamp());
         wishDTO.setUpdateTime(wishDocument.getUpdateTime());
         return wishDTO;
     }

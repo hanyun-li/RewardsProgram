@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 计划相关的数据方法
+ * 计划相关的数据操作方法
  *
  * @author hanyun.li
  * @createTime 2022/07/20 10:32:00
@@ -69,10 +69,10 @@ public interface PlanDao {
     PlanDocument getSinglePlanByQuery(Query query) throws IOException;
 
     /**
-     * 根据特定条件查询多个个计划文档
+     * 根据特定条件查询多个计划文档
      *
      * @param query 自定义查询条件
-     * @return {@link PlanDocument} 计划信息 {@link cloud.lihan.rewardsprogram.common.constants.IntegerConstant} 查询数量控制常量
+     * @return {@link PlanDocument} 计划信息
      * @throws IOException 异常信息
      */
     List<PlanDocument> getMultiplePlanByQuery(Query query) throws IOException;

@@ -3,7 +3,7 @@ package cloud.lihan.rewardsprogram.vo;
 import lombok.Data;
 
 /**
- * 用户实体数据传输（接收用）
+ * 计划实体数据传输（接收用）
  *
  * @author hanyun.li
  * @createTime 2022/07/20 10:31:00

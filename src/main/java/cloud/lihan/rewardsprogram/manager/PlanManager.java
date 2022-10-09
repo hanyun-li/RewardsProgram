@@ -34,6 +34,7 @@ public class PlanManager {
         planDTO.setIsFinished(planDocument.getIsFinished());
         planDTO.setUserId(planDocument.getUserId());
         planDTO.setCreateTime(planDocument.getCreateTime());
+        planDTO.setCreateTimestamp(planDocument.getCreateTimestamp());
         planDTO.setUpdateTime(planDocument.getUpdateTime());
         return planDTO;
     }
