@@ -100,10 +100,14 @@ public class ContentController {
                 return view;
             }
 
-            // 帖子内容和图片不能同时为空
-            if (StringUtils.isEmpty(contentVO.getContent()) && CollectionUtils.isEmpty(contentVO.getImgUrls())) {
+            // 帖子内容不能为空
+            if (StringUtils.isEmpty(contentVO.getContent())) {
+                ContentDTO contentDTO = new ContentDTO();
+                contentDTO.setId(contentVO.getContentId());
+                view.addObject("content", contentDTO);
                 view.addObject("contentIsEmpty", Boolean.TRUE);
-                return this.contentProvider(view, userId);
+                view.setViewName("square/edit_content");
+                return view;
             }
 
             contentService.editContent(contentVO);
@@ -183,6 +187,26 @@ public class ContentController {
             }
 
             view.setViewName("square/release_content");
+            return view;
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
+
+    @GetMapping("/toEditContent")
+    public ModelAndView toEditContent(@RequestParam("id") String id, HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+
+            ContentDTO contentDTO = contentService.getSingleContent(id);
+            view.addObject("content", contentDTO);
+            view.setViewName("square/edit_content");
             return view;
         }
         view.setViewName("cover/not_logger_in");

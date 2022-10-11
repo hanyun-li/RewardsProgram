@@ -121,6 +121,11 @@ public class ContentServiceImpl implements ContentService {
         return contentDTOS;
     }
 
+    @Override
+    public ContentDTO getSingleContent(String contentId) throws Exception {
+        return contentManager.contentDocumentConvertContentDTO(contentDao.getContentById(contentId));
+    }
+
     /**
      * 更新点赞人数
      *

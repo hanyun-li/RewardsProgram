@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="send content">
+  <meta name="author" content="hanyun.li">
+  <meta name="generator" content="v1.0">
+  <title>发布帖子</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+  <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
+
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    html{height: 100%}
+    body{margin: 0;height: 100%;
+      background: #fff;}
+    canvas{display: block;width: 100%;height: 100%;}
+    .body_content{
+      position: absolute;
+      top:30%;
+      left: 20%;
+      height: 20%;
+      background: palevioletred;
+      width: 20%;
+    }
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/assets/dist/css/signin.css}" rel="stylesheet">
+  <link rel="shortcut icon" th:href="@{/assets/icon/favicon.ico}" />
+</head>
+<body class="text-center">
+<canvas id="canvas" style="position:absolute; z-index:-1;"></canvas>
+<script th:src="@{/curtain/curtain.js}"></script>
+
+<main class="form-signin">
+  <form method="post" action="/content/edit">
+    <img class="mb-4" th:src="@{/logo/send_content.jpg}" alt="" width="180" height="114">
+
+    <div class="form-floating">
+      <input th:value="${content.id}" name="contentId" id="contentId" type="hidden">
+      <textarea style="height: 150px" type="text" class="form-control" name="content" id="content" th:text="${content.content}"></textarea>
+      <label for="content">帖子内容：</label>
+      <div th:if="${contentIsEmpty}" class="alert alert-danger" role="alert">
+        帖子内容需要输入哦😊
+      </div>
+    </div>
+
+    <!--间隔行-->
+    <div style="width: 100%; height: 20px"></div>
+
+    <button class="w-100 btn btn-lg btn-info" id="xuanze" type="submit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+      </svg>
+      修改发布
+    </button>
+  </form>
+
+</main>
+
+</body>
+</html>

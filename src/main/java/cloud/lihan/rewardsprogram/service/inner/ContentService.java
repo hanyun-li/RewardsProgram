@@ -62,4 +62,13 @@ public interface ContentService {
      */
     List<ContentDTO> getAllContents(String userId) throws Exception;
 
+    /**
+     * 获取单个帖子
+     *
+     * @param contentId 帖子ID
+     * @return 帖子信息
+     * @throws Exception 异常信息
+     */
+    ContentDTO getSingleContent(String contentId) throws Exception;
+
 }
