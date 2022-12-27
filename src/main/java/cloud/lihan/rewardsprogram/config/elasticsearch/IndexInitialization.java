@@ -1,7 +1,7 @@
 package cloud.lihan.rewardsprogram.config.elasticsearch;
 
 import cloud.lihan.rewardsprogram.common.enums.IndexEnum;
-import cloud.lihan.rewardsprogram.common.utils.DocumentFactory;
+import cloud.lihan.rewardsprogram.common.utils.DocumentUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +65,7 @@ public class IndexInitialization {
         esClient.create(t -> t
                 .id(id)
                 .index(indexEnum.getIndexName())
-                .document(DocumentFactory.getDocumentByIndexName(indexEnum))
+                .document(DocumentUtil.getDocumentByIndexName(indexEnum))
         );
 
         // 判断是否是帖子索引

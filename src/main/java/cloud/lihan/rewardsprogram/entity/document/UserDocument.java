@@ -37,6 +37,11 @@ public class UserDocument extends BaseDocument {
     private String userEmail;
 
     /**
+     * 用户头像URL
+     */
+    private String avatarUrl;
+
+    /**
      * 最后一次登录失败的那一天的时间（注：格式类似于：2022-8-4）
      */
     private String lastTimeLoginFailTime;

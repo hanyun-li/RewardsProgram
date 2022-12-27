@@ -7,10 +7,12 @@ import cloud.lihan.rewardsprogram.entity.document.UserDocument;
 import cloud.lihan.rewardsprogram.entity.document.WishDocument;
 
 /**
+ * 文档相关工具
+ *
  * @author hanyun.li
  * @createTime 2022/07/18 15:44:00
  */
-public class DocumentFactory {
+public class DocumentUtil {
 
     /**
      * 根据索引枚举获取对应文档对象

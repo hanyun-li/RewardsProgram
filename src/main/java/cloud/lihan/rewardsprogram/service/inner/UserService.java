@@ -48,6 +48,15 @@ public interface UserService {
     void editUserInfo(UserVO userVO) throws IOException;
 
     /**
+     * 编辑用户头像
+     *
+     * @param userId 用户ID
+     * @param avatarUrl 用户头像url
+     * @throws Exception 异常信息
+     */
+    void editAvatarUrl(String userId, String avatarUrl) throws Exception;
+
+    /**
      * 增加激励值（完成计划时增加）
      *
      * @param userDTO 用户传输对象

@@ -33,6 +33,7 @@ public class UserManager {
         userDTO.setNickName(userDocument.getNickName());
         userDTO.setUserName(userDocument.getUserName());
         userDTO.setUserEmail(userDocument.getUserEmail());
+        userDTO.setAvatarUrl(userDocument.getAvatarUrl());
         userDTO.setPassword(userDocument.getPassword());
         userDTO.setLastTimeLoginFailTime(userDocument.getLastTimeLoginFailTime());
         userDTO.setCurrentDayLoginFailTimes(userDocument.getCurrentDayLoginFailTimes());

@@ -95,6 +95,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void editAvatarUrl(String userId, String avatarUrl) throws Exception {
+        Query query = new Query.Builder()
+                .ids(t -> t.values(userId))
+                .build();
+        Map<String, JsonData> optionsMap = new HashMap<>(IntegerConstant.THERE);
+        optionsMap.put("avatarUrl", JsonData.of(avatarUrl));
+        String source = "ctx._source.avatarUrl = params.avatarUrl";
+        userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
     public void increaseIncentiveValue(UserDTO userDTO, Integer increaseIncentiveValue) throws IOException {
         Query query = new Query.Builder()
                 .ids(t -> t.values(userDTO.getId()))

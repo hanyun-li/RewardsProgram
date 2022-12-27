@@ -1,6 +1,8 @@
 package cloud.lihan.rewardsprogram.controller;
 
 import cloud.lihan.rewardsprogram.common.utils.LoginUtil;
+import cloud.lihan.rewardsprogram.common.utils.UrlUtil;
+import cloud.lihan.rewardsprogram.config.file.AvatarPropertiesConfig;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.service.inner.UserService;
 import cloud.lihan.rewardsprogram.vo.UserVO;
@@ -10,9 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.Objects;
 
 /**
@@ -28,6 +34,46 @@ public class MyInfoController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AvatarPropertiesConfig avatarProperties;
+
+    @PostMapping("/editAvatar")
+    public ModelAndView editAvatar(@RequestParam("avatarImage") MultipartFile avatarImage, HttpServletRequest request) throws Exception {
+        ModelAndView view = new ModelAndView();
+        if (LoginUtil.checkLogin(request)) {
+            String userId = LoginUtil.getLoginTokenByRequest(request);
+            UserDTO user = userService.getUserByUserId(userId);
+            if (Objects.isNull(user)) {
+                view.setViewName("cover/not_logger_in");
+                return view;
+            }
+
+            // 未获取到头像
+            if (Objects.isNull(avatarImage) || avatarImage.isEmpty()) {
+                log.warn("MyInfoController.editAvatar() exit warn. warn info : avatar is null !");
+            } else {
+                // 生成图片
+                String originalFilename = avatarImage.getOriginalFilename();
+                if (StringUtils.isEmpty(originalFilename)) {
+                    log.error("MyInfoController.editAvatar() exit warn. error info : originalFilename is empty !");
+                } else {
+                    String avatarUrl = UrlUtil.spliceAvatarUrl(userId, originalFilename);
+                    File file = new File(avatarProperties.getAvatarPath() + avatarUrl);
+                    avatarImage.transferTo(file);
+
+                    // 如果头像上传成功，则更新头像地址
+                    if (file.exists()) {
+                        userService.editAvatarUrl(userId, avatarUrl);
+                    }
+                }
+            }
+
+            Thread.sleep(1000);
+            return this.myInfoProvider(view, userId);
+        }
+        view.setViewName("cover/not_logger_in");
+        return view;
+    }
 
     @PostMapping
     public ModelAndView saveMyInfo(UserVO userVO, HttpServletRequest request) throws Exception {
@@ -105,6 +151,7 @@ public class MyInfoController {
      */
     private synchronized ModelAndView myInfoProvider(ModelAndView view, String userId) throws Exception {
         UserDTO user = userService.getUserByUserId(userId);
+        user.setAvatarUrl(avatarProperties.getAvatarPrefix() + user.getAvatarUrl());
         view.addObject("user", user);
         view.setViewName("person/my_info");
         return view;
