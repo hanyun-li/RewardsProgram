@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 用户相关的业务细节
@@ -328,6 +325,12 @@ public class UserServiceImpl implements UserService {
         }
 
         return getUserByUserEmail(userInfo);
+    }
+
+    @Override
+    public List<UserDTO> getAllUser() throws Exception {
+        List<UserDocument> allUser = userDao.getAllUser();
+        return userManager.userDocumentsConvertUserDTO(allUser);
     }
 
     /**

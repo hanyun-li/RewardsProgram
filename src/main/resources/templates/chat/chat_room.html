@@ -63,6 +63,7 @@
 					</li>
 					<li class="systeminfo">
 						<span id="username" style="display: none" th:text="${username}"></span>
+						<span id="avatarUrl" style="display: none" th:text="${avatarUrl}"></span>
 					</li>
 				</ul>
 			</div>
@@ -101,7 +102,11 @@
 			/**
 			 * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
 			 */
-			var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://127.0.0.1:8080/chat');
+			var webSocket = new WebSocket('ws://127.0.0.1:8080/chat');
+			/**
+			 * 部署服务器时，选择这个配置
+			 */
+			// var webSocket = new WebSocket('ws://leilei.love.lihan.cloud/chat');
 			/**
 			 * 当服务端打开连接
 			 */
@@ -122,7 +127,7 @@
 				if (message.type === 'SPEAK') {
 					$messageContainer.append(
 						'<li class="left">' +
-						'<img src="/chat/images/user/12.png">' +
+						'<img src="' + message.avatarUrl + '">' +
 						'<b>' + message.username + '</b>\n' +
 						'<i>' + getNowTime()+ '</i>\n' +
 						'<div class="aaa">' + message.msg + '</div>\n' +
@@ -162,11 +167,6 @@
 
 		var webSocket = getWebSocket();
 
-		var x = 12;
-		var y = 1;
-		// 文档加载后，生成行x~y中的随机整数
-		var rand = parseInt(Math.random() * (x - y + 1) + y);
-
 		/**
 		 * 通过WebSocket对象发送消息给服务端
 		 */
@@ -174,7 +174,7 @@
 
 			var $message = $('#msg'); // 获取聊天内容
 			if ($message.val()) {
-				webSocket.send(JSON.stringify({sessionId: $('#sessionId').text(), username: $('#username').text(), msg: $message.val()}));
+				webSocket.send(JSON.stringify({sessionId: $('#sessionId').text(), username: $('#username').text(), avatarUrl: $('#avatarUrl').text(), msg: $message.val()}));
 
 				var str = $message.val(); // 获取聊天内容
 				str = str.replace(/\</g,'&lt;');
@@ -183,7 +183,7 @@
 				str = str.replace(/\[em_([0-9]*)\]/g,'<img src="/chat/images/face/$1.gif" alt="" />');
 				if(str!='') {
 
-					sends_message($('#username').text(), rand, str); // sends_message(昵称,头像id,聊天内容);
+					sends_message($('#username').text(), $('#avatarUrl').text(), str); // sends_message(昵称,头像id,聊天内容);
 
 
 					// 滚动条滚到最下面
@@ -201,7 +201,7 @@
 
 		function sends_message (userName, userPortrait, message) {
 			if(message!='') {
-				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="/chat/images/user/' + userPortrait + '.png" alt=""><b>' + userName + '</b><i>' + getNowTime() + '</i><div class="aaa">' + message  +'</div></li>');
+				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="' + userPortrait + '" alt=""><b>' + userName + '</b><i>' + getNowTime() + '</i><div style="background: #FFFFFF; border-radius: 5px;" class="aaa">' + message  +'</div></li>');
 			}
 		}
 

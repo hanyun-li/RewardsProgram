@@ -34,7 +34,7 @@ public class WebSocketController {
     @OnOpen
     public void onOpen(Session session) {
         ONLINE_SESSIONS.put(session.getId(), session);
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.ENTER, "", "", ONLINE_SESSIONS.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.ENTER, "", "", "", ONLINE_SESSIONS.size()));
     }
 
     /**
@@ -45,7 +45,7 @@ public class WebSocketController {
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
         Message message = JSON.parseObject(jsonStr, Message.class);
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(), message.getMsg(), ONLINE_SESSIONS.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(),message.getAvatarUrl(), message.getMsg(), ONLINE_SESSIONS.size()));
     }
 
     /**
@@ -54,7 +54,7 @@ public class WebSocketController {
     @OnClose
     public void onClose(Session session) {
         ONLINE_SESSIONS.remove(session.getId());
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.QUIT, "", "", ONLINE_SESSIONS.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.QUIT, "","", "", ONLINE_SESSIONS.size()));
     }
 
     /**

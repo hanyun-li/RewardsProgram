@@ -83,6 +83,13 @@ public class UserDaoImpl implements UserDao {
         return this.findUserDocument(query);
     }
 
+    @Override
+    public List<UserDocument> getAllUser() throws IOException {
+        SearchResponse<UserDocument> search = esClient.search(s -> s
+                        .index(IndexEnum.USER_INDEX.getIndexName()), UserDocument.class);
+        return this.processWish(search);
+    }
+
     /**
      * 根据自定义查询条件获取单个用户文档
      *

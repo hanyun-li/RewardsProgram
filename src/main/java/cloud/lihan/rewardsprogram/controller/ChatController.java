@@ -61,8 +61,10 @@ public class ChatController {
 
             view.setViewName("chat/chat_room");
             view.addObject("username", StringUtils.isEmpty(user.getNickName()) ? user.getUserName() : user.getNickName());
-            view.addObject("webSocketUrl",
-                    "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" +request.getServerPort() + request.getContextPath()+"/chat");
+            view.addObject("avatarUrl", user.getAvatarUrl());
+            view.addObject("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" +request.getServerPort() + request.getContextPath()+"/chat");
+            // 部署服务器时，选择这条配置
+//            view.addObject("webSocketUrl", "ws://leilei.love.lihan.cloud/chat");
             return view;
         }
         view.setViewName("cover/not_logger_in");

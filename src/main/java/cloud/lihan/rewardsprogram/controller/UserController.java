@@ -16,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
@@ -153,6 +150,19 @@ public class UserController extends BaseController {
         ModelAndView view = new ModelAndView();
         view.setViewName("password/forgot_password");
         return view;
+    }
+
+    @GetMapping("/getSinglePersonInfo")
+    @ResponseBody
+    public Base getSinglePersonInfo(@RequestParam("personInfo") String personInfo) throws Exception {
+        UserDTO user = userService.getUserByUserInfo(personInfo);
+        return apiOk(user);
+    }
+
+    @GetMapping("/getAllPersonInfo")
+    @ResponseBody
+    public Base getAllPersonInfo() throws Exception {
+        return apiOk(userService.getAllUser());
     }
 
 }

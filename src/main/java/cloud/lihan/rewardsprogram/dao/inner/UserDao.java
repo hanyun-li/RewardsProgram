@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,5 +52,13 @@ public interface UserDao {
      * @throws IOException 异常信息
      */
     UserDocument getSingleUserByQuery(Query query) throws IOException;
+
+    /**
+     * 获取所有用户文档
+     *
+     * @return 所有用户文档
+     * @throws IOException 异常信息
+     */
+    List<UserDocument> getAllUser() throws IOException;
 
 }

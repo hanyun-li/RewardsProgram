@@ -5,6 +5,7 @@ import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
 import cloud.lihan.rewardsprogram.vo.UserVO;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 用户相关的业务方法
@@ -190,5 +191,13 @@ public interface UserService {
      * @throws Exception 包含elasticsearch异常信息
      */
     UserDTO getUserByUserInfo(String userInfo) throws Exception;
+
+    /**
+     * 获取所有用户信息
+     *
+     * @return 所有用户信息
+     * @throws Exception 包含elasticsearch异常信息
+     */
+    List<UserDTO> getAllUser() throws Exception;
 
 }
