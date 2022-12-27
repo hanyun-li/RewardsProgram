@@ -39,4 +39,9 @@ public class ContentDTO extends ContentDocument {
      */
     private String likeContentInfo;
 
+    /**
+     * 用户信息
+     */
+    private UserDTO userDTO;
+
 }

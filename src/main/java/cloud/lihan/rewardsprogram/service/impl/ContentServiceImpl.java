@@ -105,9 +105,11 @@ public class ContentServiceImpl implements ContentService {
         contentDTOS.parallelStream().forEach(contentDTO -> {
             try {
                 UserDTO user = userService.getUserByUserId(contentDTO.getUserId());
+                // 装填用户信息
+                contentDTO.setUserDTO(user);
                 // 设置发帖人显示名称
                 contentDTO.setNikeNameOrUserName(StringUtils.isEmpty(user.getNickName()) ? user.getUserName() : user.getNickName());
-
+                // 解析点赞用户ID
                 List<String> likeUserIdList = JSONObject.parseArray(contentDTO.getLikeUserIds(), String.class);
 
                 // 拼接点赞名单信息

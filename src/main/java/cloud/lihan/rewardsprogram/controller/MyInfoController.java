@@ -151,7 +151,6 @@ public class MyInfoController {
      */
     private synchronized ModelAndView myInfoProvider(ModelAndView view, String userId) throws Exception {
         UserDTO user = userService.getUserByUserId(userId);
-        user.setAvatarUrl(avatarProperties.getAvatarPrefix() + user.getAvatarUrl());
         view.addObject("user", user);
         view.setViewName("person/my_info");
         return view;

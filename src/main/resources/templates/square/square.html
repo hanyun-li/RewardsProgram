@@ -56,7 +56,7 @@
       <!--帖子-->
       <div th:each="content : ${contents}" class="col d-flex align-items-start">
         <div class="icon-square text-dark flex-shrink-0 me-3">
-          <img style="border-radius: 50%" class="bi" width="100%" height="100%" th:src="@{/chat/images/rooms/1.jpg}" alt="">
+          <img style="border-radius: 50%" class="bi" width="100%" height="100%" th:src="${content.userDTO.avatarUrl}" alt="">
         </div>
         <div style="width: 75%;">
           <h1 style="display: flex; justify-content: space-between">

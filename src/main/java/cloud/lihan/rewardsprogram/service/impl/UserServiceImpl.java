@@ -5,6 +5,8 @@ import cloud.lihan.rewardsprogram.common.constants.IntegerConstant;
 import cloud.lihan.rewardsprogram.common.constants.LoginLimitConstant;
 import cloud.lihan.rewardsprogram.common.constants.TimeFormatConstant;
 import cloud.lihan.rewardsprogram.common.utils.CurrentTimeUtil;
+import cloud.lihan.rewardsprogram.common.utils.UrlUtil;
+import cloud.lihan.rewardsprogram.config.file.AvatarPropertiesConfig;
 import cloud.lihan.rewardsprogram.dao.inner.UserDao;
 import cloud.lihan.rewardsprogram.dto.UserDTO;
 import cloud.lihan.rewardsprogram.dto.provider.WishProviderDTO;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -39,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private UserManager userManager;
+    @Autowired
+    private AvatarPropertiesConfig avatarProperties;
 
     @Override
     public void savaUser(UserVO userVO) throws Exception {
@@ -195,7 +200,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByUserId(String userId) throws IOException {
         UserDocument userDocument = userDao.getUserByUserDocumentId(userId);
-        return userManager.userDocumentConvertUserDTO(userDocument);
+        UserDTO userDTO = userManager.userDocumentConvertUserDTO(userDocument);
+        // 对用户头像进行处理
+        this.assignmentAvatarUrl(userDTO);
+        return userDTO;
     }
 
     @Override
@@ -340,6 +348,27 @@ public class UserServiceImpl implements UserService {
 
         // 此处需等待最后一次登陆时间更新为当日时间，为了避免出现并发（版本冲突异常）问题
         Thread.sleep(1000);
+    }
+
+    /**
+     * 对用户头像进行处理
+     * 1.用户未上传头像，赋值默认头像
+     * 2.用户上传过头像，添加资源前缀 {@link cloud.lihan.rewardsprogram.config.file.AvatarPropertiesConfig}
+     *
+     * @param userDTO 用户信息
+     */
+    private void assignmentAvatarUrl(UserDTO userDTO) {
+        if (Objects.isNull(userDTO)) {
+            return;
+        }
+
+        if (StringUtils.isEmpty(userDTO.getAvatarUrl())) {
+            // 赋值默认头像
+            userDTO.setAvatarUrl(UrlUtil.getDefaultAvatarUrl());
+        } else {
+            // 添加资源前缀（头像访问目录的名称）
+            userDTO.setAvatarUrl(avatarProperties.getAvatarPrefix() + userDTO.getAvatarUrl());
+        }
     }
 
 }
