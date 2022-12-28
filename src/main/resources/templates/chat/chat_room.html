@@ -92,7 +92,7 @@
 	<script th:inline="javascript">
 
 		/**
-		 * WebSocket客户端
+		 * WebSocket客户端（重新链接，调用该函数即可）
 		 *
 		 * 使用说明：
 		 * 1、WebSocket客户端通过回调函数来接收服务端消息。例如：webSocket.onmessage
@@ -119,11 +119,11 @@
 			 */
 			webSocket.onmessage = function (event) {
 				console.log('WebSocket收到消息：%c' + event.data, 'color:green');
-				//获取服务端消息
+				// 获取服务端消息
 				var message = JSON.parse(event.data) || {};
 				var $messageContainer = $('.chat_info');
 				$('#sessionId').textContent = message.sessionId;
-				//喉咙发炎
+				// 拼接消息内容
 				if (message.type === 'SPEAK') {
 					$messageContainer.append(
 						'<li class="left">' +
