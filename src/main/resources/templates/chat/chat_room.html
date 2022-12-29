@@ -79,6 +79,14 @@
 
 	<script th:inline="javascript">
 
+		//避免重复连接
+		var lockReconnect = false;
+		// 部署本地时，选择这个配置
+		var wsUrl = "ws://127.0.0.1:8080/chat";
+		// 部署服务器时，选择这个配置
+		// var wsUrl = "ws://leilei.love.lihan.cloud/chat";
+		var tt;
+
 		/**
 		 * WebSocket客户端（重新链接，调用该函数即可）
 		 *
@@ -90,11 +98,8 @@
 			/**
 			 * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
 			 */
-			var webSocket = new WebSocket('ws://127.0.0.1:8080/chat');
-			/**
-			 * 部署服务器时，选择这个配置
-			 */
-			// var webSocket = new WebSocket('ws://leilei.love.lihan.cloud/chat');
+			var webSocket = new WebSocket(wsUrl);
+
 			/**
 			 * 当服务端打开连接
 			 */
@@ -148,6 +153,8 @@
 			 */
 			webSocket.onclose = function (event) {
 				console.log('WebSocket关闭连接');
+				// 断线重连
+				reconnect();
 			};
 
 			/**
@@ -155,7 +162,8 @@
 			 */
 			webSocket.onerror = function (event) {
 				console.log('WebSocket发生异常');
-
+				// 异常重连
+				reconnect();
 			};
 			return webSocket;
 		}
@@ -175,6 +183,20 @@
 					console.log('send PING !');
 				}, this.timeout)
 			}
+		}
+
+		// 断线重连
+		function reconnect() {
+			if(lockReconnect) {
+				return;
+			};
+			lockReconnect = true;
+			//没连接上会一直重连，设置延迟避免请求过多
+			tt && clearTimeout(tt);
+			tt = setTimeout(function () {
+				getWebSocket();
+				lockReconnect = false;
+			}, 5000);
 		}
 
 		/**
