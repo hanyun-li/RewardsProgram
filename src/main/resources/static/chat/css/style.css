@@ -307,7 +307,7 @@ ul{
 .room .input .center{
 	max-width: 910px;
 	width: 100%;
-	height: 99px;
+	padding: 10px 0 20px 0;
 	margin: 0 auto;
 	background: url('/chat/images/room_input_bg.png');
 }

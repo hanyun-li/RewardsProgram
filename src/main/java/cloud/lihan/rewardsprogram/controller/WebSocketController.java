@@ -34,7 +34,7 @@ public class WebSocketController {
     @OnOpen
     public void onOpen(Session session) {
         ONLINE_SESSIONS.put(session.getId(), session);
-        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.ENTER, "", "", "", ONLINE_SESSIONS.size()));
+        sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.PONG, "", "", "", ONLINE_SESSIONS.size()));
     }
 
     /**
@@ -45,6 +45,11 @@ public class WebSocketController {
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
         Message message = JSON.parseObject(jsonStr, Message.class);
+        // 发送心跳消息
+        if (Message.PING.equals(message.getMsg())) {
+            sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.PONG, "", "", message.getMsg(), ONLINE_SESSIONS.size()));
+            return;
+        }
         sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(),message.getAvatarUrl(), message.getMsg(), ONLINE_SESSIONS.size()));
     }
 
@@ -69,16 +74,40 @@ public class WebSocketController {
      * 公共方法：发送信息给所有人
      */
     private static void sendMessageToAll(String sessionId, String msg) {
+        Message message = JSON.parseObject(msg, Message.class);
         ONLINE_SESSIONS.forEach((id, session) -> {
             try {
-                // 这里判断不给自己发消息
-                if (!id.equals(sessionId)) {
+                // 检测是否心跳消息
+                if (isHeartCheck(message.getType())) {
                     session.getBasicRemote().sendText(msg);
+                } else {
+                    // 这里判断不给自己发消息
+                    if (!id.equals(sessionId)) {
+                        session.getBasicRemote().sendText(msg);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * 检测消息类型是否是心跳消息
+     *
+     * @param messageType 消息类型
+     * @return true:是心跳消息 false:不是心跳消息(聊天消息)
+     */
+    private static Boolean isHeartCheck(String messageType) {
+        if (Message.PING.equals(messageType)) {
+            return Boolean.TRUE;
+        }
+
+        if (Message.PONG.equals(messageType)) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
     }
 
 }

@@ -36,18 +36,6 @@
 					<div class="popover fade bottom in">
 						<div class="arrow"></div>
 						<h3 class="popover-title"></h3>
-<!--						<div class="popover-content scrollbar-macosx">-->
-<!--							<ul>-->
-<!--								<li>-->
-<!--									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">-->
-<!--									<b>美国队长</b>-->
-<!--								</li>-->
-<!--								<li>-->
-<!--									<img th:src="@{/chat/images/user/12.png}" alt="portrait_1">-->
-<!--									<b>美国队长</b>-->
-<!--								</li>-->
-<!--							</ul>-->
-<!--						</div>-->
 					</div>
 				</li>
 			</ul>
@@ -121,6 +109,13 @@
 				console.log('WebSocket收到消息：%c' + event.data, 'color:green');
 				// 获取服务端消息
 				var message = JSON.parse(event.data) || {};
+
+				// 如果收到"PONG"指令，说明是服务端返回的心跳响应
+				if (message.type === 'PONG') {
+					// 收到消息后，启动心跳检测机制
+					heartCheck.start();
+				}
+
 				var $messageContainer = $('.chat_info');
 				$('#sessionId').textContent = message.sessionId;
 				// 拼接消息内容
@@ -166,6 +161,21 @@
 		}
 
 		var webSocket = getWebSocket();
+
+		// 心跳检测
+		var heartCheck = {
+			timeout: 50000,
+			timeoutObj: null,
+			start: function(){
+				console.log('start heartbeat detection !');
+				this.timeoutObj && clearTimeout(this.timeoutObj);
+				this.timeoutObj = setTimeout(function(){
+					// 这里发送一个心跳(PING指令)，后端收到后，返回一个心跳消息(PONG指令)
+					webSocket.send(JSON.stringify({msg: 'PING'}));
+					console.log('send PING !');
+				}, this.timeout)
+			}
+		}
 
 		/**
 		 * 通过WebSocket对象发送消息给服务端
@@ -235,6 +245,7 @@
 			var e = event || window.event || arguments.callee.caller.arguments[0];
 			e.keyCode === 13 && sendMsgToServer();
 		};
+
 	</script>
 </body>
 </html>
