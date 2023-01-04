@@ -369,4 +369,20 @@ ul{
 	color: #afa;
 }
 
+/*表情包相关样式*/
+.fall {
+	position: absolute;
+	width: 220px;
+	height: 220px;
+	bottom: 100px;
+	border: 1px solid #333333;
+}
+.box{
+	padding:4px 0 0 4px;
+	float: left;
+}
+.box img{
+	width: 43px;
+	height: 43px;
+}
 

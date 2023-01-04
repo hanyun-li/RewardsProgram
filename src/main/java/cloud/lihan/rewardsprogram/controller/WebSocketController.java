@@ -49,6 +49,9 @@ public class WebSocketController {
         if (Message.PING.equals(message.getMsg())) {
             sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.PONG, "", "", message.getMsg(), ONLINE_SESSIONS.size()));
             return;
+        } else if (Message.EMOJI.equals(message.getType())) {
+            sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.EMOJI, message.getUsername(),message.getAvatarUrl(), message.getMsg(), ONLINE_SESSIONS.size()));
+            return;
         }
         sendMessageToAll(session.getId(), Message.jsonStr(session.getId(), Message.SPEAK, message.getUsername(),message.getAvatarUrl(), message.getMsg(), ONLINE_SESSIONS.size()));
     }

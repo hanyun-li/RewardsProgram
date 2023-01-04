@@ -13,9 +13,27 @@ import lombok.Data;
 public class Message {
 
     public static final String ENTER = "ENTER";
+
+    /**
+     * 文字消息类型
+     */
     public static final String SPEAK = "SPEAK";
+
+    /**
+     * 表情包消息类型
+     */
+    public static final String EMOJI = "EMOJI";
+
     public static final String QUIT = "QUIT";
+
+    /**
+     * 前端发送的心跳类型
+     */
     public static final String PING = "PING";
+
+    /**
+     * 后端发送的心跳在线响应类型
+     */
     public static final String PONG = "PONG";
 
     /**

@@ -56,9 +56,18 @@
 				</ul>
 			</div>
 		</div>
+
 		<div class="input">
 			<div class="center">
 				<div class="text">
+
+					<!--表情包容器展示-->
+					<div id="fallContainer" class="fall">
+						<div class="box">
+							<img src="/chat/images/kenan.jpg" alt="" onclick="clickEmoticons(this)">
+						</div>
+					</div>
+
 					<div class="input-group mb-3">
 						<input id="sessionId" type="hidden">
 						<input id="msg" type="text" class="form-control" placeholder="输入聊天信息..." aria-describedby="subxx">
@@ -132,6 +141,14 @@
 						'<i>' + getNowTime()+ '</i>\n' +
 						'<div style="background: #FFFFFF; border-radius: 5px;" class="aaa">' + message.msg + '</div>\n' +
 						'</li>');
+				} else if (message.type === 'EMOJI') {
+					$messageContainer.append(
+							'<li class="left">' +
+							'<img src="' + message.avatarUrl + '">' +
+							'<b>' + message.username + '</b>\n' +
+							'<i>' + getNowTime()+ '</i>\n' +
+							'<div style="background: #FFFFFF; border-radius: 5px;" class="aaa"><img src="' + message.msg +'"></div>\n' +
+							'</li>');
 				}
 
 				// 滚动条滚到最下面
@@ -200,6 +217,20 @@
 		}
 
 		/**
+		 * 点击表情包事件（作用：点击表情后发送）
+		 */
+		function clickEmoticons(that) {
+			// 将表情包展示框隐藏
+			const fall = $('#fallContainer');
+			fall.css("display","none");
+
+			// 给服务器发送表情包数据
+			webSocket.send(JSON.stringify({sessionId: $('#sessionId').text(), type : "EMOJI", username: $('#username').text(), avatarUrl: $('#avatarUrl').text(), msg: that.src}));
+
+			sendEmoji($('#username').text(), $('#avatarUrl').text(), that.src);
+		}
+
+		/**
 		 * 通过WebSocket对象发送消息给服务端
 		 */
 		function sendMsgToServer() {
@@ -231,9 +262,21 @@
 
 		}
 
+		/**
+		 * 发送消息
+		 */
 		function sends_message (userName, userPortrait, message) {
-			if(message!='') {
+			if(message !== '') {
 				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="' + userPortrait + '" alt=""><b>' + userName + '</b><i>' + getNowTime() + '</i><div style="background: #FFFFFF; border-radius: 5px;" class="aaa">' + message  +'</div></li>');
+			}
+		}
+
+		/**
+		 * 发送表情
+		 */
+		function sendEmoji (userName, userPortrait, imgSrc) {
+			if(imgSrc !== '') {
+				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="' + userPortrait + '" alt=""><b>' + userName + '</b><i>' + getNowTime() + '</i><div style="background: #FFFFFF; border-radius: 5px;" class="aaa"><img src="' + imgSrc +'"></div></li>');
 			}
 		}
 
