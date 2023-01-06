@@ -52,6 +52,7 @@
 					<li class="systeminfo">
 						<span id="username" style="display: none" th:text="${username}"></span>
 						<span id="avatarUrl" style="display: none" th:text="${avatarUrl}"></span>
+						<span id="webSocketUrl" style="display: none" th:text="${webSocketUrl}"></span>
 					</li>
 				</ul>
 			</div>
@@ -70,7 +71,10 @@
 					<!--表情包容器展示-->
 					<div id="fallContainer" class="fall" style="display: none">
 						<div class="box">
-							<img src="/chat/images/kenan.jpg" alt="" onclick="clickEmoticons(this)">
+							<img src="/chat/images/fall/kenan.jpg" alt="" onclick="clickEmoticons(this)">
+						</div>
+						<div class="box">
+							<img src="/chat/images/fall/doge.png" alt="" onclick="clickEmoticons(this)">
 						</div>
 					</div>
 
@@ -93,13 +97,10 @@
 	<script th:src="@{/assets/js/public.js}"></script>
 
 	<script th:inline="javascript">
-
-		//避免重复连接
+		// 避免重复连接
 		var lockReconnect = false;
-		// 部署本地时，选择这个配置
-		var wsUrl = "ws://127.0.0.1:8080/chat";
-		// 部署服务器时，选择这个配置
-		// var wsUrl = "ws://leilei.love.lihan.cloud/chat";
+		// webSocket连接地址
+		var wsUrl = $('#webSocketUrl').text();
 		var tt;
 
 		/**
@@ -249,7 +250,6 @@
 			} else {
 				fall.css("display", 'none');
 			}
-
 		}
 
 		/**
