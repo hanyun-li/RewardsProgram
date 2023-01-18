@@ -1,11 +1,3 @@
-/* 
-* @Author: sublime text
-* @Date:   2015-09-30 12:12:19
-* @Last Modified by:   sublime text
-* @Last Modified time: 2015-10-05 21:07:47
-*/
-
- /*                                                                  全局                      */
 
 .login{
 	background: url('/chat/images/login_bg.jpg') no-repeat fixed top;
@@ -17,12 +9,9 @@
 	background-size: cover;
 }
 .room{
-	background: url('/chat/images/theme/7_bg.jpg') no-repeat fixed top;
+	background: url('/chat/images/theme/fireworks.gif') no-repeat fixed top;
 	background-size: cover
 }
-
-
-
 
 body>.scrollbar-macosx{
 	position: absolute;
