@@ -269,7 +269,7 @@
 		}
 
 		/**
-		 * 点击表情包事件（作用：点击表情后发送）
+		 * 点击表情包容器事件（作用：点击表情包容器后，弹出表情窗口）
 		 */
 		function clickViewOrHiddenEmoji() {
 			// 将表情包展示框隐藏
@@ -328,6 +328,11 @@
 		function sendEmoji (userName, userPortrait, imgSrc) {
 			if(imgSrc !== '') {
 				$('.main .chat_info').html($('.main .chat_info').html() + '<li class="right"><img src="' + userPortrait + '" alt=""><b>' + userName + '</b><i>' + getNowTime() + '</i><div style="background: #FFFFFF; border-radius: 5px;" class="aaa"><img src="' + imgSrc +'"></div></li>');
+
+				// 滚动条滚到最下面
+				$('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').animate({
+					scrollTop: $('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').prop('scrollHeight')
+				}, 500);
 			}
 		}
 
