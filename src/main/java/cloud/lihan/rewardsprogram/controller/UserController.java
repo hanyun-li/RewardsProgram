@@ -165,4 +165,12 @@ public class UserController extends BaseController {
         return apiOk(userService.getAllUser());
     }
 
+    @GetMapping("/addIncreaseIncentiveValue")
+    @ResponseBody
+    public Base addRewardsValue(@RequestParam("increaseIncentiveValue") Integer increaseIncentiveValue) throws Exception {
+        // 这个接口仅仅只作为活动期间使用的临时任务，使用时可放开注释
+//        userService.increaseIncentiveValue(increaseIncentiveValue);
+        return apiOk();
+    }
+
 }

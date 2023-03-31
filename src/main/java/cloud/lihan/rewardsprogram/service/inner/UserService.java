@@ -67,6 +67,14 @@ public interface UserService {
     void increaseIncentiveValue(UserDTO userDTO, Integer increaseIncentiveValue) throws IOException;
 
     /**
+     * 活动奖励激励值（自定义奖励激励值）
+     *
+     * @param increaseIncentiveValue 需要增加的激励值
+     * @throws IOException 异常信息
+     */
+    void increaseIncentiveValue(Integer increaseIncentiveValue) throws Exception;
+
+    /**
      * 减少激励值（实现愿望时消耗）
      *
      * @param userDTO 用户传输对象

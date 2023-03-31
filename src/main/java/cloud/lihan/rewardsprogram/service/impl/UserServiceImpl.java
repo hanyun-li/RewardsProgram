@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
@@ -120,6 +121,30 @@ public class UserServiceImpl implements UserService {
         optionsMap.put("incentiveValue", JsonData.of(currentIncentiveValue));
         String source = "ctx._source.incentiveValue = params.incentiveValue";
         userDao.updateUserField(optionsMap, source, query);
+    }
+
+    @Override
+    public void increaseIncentiveValue(Integer increaseIncentiveValue) throws Exception {
+        if (Objects.isNull(increaseIncentiveValue)) {
+            return;
+        }
+
+        List<UserDTO> allUser = getAllUser();
+        if (CollectionUtils.isEmpty(allUser)) {
+            return;
+        }
+
+        // 给所有用户赠送制定的激励值奖励
+        allUser.parallelStream()
+                // 去除模版数据
+                .filter(user -> Objects.nonNull(user.getId()))
+                .forEach(user -> {
+                    try {
+                        increaseIncentiveValue(user, increaseIncentiveValue);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     @Override
