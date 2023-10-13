@@ -26,7 +26,7 @@ public class UserActionListener {
     public void sendVerificationCodeLimit(SendVerificationCodeLimitEvent event) throws InterruptedException {
         UserDTO userDTO = event.getEventData();
         if (Objects.isNull(userDTO)) {
-            log.error("UserActionListener.sendVerificationCodeLimit() exit error! userDTO is empty!");
+            log.error("UserActionListener.sendVerificationCodeLimit() exist error! userDTO is empty!");
         }
 
         // 锁定发送邮件功能，不允许发送邮件

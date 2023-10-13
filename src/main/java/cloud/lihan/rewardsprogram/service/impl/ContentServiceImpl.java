@@ -63,7 +63,7 @@ public class ContentServiceImpl implements ContentService {
     public void likeContent(ContentVO contentVO) throws Exception {
         ContentDocument contentDocument = contentDao.getContentById(contentVO.getContentId());
         if (Objects.isNull(contentDocument)) {
-            log.error("ContentServiceImpl.likeContent() exit error! contentId = {} not exit!", contentVO.getContentId());
+            log.error("ContentServiceImpl.likeContent() exist error! contentId = {} not exist!", contentVO.getContentId());
             return;
         }
 
@@ -85,7 +85,7 @@ public class ContentServiceImpl implements ContentService {
     public void cancelLikeContent(ContentVO contentVO) throws Exception {
         ContentDocument contentDocument = contentDao.getContentById(contentVO.getContentId());
         if (Objects.isNull(contentDocument)) {
-            log.error("ContentServiceImpl.cancelLikeContent() exit error! contentId = {} not exit!", contentVO.getContentId());
+            log.error("ContentServiceImpl.cancelLikeContent() exist error! contentId = {} not exist!", contentVO.getContentId());
             return;
         }
 
@@ -117,7 +117,7 @@ public class ContentServiceImpl implements ContentService {
                 // 按钮展示控制
                 this.viewButtonControl(contentDTO, userId, likeUserIdList);
             } catch (IOException e) {
-                log.error("ContentServiceImpl.getAllContents() exit error! error info : {}", e.getMessage());
+                log.error("ContentServiceImpl.getAllContents() exist error! error info : {}", e.getMessage());
             }
         });
         return contentDTOS;

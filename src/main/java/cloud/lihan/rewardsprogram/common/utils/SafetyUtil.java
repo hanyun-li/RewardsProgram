@@ -53,7 +53,7 @@ public class SafetyUtil {
      */
     public static int generateVerificationCode(int nums) throws IllegalArgumentException {
         if (IntegerConstant.SIX < nums || nums < IntegerConstant.ONE) {
-            throw new IllegalArgumentException("SafetyUtil.generateVerificationCode() exit error! nums have to in (1~6)!");
+            throw new IllegalArgumentException("SafetyUtil.generateVerificationCode() exist error! nums have to in (1~6)!");
         }
 
         int verificationCode = IntegerConstant.ZERO;

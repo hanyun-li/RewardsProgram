@@ -61,7 +61,7 @@ public class WishController {
             UserDTO userDTO = userService.getUserByUserInfo(wishVO.getImplementsPersonInfo());
             // 输入的实现人信息是否存在
             if (Objects.isNull(userDTO)) {
-                view.addObject("implementsPersonInfoIsNotExits", Boolean.TRUE);
+                view.addObject("implementsPersonInfoIsNotExists", Boolean.TRUE);
                 view.addObject("wishId", wishVO.getWishId());
                 view.setViewName("cover/implements_wish");
                 return view;

@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public void failLogin(String userId) throws Exception {
         UserDTO userDTO = this.getUserByUserId(userId);
         if (Objects.isNull(userDTO)) {
-            log.error("UserServiceImpl.failLogin() exit error! userDTO is null!");
+            log.error("UserServiceImpl.failLogin() exist error! userDTO is null!");
             return;
         }
 
@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService {
     public void increaseCreatePlanTimes(String userId) throws IOException {
         UserDTO userDTO = this.getUserByUserId(userId);
         if (Objects.isNull(userDTO)) {
-            log.error("UserServiceImpl.increaseCreatePlanTimes() exit error! userDTO is null!");
+            log.error("UserServiceImpl.increaseCreatePlanTimes() exist error! userDTO is null!");
             return;
         }
 
@@ -296,7 +296,7 @@ public class UserServiceImpl implements UserService {
             Integer currentDayLoginFailTimes = userDTO.getCurrentDayLoginFailTimes();
             // 检测是否超过最大失败登录次数
             if (currentDayLoginFailTimes >= LoginLimitConstant.CURRENT_DAY_LOGIN_FAIL_MAX_TIMES) {
-                log.warn("UserServiceImpl.isLocked() exit warn! Exceeded maximum number of failed logins . The userId is: {}", userDTO.getId());
+                log.warn("UserServiceImpl.isLocked() exist warn! Exceeded maximum number of failed logins . The userId is: {}", userDTO.getId());
                 return Boolean.TRUE;
             }
             return Boolean.FALSE;

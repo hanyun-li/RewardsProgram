@@ -27,7 +27,7 @@ public class CurrentTimeUtil {
      */
     public static Boolean isDaytime(Date currentDate) {
         if (Objects.isNull(currentDate)) {
-            throw new IllegalArgumentException("CurrentTimeUtil.isDaytime() exit error! The currentDate is null!");
+            throw new IllegalArgumentException("CurrentTimeUtil.isDaytime() exist error! The currentDate is null!");
         }
 
         // 获取当天时间的小时数（24小时制，eg:17）
@@ -46,7 +46,7 @@ public class CurrentTimeUtil {
      */
     public static Boolean isSameDay(String compareTime, String currentDayTime) {
         if (Objects.isNull(compareTime)) {
-            throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exit error! The compareTime is null!");
+            throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exist error! The compareTime is null!");
         }
 
         if (currentDayTime.equals(compareTime)) {
@@ -76,7 +76,7 @@ public class CurrentTimeUtil {
      */
     public static Boolean isSameDay(UserDTO userDTO, String currentDayTime) {
         if (Objects.isNull(userDTO.getLastTimeLoginFailTime())) {
-            throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exit error! The lastTimeLoginFailTime filed not initialized!");
+            throw new IllegalArgumentException("CurrentTimeUtil.isSameDay() exist error! The lastTimeLoginFailTime filed not initialized!");
         }
 
         // 判断当天时间是否与上一次失败登录的时间是同一天

@@ -125,7 +125,7 @@ public class PlanServiceImpl implements PlanService {
     @Transactional(rollbackFor = Exception.class)
     public Boolean canCreatePlan(UserDTO userDTO) throws Exception {
         if (Objects.isNull(userDTO)) {
-            log.error("PlanServiceImpl.savePlan() is exit error! userDTO is null!");
+            log.error("PlanServiceImpl.savePlan() is exist error! userDTO is null!");
         }
 
         // 获取当天的时间(eg:2022-8-4)

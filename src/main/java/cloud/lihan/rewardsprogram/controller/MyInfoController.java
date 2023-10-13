@@ -50,12 +50,12 @@ public class MyInfoController {
 
             // 未获取到头像
             if (Objects.isNull(avatarImage) || avatarImage.isEmpty()) {
-                log.warn("MyInfoController.editAvatar() exit warn. warn info : avatar is null !");
+                log.warn("MyInfoController.editAvatar() exist warn. warn info : avatar is null !");
             } else {
                 // 生成图片
                 String originalFilename = avatarImage.getOriginalFilename();
                 if (StringUtils.isEmpty(originalFilename)) {
-                    log.error("MyInfoController.editAvatar() exit warn. error info : originalFilename is empty !");
+                    log.error("MyInfoController.editAvatar() exist warn. error info : originalFilename is empty !");
                 } else {
                     String avatarUrl = UrlUtil.spliceAvatarUrl(userId, originalFilename);
                     File file = new File(avatarProperties.getAvatarPath() + avatarUrl);

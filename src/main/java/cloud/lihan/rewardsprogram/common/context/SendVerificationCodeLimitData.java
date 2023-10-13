@@ -29,7 +29,7 @@ public class SendVerificationCodeLimitData {
      */
     public static Boolean canSend(String userId) throws IllegalArgumentException{
         if (!StringUtils.hasText(userId)) {
-            throw new IllegalArgumentException("SendVerificationCodeLimitData.canSend() exit error! userId is empty!");
+            throw new IllegalArgumentException("SendVerificationCodeLimitData.canSend() exist error! userId is empty!");
         }
 
         Boolean canSendStatus = sendVerificationCodeLimitStatus.get(userId);
