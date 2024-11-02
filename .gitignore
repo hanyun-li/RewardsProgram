@@ -33,5 +33,5 @@ build/
 ### VS Code ###
 .vscode/
 
-### maven
+### maven command
 mvnw
