@@ -60,8 +60,13 @@
         </div>
         <div style="width: 75%;">
           <h1 style="display: flex; justify-content: space-between">
-            <span th:text="${content.nikeNameOrUserName}"></span>
-
+            <!--帖子昵称+时间-->
+            <div style="display: flex; flex-direction: column; align-items: center">
+              <span th:text="${content.nikeNameOrUserName}"></span>
+              <span style="height: 15px;">&nbsp;&nbsp;</span>
+              <span style="font-size: 0.4em; color: green;" th:text="${content.createTime}"></span>
+              <span style="height: 10px;">&nbsp;&nbsp;</span>
+            </div>
             <!--操作按钮显示判定-->
             <span th:if="${content.isViewEditAndDeleteButton}">
               <!--编辑按钮-->
