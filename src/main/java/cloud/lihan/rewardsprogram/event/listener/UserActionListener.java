@@ -27,6 +27,7 @@ public class UserActionListener {
         UserDTO userDTO = event.getEventData();
         if (Objects.isNull(userDTO)) {
             log.error("UserActionListener.sendVerificationCodeLimit() exist error! userDTO is empty!");
+            return;
         }
 
         // 锁定发送邮件功能，不允许发送邮件
